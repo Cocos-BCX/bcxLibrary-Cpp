@@ -1,0 +1,12 @@
+[submodule "vendor/diff-match-patch-cpp-stl"]
+    path = vendor/diff-match-patch-cpp-stl
+    url = https://github.com/leutloff/diff-match-patch-cpp-stl
+[submodule "vendor/secp256k1-zkp"]
+    path = vendor/secp256k1-zkp
+    url = https://github.com/bitshares/secp256k1-zkp.git
+[submodule "vendor/websocketpp"]
+    path = vendor/websocketpp
+    url = https://github.com/bitshares/websocketpp.git
+[submodule "vendor/editline"]
+    path = vendor/editline
+    url = https://github.com/troglobit/editline.git

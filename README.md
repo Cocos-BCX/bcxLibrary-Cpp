@@ -1,2 +1,2 @@
 # bcxLibrary-Cpp
-Cocos-BCX CPP Library
+Official C++ libs for Cocos-BCX.

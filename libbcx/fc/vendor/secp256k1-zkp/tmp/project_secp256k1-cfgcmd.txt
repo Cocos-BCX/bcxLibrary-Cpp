@@ -1,0 +1,1 @@
+cmd='/Users/hugo/Documents/work/bitshares/bitshares-core/libraries/fc/vendor/secp256k1-zkp/configure;--prefix=/Users/hugo/Documents/work/bitshares/bitshares-core/libraries/fc/vendor/secp256k1-zkp;--with-bignum=no'

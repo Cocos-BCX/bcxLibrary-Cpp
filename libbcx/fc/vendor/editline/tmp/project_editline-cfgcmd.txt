@@ -1,0 +1,1 @@
+cmd='/Users/hugo/Documents/work/bitshares/bitshares-core/libraries/fc/vendor/editline/configure;--prefix=/Users/hugo/Documents/work/bitshares/bitshares-core/libraries/fc/vendor/editline'
