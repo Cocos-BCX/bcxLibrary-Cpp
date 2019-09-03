@@ -1,0 +1,10 @@
+proposal_evaluator.o
+committee_member_evaluator.o
+account_evaluator.o
+confidential_evaluator.o
+asio.o
+ecp_nistz256-x86_64.o
+unique_path.o
+obj_dat.o
+transfer_evaluator.o
+process_cpu_clocks.o
