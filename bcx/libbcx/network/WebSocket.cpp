@@ -7,10 +7,11 @@
 
 #include "./WebSocket.hpp"
 #include "./Uri.hpp"
-#include "../platform/PlatformMacros.h"
 
 #ifdef __APPLE__
 #include "../3rd/websockets/include/ios/libwebsockets.h"
+#elif defined(_WIN32)
+#include "../3rd/websockets/include/win32/libwebsockets.h"
 #else
 #include "../3rd/websockets/include/android/libwebsockets.h"
 #endif

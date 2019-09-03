@@ -138,6 +138,144 @@
 		9A67665B2238A23200FC9B2D /* bcxlog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764E82238A23000FC9B2D /* bcxlog.cpp */; };
 		9A67665C2238A23200FC9B2D /* bcxws.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764EB2238A23000FC9B2D /* bcxws.cpp */; };
 		9A67665F2238A53400FC9B2D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A67665E2238A53300FC9B2D /* libz.tbd */; };
+		9A86EBBD22814FF5007883A8 /* bcxapi_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8A7A022426BCF00C2857E /* bcxapi_p.cpp */; };
+		9A86EBBE22814FF5007883A8 /* bcx_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764E62238A23000FC9B2D /* bcx_api.cpp */; };
+		9A86EBBF22814FF5007883A8 /* bcxdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AAD0D6F2238E51F006F8564 /* bcxdb.cpp */; };
+		9A86EBC022814FF5007883A8 /* bcxlog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764E82238A23000FC9B2D /* bcxlog.cpp */; };
+		9A86EBC122814FF5007883A8 /* bcxtimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D3EE2241DB7800DA5A9F /* bcxtimer.cpp */; };
+		9A86EBC222814FF5007883A8 /* bcxws.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764EB2238A23000FC9B2D /* bcxws.cpp */; };
+		9A86EBC322814FF5007883A8 /* bcxconfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC67C225CA560003FA15D /* bcxconfig.cpp */; };
+		9A86EBC422814FF5007883A8 /* boostHttpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A634E38224356DA00492138 /* boostHttpClient.cpp */; };
+		9A86EBC522814FFE007883A8 /* contract_create_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A9A8B2D224BA6F8008BDE43 /* contract_create_operation.cpp */; };
+		9A86EBC622814FFE007883A8 /* contract_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C56224C645700F11330 /* contract_object.cpp */; };
+		9A86EBC722814FFE007883A8 /* contract_revise_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C5A224CB58C00F11330 /* contract_revise_operation.cpp */; };
+		9A86EBC822814FFE007883A8 /* contract_call_function_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C8E224DEF0D00BD8F20 /* contract_call_function_operation.cpp */; };
+		9A86EBC922814FFE007883A8 /* relate_parent_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C5D224CCB0500F11330 /* relate_parent_file.cpp */; };
+		9A86EBCA22814FFE007883A8 /* file_signature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C60224CCB1A00F11330 /* file_signature.cpp */; };
+		9A86EBCB22814FFE007883A8 /* add_file_relate_account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C63224CCB2C00F11330 /* add_file_relate_account.cpp */; };
+		9A86EBCC22814FFE007883A8 /* create_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C66224CCB3F00F11330 /* create_file.cpp */; };
+		9A86EBCD22814FFE007883A8 /* fill_nh_asset_order.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C69224CCB4E00F11330 /* fill_nh_asset_order.cpp */; };
+		9A86EBCE22814FFE007883A8 /* nh_cancel_asset_order_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C6C224CCB5D00F11330 /* nh_cancel_asset_order_operation.cpp */; };
+		9A86EBCF22814FFE007883A8 /* nh_create_asset_order_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C6F224CCB6E00F11330 /* nh_create_asset_order_operation.cpp */; };
+		9A86EBD022814FFE007883A8 /* nh_transfer_asset_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C72224CCB8400F11330 /* nh_transfer_asset_operation.cpp */; };
+		9A86EBD122814FFE007883A8 /* nh_delete_asset_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C75224CCB9200F11330 /* nh_delete_asset_operation.cpp */; };
+		9A86EBD222814FFE007883A8 /* nh_relate_asset_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C78224CCBA300F11330 /* nh_relate_asset_operation.cpp */; };
+		9A86EBD322814FFE007883A8 /* nh_create_asset_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C7B224CCBB200F11330 /* nh_create_asset_operation.cpp */; };
+		9A86EBD422814FFE007883A8 /* nh_relate_world_view_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C7E224CCBC000F11330 /* nh_relate_world_view_operation.cpp */; };
+		9A86EBD522814FFE007883A8 /* nh_register_creator_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C88224DAD4E00BD8F20 /* nh_register_creator_operation.cpp */; };
+		9A86EBD622814FFE007883A8 /* nh_create_world_view_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C8B224DB7D200BD8F20 /* nh_create_world_view_operation.cpp */; };
+		9A86EBD722814FFE007883A8 /* game_protocol_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A2149522253501500E2247C /* game_protocol_object.cpp */; };
+		9A86EBD822814FFE007883A8 /* transaction_confirmation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AD287DC2266DA7700B52986 /* transaction_confirmation.cpp */; };
+		9A86EBD922815006007883A8 /* account_evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764142238A22F00FC9B2D /* account_evaluator.cpp */; };
+		9A86EBDA22815006007883A8 /* account_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764152238A22F00FC9B2D /* account_object.cpp */; };
+		9A86EBDB22815006007883A8 /* assert_evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764162238A22F00FC9B2D /* assert_evaluator.cpp */; };
+		9A86EBDD22815006007883A8 /* asset_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764182238A22F00FC9B2D /* asset_object.cpp */; };
+		9A86EBDE22815006007883A8 /* balance_evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764192238A22F00FC9B2D /* balance_evaluator.cpp */; };
+		9A86EBE022815006007883A8 /* buyback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67641B2238A22F00FC9B2D /* buyback.cpp */; };
+		9A86EBE122815006007883A8 /* committee_member_evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67641D2238A22F00FC9B2D /* committee_member_evaluator.cpp */; };
+		9A86EBE222815006007883A8 /* confidential_evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67641E2238A22F00FC9B2D /* confidential_evaluator.cpp */; };
+		9A86EBE722815006007883A8 /* db_getter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764232238A22F00FC9B2D /* db_getter.cpp */; };
+		9A86EBEF22815006007883A8 /* evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67642B2238A22F00FC9B2D /* evaluator.cpp */; };
+		9A86EBF322815006007883A8 /* get_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67642F2238A22F00FC9B2D /* get_config.cpp */; };
+		9A86EBF422815006007883A8 /* is_authorized_asset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764BF2238A22F00FC9B2D /* is_authorized_asset.cpp */; };
+		9A86EBF722815006007883A8 /* proposal_evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764C42238A22F00FC9B2D /* proposal_evaluator.cpp */; };
+		9A86EBF822815006007883A8 /* proposal_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764C52238A22F00FC9B2D /* proposal_object.cpp */; };
+		9A86EBF9228150D3007883A8 /* account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764C72238A22F00FC9B2D /* account.cpp */; };
+		9A86EBFA228150D3007883A8 /* address.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764C82238A22F00FC9B2D /* address.cpp */; };
+		9A86EBFB228150D3007883A8 /* assert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764C92238A22F00FC9B2D /* assert.cpp */; };
+		9A86EBFC228150D3007883A8 /* asset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764CA2238A22F00FC9B2D /* asset.cpp */; };
+		9A86EBFD228150D3007883A8 /* asset_ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764CB2238A22F00FC9B2D /* asset_ops.cpp */; };
+		9A86EBFE228150D3007883A8 /* authority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764CC2238A22F00FC9B2D /* authority.cpp */; };
+		9A86EBFF228150D3007883A8 /* block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764CD2238A22F00FC9B2D /* block.cpp */; };
+		9A86EC00228150D3007883A8 /* committee_member.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764CE2238A22F00FC9B2D /* committee_member.cpp */; };
+		9A86EC01228150D3007883A8 /* confidential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764CF2238A22F00FC9B2D /* confidential.cpp */; };
+		9A86EC02228150D3007883A8 /* custom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D02238A22F00FC9B2D /* custom.cpp */; };
+		9A86EC03228150D3007883A8 /* fee_schedule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D12238A22F00FC9B2D /* fee_schedule.cpp */; };
+		9A86EC04228150D3007883A8 /* market.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D22238A22F00FC9B2D /* market.cpp */; };
+		9A86EC05228150D3007883A8 /* memo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D32238A22F00FC9B2D /* memo.cpp */; };
+		9A86EC06228150D3007883A8 /* operations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D42238A22F00FC9B2D /* operations.cpp */; };
+		9A86EC07228150D3007883A8 /* proposal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D52238A22F00FC9B2D /* proposal.cpp */; };
+		9A86EC08228150D3007883A8 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D62238A22F00FC9B2D /* transaction.cpp */; };
+		9A86EC09228150D3007883A8 /* transfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D72238A22F00FC9B2D /* transfer.cpp */; };
+		9A86EC0A228150D3007883A8 /* types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D82238A22F00FC9B2D /* types.cpp */; };
+		9A86EC0B228150D3007883A8 /* vote.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764D92238A22F00FC9B2D /* vote.cpp */; };
+		9A86EC0C228150D3007883A8 /* withdraw_permission.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764DA2238A22F00FC9B2D /* withdraw_permission.cpp */; };
+		9A86EC0D228150D3007883A8 /* witness.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764DB2238A22F00FC9B2D /* witness.cpp */; };
+		9A86EC0E228150D3007883A8 /* worker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764DC2238A22F00FC9B2D /* worker.cpp */; };
+		9A86EC0F228150DD007883A8 /* pts_address.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764DD2238A22F00FC9B2D /* pts_address.cpp */; };
+		9A86EC10228150E0007883A8 /* special_authority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764DE2238A22F00FC9B2D /* special_authority.cpp */; };
+		9A86EC11228150E5007883A8 /* transfer_evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6764DF2238A22F00FC9B2D /* transfer_evaluator.cpp */; };
+		9A86EC12228150F3007883A8 /* index.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67605A2238A22C00FC9B2D /* index.cpp */; };
+		9A86EC13228150F3007883A8 /* object_database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67605D2238A22C00FC9B2D /* object_database.cpp */; };
+		9A86EC14228150F3007883A8 /* undo_database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67605E2238A22C00FC9B2D /* undo_database.cpp */; };
+		9A86EC15228150F7007883A8 /* git_revision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67606F2238A22D00FC9B2D /* git_revision.cpp */; };
+		9A86EC16228150FB007883A8 /* asio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67610B2238A22D00FC9B2D /* asio.cpp */; };
+		9A86EC1722815100007883A8 /* miniz.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A67610E2238A22D00FC9B2D /* miniz.c */; };
+		9A86EC1822815100007883A8 /* zlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67610F2238A22D00FC9B2D /* zlib.cpp */; };
+		9A86EC1922815108007883A8 /* _digest_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761112238A22D00FC9B2D /* _digest_common.cpp */; };
+		9A86EC1A22815108007883A8 /* aes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761152238A22D00FC9B2D /* aes.cpp */; };
+		9A86EC1B22815108007883A8 /* base36.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761162238A22D00FC9B2D /* base36.cpp */; };
+		9A86EC1C22815108007883A8 /* base58.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761172238A22D00FC9B2D /* base58.cpp */; };
+		9A86EC1D22815108007883A8 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761182238A22D00FC9B2D /* base64.cpp */; };
+		9A86EC1E22815108007883A8 /* bigint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761192238A22D00FC9B2D /* bigint.cpp */; };
+		9A86EC1F22815108007883A8 /* blowfish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67611A2238A22D00FC9B2D /* blowfish.cpp */; };
+		9A86EC2022815108007883A8 /* city.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67611B2238A22D00FC9B2D /* city.cpp */; };
+		9A86EC2122815108007883A8 /* crc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67611C2238A22D00FC9B2D /* crc.cpp */; };
+		9A86EC2222815108007883A8 /* dh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67611D2238A22D00FC9B2D /* dh.cpp */; };
+		9A86EC2322815108007883A8 /* elliptic_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67611E2238A22D00FC9B2D /* elliptic_common.cpp */; };
+		9A86EC2422815108007883A8 /* elliptic_impl_priv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67611F2238A22D00FC9B2D /* elliptic_impl_priv.cpp */; };
+		9A86EC2522815108007883A8 /* elliptic_secp256k1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761232238A22D00FC9B2D /* elliptic_secp256k1.cpp */; };
+		9A86EC2622815108007883A8 /* hex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761242238A22D00FC9B2D /* hex.cpp */; };
+		9A86EC2722815108007883A8 /* openssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761252238A22D00FC9B2D /* openssl.cpp */; };
+		9A86EC2822815108007883A8 /* rand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761272238A22D00FC9B2D /* rand.cpp */; };
+		9A86EC2922815108007883A8 /* ripemd160.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761282238A22D00FC9B2D /* ripemd160.cpp */; };
+		9A86EC2A22815108007883A8 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761292238A22D00FC9B2D /* sha1.cpp */; };
+		9A86EC2B22815108007883A8 /* sha224.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67612A2238A22D00FC9B2D /* sha224.cpp */; };
+		9A86EC2C22815108007883A8 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67612B2238A22D00FC9B2D /* sha256.cpp */; };
+		9A86EC2D22815108007883A8 /* sha512.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67612C2238A22D00FC9B2D /* sha512.cpp */; };
+		9A86EC2E2281510E007883A8 /* exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67612D2238A22D00FC9B2D /* exception.cpp */; };
+		9A86EC2F2281510E007883A8 /* filesystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67612E2238A22D00FC9B2D /* filesystem.cpp */; };
+		9A86EC3022815118007883A8 /* buffered_iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761362238A22D00FC9B2D /* buffered_iostream.cpp */; };
+		9A86EC3122815118007883A8 /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761372238A22D00FC9B2D /* console.cpp */; };
+		9A86EC3222815118007883A8 /* datastream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761382238A22D00FC9B2D /* datastream.cpp */; };
+		9A86EC3322815118007883A8 /* fstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761392238A22D00FC9B2D /* fstream.cpp */; };
+		9A86EC3422815118007883A8 /* iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67613A2238A22D00FC9B2D /* iostream.cpp */; };
+		9A86EC3522815118007883A8 /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67613B2238A22D00FC9B2D /* json.cpp */; };
+		9A86EC3622815118007883A8 /* sstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67613C2238A22D00FC9B2D /* sstream.cpp */; };
+		9A86EC3722815118007883A8 /* varint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67613D2238A22D00FC9B2D /* varint.cpp */; };
+		9A86EC382281511F007883A8 /* appender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67613F2238A22D00FC9B2D /* appender.cpp */; };
+		9A86EC392281511F007883A8 /* console_appender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761402238A22D00FC9B2D /* console_appender.cpp */; };
+		9A86EC3A2281511F007883A8 /* file_appender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761422238A22D00FC9B2D /* file_appender.cpp */; };
+		9A86EC3B2281511F007883A8 /* gelf_appender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761432238A22D00FC9B2D /* gelf_appender.cpp */; };
+		9A86EC3C2281511F007883A8 /* log_message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761442238A22D00FC9B2D /* log_message.cpp */; };
+		9A86EC3D2281511F007883A8 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761452238A22D00FC9B2D /* logger.cpp */; };
+		9A86EC3E2281511F007883A8 /* logger_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761462238A22D00FC9B2D /* logger_config.cpp */; };
+		9A86EC3F22815124007883A8 /* real128.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761522238A22D00FC9B2D /* real128.cpp */; };
+		9A86EC402281512C007883A8 /* shared_ptr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67615A2238A22D00FC9B2D /* shared_ptr.cpp */; };
+		9A86EC412281512C007883A8 /* stacktrace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67615B2238A22D00FC9B2D /* stacktrace.cpp */; };
+		9A86EC422281512C007883A8 /* string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67615C2238A22D00FC9B2D /* string.cpp */; };
+		9A86EC4322815132007883A8 /* future.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A67615F2238A22D00FC9B2D /* future.cpp */; };
+		9A86EC4422815132007883A8 /* mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761602238A22D00FC9B2D /* mutex.cpp */; };
+		9A86EC4522815132007883A8 /* non_preemptable_scope_check.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761612238A22D00FC9B2D /* non_preemptable_scope_check.cpp */; };
+		9A86EC4622815132007883A8 /* spin_lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761622238A22D00FC9B2D /* spin_lock.cpp */; };
+		9A86EC4722815132007883A8 /* spin_yield_lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761632238A22D00FC9B2D /* spin_yield_lock.cpp */; };
+		9A86EC4822815132007883A8 /* task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761642238A22D00FC9B2D /* task.cpp */; };
+		9A86EC4922815132007883A8 /* thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761652238A22D00FC9B2D /* thread.cpp */; };
+		9A86EC4A22815132007883A8 /* thread_specific.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761672238A22D00FC9B2D /* thread_specific.cpp */; };
+		9A86EC4B22815137007883A8 /* time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761682238A22D00FC9B2D /* time.cpp */; };
+		9A86EC4C22815137007883A8 /* uint128.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761692238A22D00FC9B2D /* uint128.cpp */; };
+		9A86EC4D22815137007883A8 /* utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761702238A22D00FC9B2D /* utf8.cpp */; };
+		9A86EC4E22815137007883A8 /* variant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761712238A22D00FC9B2D /* variant.cpp */; };
+		9A86EC4F22815137007883A8 /* variant_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A6761722238A22D00FC9B2D /* variant_object.cpp */; };
+		9A86EC502281513D007883A8 /* Uri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A672E342238A21B00FC9B2D /* Uri.cpp */; };
+		9A86EC512281513D007883A8 /* WebSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A672E362238A21B00FC9B2D /* WebSocket.cpp */; };
+		9A86EC53228153EC007883A8 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A86EC52228153EC007883A8 /* libz.a */; };
+		9A86EC56228153FB007883A8 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A86EC54228153FA007883A8 /* libcrypto.a */; };
+		9A86EC57228153FB007883A8 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A86EC55228153FB007883A8 /* libssl.a */; };
+		9A86EC592281541B007883A8 /* libsecp256k1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A86EC582281541B007883A8 /* libsecp256k1.a */; };
+		9A86EC5B2281543D007883A8 /* libuv_a.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A86EC5A2281543D007883A8 /* libuv_a.a */; };
+		9A86EC5D22815457007883A8 /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A86EC5C22815457007883A8 /* libwebsockets.a */; };
+		9A86EC6C22816821007883A8 /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A86EC6B22816820007883A8 /* libboost.a */; };
 		9A8CC67E225CA560003FA15D /* bcxconfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC67C225CA560003FA15D /* bcxconfig.cpp */; };
 		9A9A8B2E224BA6F8008BDE43 /* contract_create_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A9A8B2D224BA6F8008BDE43 /* contract_create_operation.cpp */; };
 		9AAD0D712238E51F006F8564 /* bcxdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AAD0D6F2238E51F006F8564 /* bcxdb.cpp */; };
@@ -697,6 +835,15 @@
 		9A6764EB2238A23000FC9B2D /* bcxws.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bcxws.cpp; sourceTree = "<group>"; };
 		9A6764EC2238A23000FC9B2D /* bcxws.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bcxws.hpp; sourceTree = "<group>"; };
 		9A67665E2238A53300FC9B2D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		9A86EBB922814F87007883A8 /* libbcx mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libbcx mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A86EC52228153EC007883A8 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = ../../libbcx/3rd/zlib/prebuilt/mac/libz.a; sourceTree = "<group>"; };
+		9A86EC54228153FA007883A8 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../../libbcx/3rd/openssl/prebuilt/mac/libcrypto.a; sourceTree = "<group>"; };
+		9A86EC55228153FB007883A8 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../../libbcx/3rd/openssl/prebuilt/mac/libssl.a; sourceTree = "<group>"; };
+		9A86EC582281541B007883A8 /* libsecp256k1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsecp256k1.a; path = ../../libbcx/3rd/secp256k1/prebuilt/mac/libsecp256k1.a; sourceTree = "<group>"; };
+		9A86EC5A2281543D007883A8 /* libuv_a.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libuv_a.a; path = ../../libbcx/3rd/uv/prebuilt/mac/libuv_a.a; sourceTree = "<group>"; };
+		9A86EC5C22815457007883A8 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebsockets.a; path = ../../libbcx/3rd/websockets/prebuilt/mac/libwebsockets.a; sourceTree = "<group>"; };
+		9A86EC6B22816820007883A8 /* libboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost.a; path = ../../libbcx/3rd/boost/ios/lib/libboost.a; sourceTree = "<group>"; };
+		9A86EC70228173A9007883A8 /* PlatformDefine-mac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlatformDefine-mac.h"; sourceTree = "<group>"; };
 		9A8CC67B225C9A4D003FA15D /* bcx_common.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bcx_common.hpp; sourceTree = "<group>"; };
 		9A8CC67C225CA560003FA15D /* bcxconfig.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bcxconfig.cpp; sourceTree = "<group>"; };
 		9A8CC67D225CA560003FA15D /* bcxconfig.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bcxconfig.hpp; sourceTree = "<group>"; };
@@ -726,6 +873,20 @@
 				9A6765122238A23100FC9B2D /* libuv_a.a in Frameworks */,
 				9A6765212238A23100FC9B2D /* libwebsockets.a in Frameworks */,
 				9A6764F22238A23100FC9B2D /* libboost.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A86EBB722814F87007883A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A86EC53228153EC007883A8 /* libz.a in Frameworks */,
+				9A86EC56228153FB007883A8 /* libcrypto.a in Frameworks */,
+				9A86EC57228153FB007883A8 /* libssl.a in Frameworks */,
+				9A86EC592281541B007883A8 /* libsecp256k1.a in Frameworks */,
+				9A86EC5B2281543D007883A8 /* libuv_a.a in Frameworks */,
+				9A86EC5D22815457007883A8 /* libwebsockets.a in Frameworks */,
+				9A86EC6C22816821007883A8 /* libboost.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -817,6 +978,7 @@
 			isa = PBXGroup;
 			children = (
 				9A672E252238A19F00FC9B2D /* libbcx.a */,
+				9A86EBB922814F87007883A8 /* libbcx mac.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -852,6 +1014,7 @@
 			isa = PBXGroup;
 			children = (
 				9A672E3C2238A21B00FC9B2D /* ios */,
+				9A86EC6F228173A9007883A8 /* mac */,
 				9A672E3E2238A21B00FC9B2D /* PlatformConfig.h */,
 				9A672E3F2238A21B00FC9B2D /* PlatformDefine.h */,
 				9A672E402238A21B00FC9B2D /* PlatformMacros.h */,
@@ -1828,12 +1991,37 @@
 		9A67665D2238A53300FC9B2D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9A86EC6B22816820007883A8 /* libboost.a */,
+				9A86EC5C22815457007883A8 /* libwebsockets.a */,
+				9A86EC5A2281543D007883A8 /* libuv_a.a */,
+				9A86EC582281541B007883A8 /* libsecp256k1.a */,
+				9A86EC54228153FA007883A8 /* libcrypto.a */,
+				9A86EC55228153FB007883A8 /* libssl.a */,
+				9A86EC52228153EC007883A8 /* libz.a */,
 				9A67665E2238A53300FC9B2D /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9A86EC6F228173A9007883A8 /* mac */ = {
+			isa = PBXGroup;
+			children = (
+				9A86EC70228173A9007883A8 /* PlatformDefine-mac.h */,
+			);
+			path = mac;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		9A86EBB522814F87007883A8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		9A672E242238A19F00FC9B2D /* bcx */ = {
@@ -1853,6 +2041,23 @@
 			productReference = 9A672E252238A19F00FC9B2D /* libbcx.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		9A86EBB822814F87007883A8 /* bcx mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A86EBBA22814F87007883A8 /* Build configuration list for PBXNativeTarget "bcx mac" */;
+			buildPhases = (
+				9A86EBB522814F87007883A8 /* Headers */,
+				9A86EBB622814F87007883A8 /* Sources */,
+				9A86EBB722814F87007883A8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "bcx mac";
+			productName = "bcx mac";
+			productReference = 9A86EBB922814F87007883A8 /* libbcx mac.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1864,6 +2069,9 @@
 				TargetAttributes = {
 					9A672E242238A19F00FC9B2D = {
 						CreatedOnToolsVersion = 10.1;
+					};
+					9A86EBB822814F87007883A8 = {
+						CreatedOnToolsVersion = 10.2.1;
 					};
 				};
 			};
@@ -1880,6 +2088,7 @@
 			projectRoot = "";
 			targets = (
 				9A672E242238A19F00FC9B2D /* bcx */,
+				9A86EBB822814F87007883A8 /* bcx mac */,
 			);
 		};
 /* End PBXProject section */
@@ -2023,6 +2232,144 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9A86EBB622814F87007883A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A86EC1822815100007883A8 /* zlib.cpp in Sources */,
+				9A86EBF9228150D3007883A8 /* account.cpp in Sources */,
+				9A86EC502281513D007883A8 /* Uri.cpp in Sources */,
+				9A86EBCF22814FFE007883A8 /* nh_create_asset_order_operation.cpp in Sources */,
+				9A86EC3622815118007883A8 /* sstream.cpp in Sources */,
+				9A86EC2222815108007883A8 /* dh.cpp in Sources */,
+				9A86EBC622814FFE007883A8 /* contract_object.cpp in Sources */,
+				9A86EC01228150D3007883A8 /* confidential.cpp in Sources */,
+				9A86EC4F22815137007883A8 /* variant_object.cpp in Sources */,
+				9A86EBBF22814FF5007883A8 /* bcxdb.cpp in Sources */,
+				9A86EBD822814FFE007883A8 /* transaction_confirmation.cpp in Sources */,
+				9A86EC1B22815108007883A8 /* base36.cpp in Sources */,
+				9A86EC3122815118007883A8 /* console.cpp in Sources */,
+				9A86EC1E22815108007883A8 /* bigint.cpp in Sources */,
+				9A86EBBE22814FF5007883A8 /* bcx_api.cpp in Sources */,
+				9A86EC4B22815137007883A8 /* time.cpp in Sources */,
+				9A86EBD722814FFE007883A8 /* game_protocol_object.cpp in Sources */,
+				9A86EC3222815118007883A8 /* datastream.cpp in Sources */,
+				9A86EBCC22814FFE007883A8 /* create_file.cpp in Sources */,
+				9A86EBC822814FFE007883A8 /* contract_call_function_operation.cpp in Sources */,
+				9A86EC2C22815108007883A8 /* sha256.cpp in Sources */,
+				9A86EC2122815108007883A8 /* crc.cpp in Sources */,
+				9A86EC03228150D3007883A8 /* fee_schedule.cpp in Sources */,
+				9A86EBEF22815006007883A8 /* evaluator.cpp in Sources */,
+				9A86EBE022815006007883A8 /* buyback.cpp in Sources */,
+				9A86EBC422814FF5007883A8 /* boostHttpClient.cpp in Sources */,
+				9A86EBD122814FFE007883A8 /* nh_delete_asset_operation.cpp in Sources */,
+				9A86EC2F2281510E007883A8 /* filesystem.cpp in Sources */,
+				9A86EC02228150D3007883A8 /* custom.cpp in Sources */,
+				9A86EBE122815006007883A8 /* committee_member_evaluator.cpp in Sources */,
+				9A86EC4722815132007883A8 /* spin_yield_lock.cpp in Sources */,
+				9A86EBFC228150D3007883A8 /* asset.cpp in Sources */,
+				9A86EC3A2281511F007883A8 /* file_appender.cpp in Sources */,
+				9A86EC3B2281511F007883A8 /* gelf_appender.cpp in Sources */,
+				9A86EC1F22815108007883A8 /* blowfish.cpp in Sources */,
+				9A86EBDE22815006007883A8 /* balance_evaluator.cpp in Sources */,
+				9A86EC2D22815108007883A8 /* sha512.cpp in Sources */,
+				9A86EBDA22815006007883A8 /* account_object.cpp in Sources */,
+				9A86EC2922815108007883A8 /* ripemd160.cpp in Sources */,
+				9A86EBC922814FFE007883A8 /* relate_parent_file.cpp in Sources */,
+				9A86EC0E228150D3007883A8 /* worker.cpp in Sources */,
+				9A86EBDB22815006007883A8 /* assert_evaluator.cpp in Sources */,
+				9A86EC10228150E0007883A8 /* special_authority.cpp in Sources */,
+				9A86EBCB22814FFE007883A8 /* add_file_relate_account.cpp in Sources */,
+				9A86EBC522814FFE007883A8 /* contract_create_operation.cpp in Sources */,
+				9A86EC2722815108007883A8 /* openssl.cpp in Sources */,
+				9A86EBC022814FF5007883A8 /* bcxlog.cpp in Sources */,
+				9A86EC2322815108007883A8 /* elliptic_common.cpp in Sources */,
+				9A86EC3322815118007883A8 /* fstream.cpp in Sources */,
+				9A86EC15228150F7007883A8 /* git_revision.cpp in Sources */,
+				9A86EC2522815108007883A8 /* elliptic_secp256k1.cpp in Sources */,
+				9A86EC1A22815108007883A8 /* aes.cpp in Sources */,
+				9A86EC2822815108007883A8 /* rand.cpp in Sources */,
+				9A86EC2622815108007883A8 /* hex.cpp in Sources */,
+				9A86EBD322814FFE007883A8 /* nh_create_asset_operation.cpp in Sources */,
+				9A86EC16228150FB007883A8 /* asio.cpp in Sources */,
+				9A86EBFE228150D3007883A8 /* authority.cpp in Sources */,
+				9A86EBC222814FF5007883A8 /* bcxws.cpp in Sources */,
+				9A86EC3D2281511F007883A8 /* logger.cpp in Sources */,
+				9A86EBC722814FFE007883A8 /* contract_revise_operation.cpp in Sources */,
+				9A86EC11228150E5007883A8 /* transfer_evaluator.cpp in Sources */,
+				9A86EBFB228150D3007883A8 /* assert.cpp in Sources */,
+				9A86EC2B22815108007883A8 /* sha224.cpp in Sources */,
+				9A86EBFD228150D3007883A8 /* asset_ops.cpp in Sources */,
+				9A86EBD022814FFE007883A8 /* nh_transfer_asset_operation.cpp in Sources */,
+				9A86EC382281511F007883A8 /* appender.cpp in Sources */,
+				9A86EBDD22815006007883A8 /* asset_object.cpp in Sources */,
+				9A86EC4822815132007883A8 /* task.cpp in Sources */,
+				9A86EC4422815132007883A8 /* mutex.cpp in Sources */,
+				9A86EBCA22814FFE007883A8 /* file_signature.cpp in Sources */,
+				9A86EC0B228150D3007883A8 /* vote.cpp in Sources */,
+				9A86EBD922815006007883A8 /* account_evaluator.cpp in Sources */,
+				9A86EC06228150D3007883A8 /* operations.cpp in Sources */,
+				9A86EC3722815118007883A8 /* varint.cpp in Sources */,
+				9A86EBC122814FF5007883A8 /* bcxtimer.cpp in Sources */,
+				9A86EC1722815100007883A8 /* miniz.c in Sources */,
+				9A86EC0C228150D3007883A8 /* withdraw_permission.cpp in Sources */,
+				9A86EC2A22815108007883A8 /* sha1.cpp in Sources */,
+				9A86EBF422815006007883A8 /* is_authorized_asset.cpp in Sources */,
+				9A86EC512281513D007883A8 /* WebSocket.cpp in Sources */,
+				9A86EC412281512C007883A8 /* stacktrace.cpp in Sources */,
+				9A86EC4D22815137007883A8 /* utf8.cpp in Sources */,
+				9A86EC2422815108007883A8 /* elliptic_impl_priv.cpp in Sources */,
+				9A86EBFA228150D3007883A8 /* address.cpp in Sources */,
+				9A86EC4922815132007883A8 /* thread.cpp in Sources */,
+				9A86EBE222815006007883A8 /* confidential_evaluator.cpp in Sources */,
+				9A86EBF322815006007883A8 /* get_config.cpp in Sources */,
+				9A86EC14228150F3007883A8 /* undo_database.cpp in Sources */,
+				9A86EBC322814FF5007883A8 /* bcxconfig.cpp in Sources */,
+				9A86EC4C22815137007883A8 /* uint128.cpp in Sources */,
+				9A86EBCE22814FFE007883A8 /* nh_cancel_asset_order_operation.cpp in Sources */,
+				9A86EC4A22815132007883A8 /* thread_specific.cpp in Sources */,
+				9A86EC00228150D3007883A8 /* committee_member.cpp in Sources */,
+				9A86EC05228150D3007883A8 /* memo.cpp in Sources */,
+				9A86EC1C22815108007883A8 /* base58.cpp in Sources */,
+				9A86EBF722815006007883A8 /* proposal_evaluator.cpp in Sources */,
+				9A86EBBD22814FF5007883A8 /* bcxapi_p.cpp in Sources */,
+				9A86EC3022815118007883A8 /* buffered_iostream.cpp in Sources */,
+				9A86EC2022815108007883A8 /* city.cpp in Sources */,
+				9A86EC04228150D3007883A8 /* market.cpp in Sources */,
+				9A86EC3522815118007883A8 /* json.cpp in Sources */,
+				9A86EC2E2281510E007883A8 /* exception.cpp in Sources */,
+				9A86EC4322815132007883A8 /* future.cpp in Sources */,
+				9A86EC08228150D3007883A8 /* transaction.cpp in Sources */,
+				9A86EBCD22814FFE007883A8 /* fill_nh_asset_order.cpp in Sources */,
+				9A86EBD422814FFE007883A8 /* nh_relate_world_view_operation.cpp in Sources */,
+				9A86EBE722815006007883A8 /* db_getter.cpp in Sources */,
+				9A86EC0F228150DD007883A8 /* pts_address.cpp in Sources */,
+				9A86EC0D228150D3007883A8 /* witness.cpp in Sources */,
+				9A86EC1922815108007883A8 /* _digest_common.cpp in Sources */,
+				9A86EC422281512C007883A8 /* string.cpp in Sources */,
+				9A86EC3C2281511F007883A8 /* log_message.cpp in Sources */,
+				9A86EBD522814FFE007883A8 /* nh_register_creator_operation.cpp in Sources */,
+				9A86EC09228150D3007883A8 /* transfer.cpp in Sources */,
+				9A86EC4622815132007883A8 /* spin_lock.cpp in Sources */,
+				9A86EBD222814FFE007883A8 /* nh_relate_asset_operation.cpp in Sources */,
+				9A86EC4E22815137007883A8 /* variant.cpp in Sources */,
+				9A86EC12228150F3007883A8 /* index.cpp in Sources */,
+				9A86EBF822815006007883A8 /* proposal_object.cpp in Sources */,
+				9A86EC3E2281511F007883A8 /* logger_config.cpp in Sources */,
+				9A86EC392281511F007883A8 /* console_appender.cpp in Sources */,
+				9A86EC07228150D3007883A8 /* proposal.cpp in Sources */,
+				9A86EC1D22815108007883A8 /* base64.cpp in Sources */,
+				9A86EC3422815118007883A8 /* iostream.cpp in Sources */,
+				9A86EC3F22815124007883A8 /* real128.cpp in Sources */,
+				9A86EBFF228150D3007883A8 /* block.cpp in Sources */,
+				9A86EBD622814FFE007883A8 /* nh_create_world_view_operation.cpp in Sources */,
+				9A86EC4522815132007883A8 /* non_preemptable_scope_check.cpp in Sources */,
+				9A86EC0A228150D3007883A8 /* types.cpp in Sources */,
+				9A86EC13228150F3007883A8 /* object_database.cpp in Sources */,
+				9A86EC402281512C007883A8 /* shared_ptr.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -2145,13 +2492,12 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../libbcx/3rd/ofxiOSBoost/libs/boost/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/openssl/prebuilt/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/prebuilt/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/uv/prebuilt/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/websockets/prebuilt/ios\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2160,12 +2506,12 @@
 					"\"$(SRCROOT)/../../libbcx/db/include\"",
 					"\"$(SRCROOT)/../../libbcx/chain/include\"",
 					"\"$(SRCROOT)/../../libbcx/fc/include\"",
-					"\"$(SRCROOT)/../../libbcx/3rd/ofxiOSBoost/libs/boost/include\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/openssl/include/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/include\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/uv/include\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/websockets/include/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/promise-cpp\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/include\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../libbcx\"";
@@ -2179,14 +2525,13 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../libbcx/3rd/ofxiOSBoost/libs/boost/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/openssl/prebuilt/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/prebuilt/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/uv/prebuilt/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/websockets/prebuilt/ios\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2195,16 +2540,84 @@
 					"\"$(SRCROOT)/../../libbcx/db/include\"",
 					"\"$(SRCROOT)/../../libbcx/chain/include\"",
 					"\"$(SRCROOT)/../../libbcx/fc/include\"",
-					"\"$(SRCROOT)/../../libbcx/3rd/ofxiOSBoost/libs/boost/include\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/openssl/include/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/include\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/uv/include\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/websockets/include/ios\"",
 					"\"$(SRCROOT)/../../libbcx/3rd/promise-cpp\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/include\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../libbcx\"";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
+			};
+			name = Release;
+		};
+		9A86EBBB22814F87007883A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../libbcx/3rd/zlib/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/openssl/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/uv/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/websockets/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/lib\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../libbcx/db/include\"",
+					"\"$(SRCROOT)/../../libbcx/chain/include\"",
+					"\"$(SRCROOT)/../../libbcx/fc/include\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/openssl/include/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/include\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/uv/include\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/websockets/include/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/promise-cpp\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/include\"",
+				);
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../libbcx\"";
+			};
+			name = Debug;
+		};
+		9A86EBBC22814F87007883A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../libbcx/3rd/zlib/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/openssl/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/uv/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/websockets/prebuilt/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/lib\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../libbcx/db/include\"",
+					"\"$(SRCROOT)/../../libbcx/chain/include\"",
+					"\"$(SRCROOT)/../../libbcx/fc/include\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/openssl/include/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/secp256k1/include\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/uv/include\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/websockets/include/mac\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/promise-cpp\"",
+					"\"$(SRCROOT)/../../libbcx/3rd/boost/ios/include\"",
+				);
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../libbcx\"";
 			};
 			name = Release;
 		};
@@ -2225,6 +2638,15 @@
 			buildConfigurations = (
 				9A672E2F2238A19F00FC9B2D /* Debug */,
 				9A672E302238A19F00FC9B2D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A86EBBA22814F87007883A8 /* Build configuration list for PBXNativeTarget "bcx mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A86EBBB22814F87007883A8 /* Debug */,
+				9A86EBBC22814F87007883A8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

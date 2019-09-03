@@ -133,35 +133,35 @@ public:
 
 private:
     void query_login(const std::function<void(int)> &callback);
-    ::promise::Defer query_api_id(const std::string& name, ::promise::Defer defer = ::promise::newPromise());
+    ::promise::Defer query_api_id(const std::string& name, ::promise::Defer defer = promise::newPromise());
     ::promise::Defer get_required_fees(const std::vector<graphene::chain::operation> &ops,
                                        graphene::chain::asset_id_type id,
-                                       ::promise::Defer defer = ::promise::newPromise());
+                                       ::promise::Defer defer = promise::newPromise());
     ::promise::Defer broadcast_transaction_with_callback(const graphene::chain::signed_transaction& trx,
-                                                         ::promise::Defer defer = ::promise::newPromise());
+                                                         ::promise::Defer defer = promise::newPromise());
     void query_dynamic_global_property_object();
-    ::promise::Defer query_get_full_accounts(const std::string &nameOrId, ::promise::Defer defer = ::promise::newPromise());
-    ::promise::Defer query_get_account_by_name(const std::string &name, ::promise::Defer defer = ::promise::newPromise());
-    ::promise::Defer query_lookup_account_names(const std::vector<std::string> &names, ::promise::Defer defer = ::promise::newPromise());
-    ::promise::Defer query_get_key_references(const std::vector<graphene::chain::public_key_type> &keys, ::promise::Defer defer = ::promise::newPromise());
-    ::promise::Defer send_operation(const std::vector<graphene::chain::operation>& ops,  ::promise::Defer defer = ::promise::newPromise());
+    ::promise::Defer query_get_full_accounts(const std::string &nameOrId, ::promise::Defer defer = promise::newPromise());
+    ::promise::Defer query_get_account_by_name(const std::string &name, ::promise::Defer defer = promise::newPromise());
+    ::promise::Defer query_lookup_account_names(const std::vector<std::string> &names, ::promise::Defer defer = promise::newPromise());
+    ::promise::Defer query_get_key_references(const std::vector<graphene::chain::public_key_type> &keys, ::promise::Defer defer = promise::newPromise());
+    ::promise::Defer send_operation(const std::vector<graphene::chain::operation>& ops,  ::promise::Defer defer = promise::newPromise());
     fc::optional<fc::ecc::private_key> get_current_private_key(const std::string& role);
     fc::optional<fc::ecc::private_key> get_private_key_by_public(const graphene::chain::public_key_type pkeyt);
-    ::promise::Defer validate_password(const std::string &account, const std::string &pwd, ::promise::Defer defer = ::promise::newPromise());
+    ::promise::Defer validate_password(const std::string &account, const std::string &pwd, ::promise::Defer defer = promise::newPromise());
     ::promise::Defer createAccountByAccount(const std::string &account, const std::string &pw,
-                       ::promise::Defer defer = ::promise::newPromise());
+                       ::promise::Defer defer = promise::newPromise());
     ::promise::Defer createAccountByFaucet(const std::string &account, const std::string &pw,
-                       ::promise::Defer defer = ::promise::newPromise());
+                       ::promise::Defer defer = promise::newPromise());
     ::promise::Defer lookup_asset_symbols(const std::vector<std::string>& symbols_or_ids,
-                                          ::promise::Defer defer = ::promise::newPromise());
+                                          ::promise::Defer defer = promise::newPromise());
     void comm_fail_hander(::promise::Defer& defer, const std::function<void(int)> &callback);
     ::promise::Defer query_get_transaction_by_id(const std::string& trx_id,
-                                            ::promise::Defer defer = ::promise::newPromise());
-    ::promise::Defer query_get_contract(const std::string& nameOrId, ::promise::Defer defer = ::promise::newPromise());
+                                            ::promise::Defer defer = promise::newPromise());
+    ::promise::Defer query_get_contract(const std::string& nameOrId, ::promise::Defer defer = promise::newPromise());
     ::promise::Defer query_nh_lookup_assets(const std::vector<std::string>& ids_or_hashs,
-                                      ::promise::Defer defer = ::promise::newPromise());
+                                      ::promise::Defer defer = promise::newPromise());
     ::promise::Defer query_get_potential_signatures(const signed_transaction& trx,
-                                                    ::promise::Defer defer = ::promise::newPromise());
+                                                    ::promise::Defer defer = promise::newPromise());
 
 private:
     bcxconfig _config;

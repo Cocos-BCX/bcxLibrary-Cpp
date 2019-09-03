@@ -23,22 +23,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
+#ifndef __PLATFORMDEFINE_MAC_H__
+#define __PLATFORMDEFINE_MAC_H__
 
-#ifndef __PLATFORM_DEFINE_H__
-#define __PLATFORM_DEFINE_H__
-/// @cond DO_NOT_SHOW
+#include "../PlatformConfig.h"
+#if BCX_TARGET_PLATFORM == BCX_PLATFORM_MAC
 
-#include "./PlatformConfig.h"
+#include <assert.h>
 
-#if BCX_TARGET_PLATFORM == BCX_PLATFORM_IOS
-#include "./ios/PlatformDefine-ios.h"
-#elif BCX_TARGET_PLATFORM == BCX_PLATFORM_MAC
-#include "./mac/PlatformDefine-mac.h"
-#elif BCX_TARGET_PLATFORM == BCX_PLATFORM_ANDROID
-#include "./android/PlatformDefine-android.h"
-#elif BCX_TARGET_PLATFORM == BCX_PLATFORM_WIN32
-#include "./win/PlatformDefine-win.h"
+#define BCX_DLL 
+
+#define BCX_ASSERT(cond) assert(cond)
+
+#define BCX_UNUSED_PARAM(unusedparam) (void)unusedparam
+
+/* Define NULL pointer value */
+#ifndef NULL
+#ifdef __cplusplus
+#define NULL    0
+#else
+#define NULL    ((void *)0)
+#endif
 #endif
 
-/// @endcond
-#endif /* __PLATFORM_DEFINE_H__*/
+
+#endif // CC_PLATFORM_MAC
+
+#endif /* __CCPLATFORMDEFINE_H__*/

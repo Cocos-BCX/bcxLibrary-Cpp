@@ -12,6 +12,12 @@
 #include <android/log.h>
 #endif // __ANDROID__
 
+#if (BCX_TARGET_PLATFORM == BCX_PLATFORM_WIN32)
+// #include <stdio.h>
+#include <stdarg.h>
+#endif
+
+
 #include <string>
 #include <cstring>
 

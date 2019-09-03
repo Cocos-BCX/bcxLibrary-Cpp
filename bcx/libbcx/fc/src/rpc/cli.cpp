@@ -150,7 +150,11 @@ static char *my_rl_complete(char *token, int *match)
    {
       *match = 1;
       method_name += " ";
+#ifdef _WIN32
+	  return _strdup(method_name.c_str() + partlen);
+#else
       return strdup (method_name.c_str() + partlen);
+#endif
    }
 
    return NULL;
@@ -181,7 +185,11 @@ static int cli_completion(char *token, char ***array)
    {
       if ( it.compare(0, partlen, token) == 0)
       {
-         copy[total_matches] = strdup ( it.c_str() );
+#ifdef _WIN32
+		  copy[total_matches] = _strdup(it.c_str());
+#else
+		  copy[total_matches] = strdup(it.c_str());
+#endif
          ++total_matches;
       }
    }

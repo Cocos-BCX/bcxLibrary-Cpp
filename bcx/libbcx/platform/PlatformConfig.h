@@ -49,7 +49,7 @@
 #endif
 
 // win32
-#if defined(_WIN32) && defined(_WINDOWS)
+#if defined(_WIN32)
     #undef  BCX_TARGET_PLATFORM
     #define BCX_TARGET_PLATFORM         BCX_PLATFORM_WIN32
 #endif

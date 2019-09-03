@@ -5,9 +5,13 @@
 //  Created by admin on 2019/3/12.
 //  Copyright © 2019 SDKBox. All rights reserved.
 //
+#include <vector>
 
 #include "bcxws.hpp"
 #include "bcxlog.hpp"
+
+#include "./bcxtimer.hpp"
+#include "./errors.h"
 
 #include "fc/crypto/elliptic.hpp"
 #include "fc/rpc/state.hpp"
@@ -17,8 +21,6 @@
 #include <fc/smart_ref_fwd.hpp>
 #include <fc/smart_ref_impl.hpp>
 #include <fc/crypto/base58.hpp>
-
-#include <vector>
 
 #include "graphene/chain/protocol/transaction.hpp"
 #include "graphene/chain/protocol/asset.hpp"
@@ -36,31 +38,38 @@ using namespace graphene::chain;
 
 NS_BCX_BEGIN
 
-bcxws::bcxws():_on_open(nullptr)
-{
+bcxws::bcxws():_onNetStatus(nullptr){
 }
 
 // ws://echo.websocket.org
 // ws://127.0.0.1:8090
 // wss://bitshares.openledger.info/ws
 // ws://47.93.62.96:8020
-bool bcxws::init(const std::string &url, const std::function<void()>& cb)
-{
+bool bcxws::init(const std::string &url,
+                 const std::function<void(int)>& cb) {
+    _url = url;
     bool suc = _socket.init(*this, url);
-    _on_open = cb;
+    _onNetStatus = cb;
+
+    setAutoConnect(true);
+
     return suc;
 }
 
-void bcxws::close()
-{
+void bcxws::setAutoConnect(bool b) {
+    _autoConnect = b;
+}
+
+void bcxws::close() {
     _socket.closeAllConnections();
 }
 
 void bcxws::send(const std::string &data)
 {
-    bcx::log("send> %s", data.c_str());
+    BCXLOG("send> %s", data.c_str());
     if (_socket.getReadyState() != bcx::network::WebSocket::State::OPEN) {
-        return ;
+        bcx::log("ERROR! socket is not open.");
+        return;
     }
     _socket.send(data);
 }
@@ -68,6 +77,14 @@ void bcxws::send(const std::string &data)
 ::promise::Defer  bcxws::send_call(int api_type, const std::string &api_name, const fc::variant &var,
                       ::promise::Defer defer)
 {
+    if (_socket.getReadyState() != bcx::network::WebSocket::State::OPEN) {
+        bcx::log("ERROR! socket is not open.");
+        TimerMgr::instance().addTimer(10, false, [defer](int i) {
+            defer.reject(ERROR_NET_NOT_CONNECT);
+        });
+        return defer;
+    }
+
     fc::variants params;
     params.push_back(api_type);
     params.push_back(api_name);
@@ -117,15 +134,18 @@ void bcxws::send(const std::string &data)
 
 void bcxws::onOpen(bcx::network::WebSocket* ws) {
     BCXLOG("WS:onOpen");
-    _on_open();
+    if (_onNetStatus) {
+        _onNetStatus(ERROR_NET_CONNECT);
+        _onNetStatus = nullptr;
+    }
 }
 void bcxws::onMessage(bcx::network::WebSocket* ws, const bcx::network::WebSocket::Data& data) {
     //        dispatch_async(dispatch_get_main_queue(), ^{
     
     if (data.isBinary) {
-        bcx::log("WS:onMessage,binary: %ld", data.len);
+        BCXLOG("WS:onMessage,binary: %ld", data.len);
     } else {
-        bcx::log("WS:onMessage,string: %s", data.bytes);
+        BCXLOG("WS:onMessage,string: %s", data.bytes);
     }
     
     /**
@@ -147,9 +167,37 @@ void bcxws::onMessage(bcx::network::WebSocket* ws, const bcx::network::WebSocket
 
 void bcxws::onClose(bcx::network::WebSocket* ws) {
     BCXLOG("WS:onClose");
+    if (_onNetStatus) {
+        _onNetStatus(ERROR_NET_CLOSE);
+        _onNetStatus = nullptr;
+    }
+    _rejectAllRqeuest(ERROR_NET_NOT_CONNECT);
+    if (_autoConnect) {
+        TimerMgr::instance().addTimer(1000 * 10, false, [this](int i) {
+            this->_socket.init(*this, this->_url);
+        });
+    }
 }
+
 void bcxws::onError(bcx::network::WebSocket* ws, const bcx::network::WebSocket::ErrorCode& error) {
     BCXLOG("WS:onError");
+    if (_onNetStatus) {
+        _onNetStatus(ERROR_NET_ERROR);
+        _onNetStatus = nullptr;
+    }
+    _rejectAllRqeuest(ERROR_NET_NOT_CONNECT);
+}
+
+void bcxws::_rejectAllRqeuest(int i) {
+    for (const auto& it : callbackMap) {
+        it.second.reject(i);
+        noticeMap.erase(it.first);
+    }
+    for (const auto& it : noticeMap) {
+        it.second.reject(i);
+    }
+    callbackMap.clear();
+    noticeMap.clear();
 }
 
 void bcxws::_oncall(const fc::variant &v)

@@ -21,6 +21,8 @@
 using namespace graphene;
 using namespace graphene::chain;
 
+#define BCX_SDK_VERSION_STR "0.0.1"
+
 NS_BCX_BEGIN
 
 bcxapi::bcxapi() {
@@ -32,6 +34,10 @@ bcxapi::~bcxapi() {
 bcxapi & bcxapi::instance() {
     static bcxapi self;
     return self;
+}
+
+std::string bcxapi::getVersion() {
+    return BCX_SDK_VERSION_STR;
 }
 
 void bcxapi::init(const bcxconfig& cfg, const std::function<void(int)>& cb) {

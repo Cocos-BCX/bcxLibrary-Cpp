@@ -11,6 +11,9 @@
 
 #include <stdio.h>
 
+#include "../platform/PlatformConfig.h"
+
+
 /** @def CC_FORMAT_PRINTF(formatPos, argPos)
  * Only certain compiler support __attribute__((format))
  *
@@ -27,7 +30,11 @@
 #define CC_FORMAT_PRINTF(formatPos, argPos)
 #endif
 
+#if (BCX_TARGET_PLATFORM == BCX_PLATFORM_WIN32)
+#define BCXLOG(fmt, ...) bcx::log(("%s [Line %d] " fmt), __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
 #define BCXLOG(fmt, ...) bcx::log(("%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#endif
 
 namespace bcx {
     /// The max length of CCLog message.

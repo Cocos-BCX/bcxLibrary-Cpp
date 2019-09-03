@@ -16,6 +16,9 @@
 #define ERROR_NOT_EXIST         4
 #define ERROR_CHAIN             5
 #define ERROR_NOT_OWN           6
-
+#define ERROR_NET_CONNECT       10
+#define ERROR_NET_NOT_CONNECT   11
+#define ERROR_NET_CLOSE         12
+#define ERROR_NET_ERROR         13
 
 #endif /* errors_h */

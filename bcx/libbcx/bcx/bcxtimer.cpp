@@ -74,6 +74,15 @@ int TimerMgr::addTimer(int ms, bool loop, TimerCallback func)
     return _currentTimerId;
 }
 
+void TimerMgr::delTimer(int timerId) {
+    for (auto it = _allTimers.begin(); it != _allTimers.end(); it++) {
+        if (timerId == (*it)->getId()) {
+            _allTimers.erase(it);
+            break;
+        }
+    }
+}
+
 void TimerMgr::processTimer()
 {
     for (int i = 0; i < (int)_allTimers.size(); ++i) {

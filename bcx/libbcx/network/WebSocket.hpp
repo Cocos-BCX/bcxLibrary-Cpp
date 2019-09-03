@@ -7,6 +7,8 @@
 #include <atomic>
 #include <condition_variable>
 
+#include "../platform/PlatformMacros.h"
+
 struct lws;
 struct lws_protocols;
 struct lws_vhost;

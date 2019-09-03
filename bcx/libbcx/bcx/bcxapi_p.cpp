@@ -54,8 +54,12 @@ void bcxapi_p::init(const bcxconfig& cfg, const std::function<void(int)>& cb) {
         cb(ERROR_UNKNOW);
         return;
     }
-    _ws.init(cfg.wsnode, [this, cb]() {
-        this->query_login(cb);
+    _ws.init(cfg.wsnode, [this, cb](int status) {
+        if (ERROR_NET_CONNECT == status) {
+            this->query_login(cb);
+        } else {
+            cb(ERROR_NET_NOT_CONNECT);
+        }
     });
     
     TimerMgr::instance().addTimer(60*1000, true, [this](int) {
@@ -146,6 +150,9 @@ void bcxapi_p::changePassword(const std::string &account,
         bcx::log("%s", e.c_str());
         callback(false);
     })
+    .fail([=](int error) {
+        callback(false);
+    })
     .fail([=] {
         callback(false);
     });
@@ -180,6 +187,9 @@ void bcxapi_p::upgradeAccount(const std::function<void(int)> &callback) {
     .fail([=](const std::string& e) {
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
+    })
+    .fail([=](int error) {
+        callback(error);
     })
     .fail([=] {
         callback(ERROR_UNKNOW);
@@ -218,6 +228,12 @@ void bcxapi_p::get_full_accounts(const std::string &nameOrId,
         }
         // TODO: statistics
         // TODO: balances
+    })
+    .fail([=](int error) {
+        callback(graphene::chain::account_object());
+    })
+    .fail([=] {
+        callback(graphene::chain::account_object());
     });
 }
 
@@ -231,6 +247,12 @@ void bcxapi_p::get_chain_id(const std::function<void(std::string)> &callback)
         if (callback) {
             callback(this->_db.chain_id);
         }
+    })
+    .fail([=](int error) {
+        callback("");
+    })
+    .fail([=] {
+        callback("");
     });
 }
 
@@ -246,6 +268,14 @@ void bcxapi_p::get_objects(const std::vector<std::string> &ids, const std::funct
         //        fc::variant var;
         //        fc::to_variant(arr, var, BCX_PACK_MAX_DEPTH);
         if (cb) { cb(arr); }
+    })
+    .fail([=](int error) {
+        fc::variants v;
+        cb(v);
+    })
+    .fail([=] {
+        fc::variants v;
+        cb(v);
     });
 }
 
@@ -283,7 +313,12 @@ void bcxapi_p::get_key_references(const std::function<void(std::string)> &callba
         if (callback) {
             callback(id);
         }
-        
+    })
+    .fail([=](int error) {
+        callback("");
+    })
+    .fail([=] {
+        callback("");
     });
 }
 
@@ -376,13 +411,16 @@ void bcxapi_p::transfer(const std::string& to,
     .fail([=](const std::string& e) {
         callback(ERROR_FC_EXCEPTION, e.data());
     })
-    .fail([=] {
-        callback(ERROR_UNKNOW, "");
+    .fail([=](int error) {
+        callback(error, "");
     })
-    .fail([](void) {
-        std::exception_ptr p = std::current_exception();
-        bcx::log("unknow error");
+    .fail([=](void) {
+        callback(ERROR_UNKNOW, "");
     });
+//    .fail([](void) {
+//        std::exception_ptr p = std::current_exception();
+//        bcx::log("unknow error");
+//    });
 }
 
 void bcxapi_p::get_createAsset_fee(const std::function<void(bool)> &callback) {
@@ -418,6 +456,14 @@ void bcxapi_p::lookup_asset_symbols(const std::vector<std::string>& symbols_or_i
             }
             callback(retv);
         }
+    })
+    .fail([=](int error) {
+        std::vector<graphene::chain::asset_object> v;
+        callback(v);
+    })
+    .fail([=] {
+        std::vector<graphene::chain::asset_object> v;
+        callback(v);
     });
 }
 
@@ -437,6 +483,9 @@ void bcxapi_p::list_assets(const std::string& lower_bound_symbol, int limit,
             }
             callback(retv, SUCCESS);
         }
+    })
+    .fail([=](int error) {
+        callback(std::vector<graphene::chain::asset_object>(), error);
     })
     .fail([callback]() {
         callback(std::vector<graphene::chain::asset_object>(), ERROR_UNKNOW);
@@ -487,6 +536,9 @@ void bcxapi_p::create_asset(const std::string& symbol,
     .fail([=](const std::string& e) {
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
+    })
+    .fail([=](int error) {
+        callback(error);
     })
     .fail([=] {
         callback(ERROR_UNKNOW);
@@ -550,6 +602,9 @@ void bcxapi_p::update_asset(const std::string& symbol,
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
     })
+    .fail([=](int error) {
+        callback(error);
+    })
     .fail([=] {
         callback(ERROR_UNKNOW);
     });
@@ -610,6 +665,9 @@ void bcxapi_p::issue_asset(const std::string& account,
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
     })
+    .fail([=](int error) {
+        callback(error);
+    })
     .fail([=] {
         callback(ERROR_UNKNOW);
     });
@@ -661,6 +719,9 @@ void bcxapi_p::reserve_asset(const std::string& symbol,
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
     })
+    .fail([=](int error) {
+        callback(error);
+    })
     .fail([=] {
         callback(ERROR_UNKNOW);
     });
@@ -679,6 +740,8 @@ void bcxapi_p::get_block_header(unsigned int num, const std::function<void(const
         bcx::log("std exception:%s", e.what());
     }).fail([](const fc::exception &e) {
         bcx::log("fc exception:%s", e.what());
+    }).fail([=](int error) {
+        bcx::log("error:%d", error);
     }).fail([](void) {
         // std::exception_ptr p = std::current_exception();
         bcx::log("unknow error");
@@ -693,11 +756,14 @@ void bcxapi_p::get_block(unsigned int num, const std::function<void(const fc::op
     .then([=](fc::variant v) {
         //TODO resutl->block_id is not exist on bts
         if (cb) { cb(v.as<fc::optional<signed_block>>(BCX_PACK_MAX_DEPTH)); }
-    }).fail([](const std::exception &e) {
+    }).fail([=](const std::exception &e) {
+        if (cb) cb(fc::optional<signed_block>());
         bcx::log("std exception:%s", e.what());
-    }).fail([](const fc::exception &e) {
+    }).fail([=](const fc::exception &e) {
+        if (cb) cb(fc::optional<signed_block>());
         bcx::log("fc exception:%s", e.what());
-    }).fail([](void) {
+    }).fail([=](void) {
+        if (cb) cb(fc::optional<signed_block>());
         // std::exception_ptr p = std::current_exception();
         bcx::log("unknow error");
     });
@@ -719,11 +785,14 @@ void bcxapi_p::get_account_history(const std::string& account,
         //TODO result->result is not same with bitshare
         auto rst = v.as<std::vector<graphene::chain::operation_history_object>>(BCX_PACK_MAX_DEPTH);
         if (cb) { cb(rst); }
-    }).fail([](const std::exception &e) {
+    }).fail([=](const std::exception &e) {
+        if (cb) cb(std::vector<graphene::chain::operation_history_object>());
         bcx::log("%s", e.what());
-    }).fail([](const fc::exception &e) {
+    }).fail([=](const fc::exception &e) {
+        if (cb) cb(std::vector<graphene::chain::operation_history_object>());
         bcx::log("%s", e.what());
-    }).fail([](void) {
+    }).fail([=](void) {
+        if (cb) cb(std::vector<graphene::chain::operation_history_object>());
         bcx::log("void");
     });
     
@@ -767,6 +836,9 @@ void bcxapi_p::create_contract(const std::string& name, const std::string& contr
     .fail([=](const std::string& e) {
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
+    })
+    .fail([=](int error) {
+        callback(error);
     })
     .fail([=] {
         callback(ERROR_UNKNOW);
@@ -823,7 +895,11 @@ void bcxapi_p::query_login(const std::function<void(int)> &callback) {
     .then([=](fc::variant v) {
         int64_t i = v.as_int64();
         defer.resolve(i);
+    })
+    .fail([=](int error) {
+        defer.reject(error);
     });
+
     return defer;
 }
 
@@ -843,6 +919,9 @@ void bcxapi_p::query_login(const std::function<void(int)> &callback) {
         // auto rst = v.get_object()["result"].as<std::vector<fc::variant>>(BCX_PACK_MAX_DEPTH);
         auto rst = v.as<std::vector<graphene::chain::asset>>(BCX_PACK_MAX_DEPTH);
         defer.resolve(rst);
+    })
+    .fail([=](int error) {
+        defer.reject(error);
     });
     
     return defer;
@@ -862,6 +941,9 @@ void bcxapi_p::query_login(const std::function<void(int)> &callback) {
     })
     .fail([defer](const fc::rpc::error_object& e) {
         defer.reject(e);
+    })
+    .fail([=](int error) {
+        defer.reject(error);
     });
 
     return defer;
@@ -898,6 +980,9 @@ void bcxapi_p::query_dynamic_global_property_object() {
         //
         //        auto v = accountVar[1].get_object()["account"];
         //        auto account = v.as<graphene::chain::account_object>(20);
+    })
+    .fail([defer](int error) {
+        defer.reject(error);
     });
     
     return defer;
@@ -918,6 +1003,9 @@ void bcxapi_p::query_dynamic_global_property_object() {
         } else {
             defer.reject(std::string("response is account object"));
         }
+    })
+    .fail([=](int error) {
+        defer.reject(error);
     });
 
     return defer;
@@ -937,6 +1025,9 @@ void bcxapi_p::query_dynamic_global_property_object() {
         }
         auto rst = var.as<std::vector<fc::optional<graphene::chain::account_object>>>(BCX_PACK_MAX_DEPTH);
         defer.resolve(rst);
+    })
+    .fail([=](int error) {
+        defer.reject(error);
     });
     
     return defer;
@@ -956,7 +1047,11 @@ void bcxapi_p::query_dynamic_global_property_object() {
             return ;
         }
         defer.resolve(var);
+    })
+    .fail([=](int error) {
+        defer.reject(error);
     });
+
     return defer;
 }
 
@@ -1005,6 +1100,9 @@ void bcxapi_p::query_dynamic_global_property_object() {
     })
     .fail([defer](const fc::rpc::error_object& e) {
         defer.reject(e);
+    })
+    .fail([=](int error) {
+        defer.reject(error);
     })
     .fail([defer] {
         defer.reject("unknow error");
@@ -1079,6 +1177,12 @@ fc::optional<fc::ecc::private_key> bcxapi_p::get_private_key_by_public(const gra
     })
     .fail([=](const fc::exception& e) {
         defer.reject(ERROR_UNKNOW);
+    })
+    .fail([=](int error) {
+        defer.reject(error);
+    })
+    .fail([=]() {
+        defer.reject(ERROR_UNKNOW);
     });
     
     return defer;
@@ -1122,6 +1226,9 @@ fc::optional<fc::ecc::private_key> bcxapi_p::get_private_key_by_public(const gra
     })
     .fail([defer](const fc::rpc::error_object& e) {
         defer.reject(false, e.message);
+    })
+    .fail([=](int error) {
+        defer.reject(false, "");
     })
     .fail([defer] {
         defer.reject(false, "unknow error");
@@ -1184,6 +1291,9 @@ void bcxapi_p::get_contract(const std::string& nameOrId,
     query_get_contract(nameOrId)
     .then([callback](const bcx::protocol::contract_object& co) {
         callback(SUCCESS , co);
+    })
+    .fail([callback](int error) {
+        callback(error, bcx::protocol::contract_object());
     })
     .fail([callback]() {
         callback(ERROR_UNKNOW, bcx::protocol::contract_object());
@@ -1262,6 +1372,9 @@ void bcxapi_p::get_transaction_by_id(const std::string& trx_id,
     .fail([=](const std::exception& e) {
         callback(ERROR_UNKNOW, graphene::chain::signed_transaction());
     })
+    .fail([callback](int e) {
+        callback(e, graphene::chain::signed_transaction());
+    })
     .fail([=]() {
         callback(ERROR_UNKNOW, graphene::chain::signed_transaction());
     });
@@ -1330,6 +1443,9 @@ void bcxapi_p::call_contract_function(const std::string& nameOrId,
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
     })
+    .fail([callback](int e) {
+        callback(e);
+    })
     .fail([=] {
         callback(ERROR_UNKNOW);
     });
@@ -1363,6 +1479,9 @@ void bcxapi_p::nh_register_creator(const std::function<void(int)> &callback) {
     .fail([=](const std::string& e) {
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
+    })
+    .fail([callback](int e) {
+        callback(e);
     })
     .fail([=] {
         callback(ERROR_UNKNOW);
@@ -1403,6 +1522,9 @@ void bcxapi_p::nh_create_world_view(const std::string& name , const std::functio
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
     })
+    .fail([callback](int e) {
+        callback(e);
+    })
     .fail([=] {
         callback(ERROR_UNKNOW);
     });
@@ -1442,6 +1564,9 @@ void bcxapi_p::nh_relate_world_view(const std::string& name , const std::functio
     .fail([=](const std::string& e) {
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
+    })
+    .fail([callback](int e) {
+        callback(e);
     })
     .fail([=] {
         callback(ERROR_UNKNOW);
@@ -1533,6 +1658,9 @@ void bcxapi_p::nh_creat_asset(const std::vector<bcx::nh_asset_create_info>& nh_a
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION, "");
     })
+    .fail([callback](int e) {
+        callback(e, "");
+    })
     .fail([=] {
         callback(ERROR_UNKNOW, "");
     });
@@ -1591,6 +1719,9 @@ void bcxapi_p::nh_delete_asset(const std::vector<std::string>& ids_or_hashs, con
     .fail([=](const std::string& e) {
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
+    })
+    .fail([callback](int e) {
+        callback(e);
     })
     .fail([=] {
         callback(ERROR_UNKNOW);
@@ -1657,6 +1788,9 @@ void bcxapi_p::nh_transfer_asset(const std::string id_or_hash,
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
     })
+    .fail([callback](int e) {
+        callback(e);
+    })
     .fail([=] {
         callback(ERROR_UNKNOW);
     });
@@ -1667,6 +1801,9 @@ void bcxapi_p::nh_lookup_assets(const std::vector<std::string>& ids_or_hashs,
     query_nh_lookup_assets(ids_or_hashs)
     .then([=](const std::vector<fc::optional<bcx::nh_asset_info>> &assets) {
         callback(SUCCESS, assets);
+    })
+    .fail([callback](int e) {
+        callback(e, std::vector<fc::optional<bcx::nh_asset_info>>());
     })
     .fail([=]() {
         callback(ERROR_UNKNOW, std::vector<fc::optional<bcx::nh_asset_info>>());
@@ -1692,6 +1829,9 @@ void bcxapi_p::nh_lookup_assets(const std::vector<std::string>& ids_or_hashs,
         }
         defer.resolve(retv);
     })
+    .fail([defer](int e) {
+        defer.reject(e);
+    })
     .fail([defer]() {
         defer.reject();
     });
@@ -1713,6 +1853,9 @@ void bcxapi_p::comm_fail_hander(::promise::Defer& defer,
     .fail([=](const std::string& e) {
         bcx::log("%s", e.c_str());
         callback(ERROR_FC_EXCEPTION);
+    })
+    .fail([defer](int e) {
+        defer.reject(e);
     })
     .fail([=] {
         callback(ERROR_UNKNOW);
@@ -1737,6 +1880,9 @@ void bcxapi_p::comm_fail_hander(::promise::Defer& defer,
     })
     .fail([=](const std::exception& e) {
         defer.reject(ERROR_UNKNOW, graphene::chain::signed_transaction());
+    })
+    .fail([defer](int e) {
+        defer.reject(e, graphene::chain::signed_transaction());
     })
     .fail([=]() {
         defer.reject(ERROR_UNKNOW, graphene::chain::signed_transaction());
@@ -1797,6 +1943,9 @@ void bcxapi_p::comm_fail_hander(::promise::Defer& defer,
         bcx::log("%s", e.c_str());
         defer.reject(ERROR_UNKNOW);
     })
+    .fail([defer](int e) {
+        defer.reject(e);
+    })
     .fail([=] {
         defer.reject(ERROR_UNKNOW);
     });
@@ -1815,6 +1964,9 @@ void bcxapi_p::comm_fail_hander(::promise::Defer& defer,
         auto ret = v.as<std::vector<fc::optional<bcx::nh_asset_info>>>(BCX_PACK_MAX_DEPTH);
         defer.resolve(ret);
     })
+    .fail([defer](int e) {
+        defer.reject(e);
+    })
     .fail([defer]() {
         defer.reject();
     });
@@ -1832,6 +1984,9 @@ void bcxapi_p::comm_fail_hander(::promise::Defer& defer,
     .then([defer](const fc::variant v) {
         auto ret = v.as<std::set<graphene::chain::public_key_type>>(BCX_PACK_MAX_DEPTH);
         defer.resolve(ret);
+    })
+    .fail([defer](int e) {
+        defer.reject(e);
     })
     .fail([defer]() {
         defer.reject();

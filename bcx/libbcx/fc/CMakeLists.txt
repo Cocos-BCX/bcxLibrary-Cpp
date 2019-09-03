@@ -138,7 +138,7 @@ target_include_directories(fc
 
 add_library(secp256k1 STATIC IMPORTED )
 set_target_properties(secp256k1 PROPERTIES IMPORTED_LOCATION
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rd/secp256k1/prebuilt/android/libsecp256k1.a)
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rd/secp256k1/prebuilt/android/${ANDROID_ABI}/libsecp256k1.a)
 
 target_link_libraries(fc
         ${LINK_USR_LOCAL_LIB}

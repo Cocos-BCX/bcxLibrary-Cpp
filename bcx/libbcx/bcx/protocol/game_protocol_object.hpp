@@ -14,7 +14,7 @@
 
 namespace bcx { namespace protocol {
     
-    class game_protocol_object : public graphene::db::abstract_object<contract_object> {
+    class game_protocol_object : public graphene::db::abstract_object<game_protocol_object> {
     public:
         static const uint8_t space_id = graphene::chain::protocol_ids;
         static const uint8_t type_id  = graphene::chain::contract_object_type;

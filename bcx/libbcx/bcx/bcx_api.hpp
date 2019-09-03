@@ -15,6 +15,8 @@ struct bcxapi
 {
     static bcxapi & instance();
     
+    std::string getVersion();
+
     void init(const bcxconfig& cfg, const std::function<void(int)>& cb = nullptr);
     
     void get_full_accounts(const std::string &nameOrId,
