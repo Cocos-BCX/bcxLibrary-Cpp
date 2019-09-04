@@ -519,7 +519,7 @@ def main():
                         help='Platfrom: ios(i)/mac(m)/android(a)/both(b)(default)')
     parser.add_argument('-c', '--clean', dest='clean', default='y', choices=['y','n'],
                         help='remove temp folder')
-    parser.add_argument('-s', '--strip', dest='strip', default='lite', choices=['none','lite','all'])
+    parser.add_argument('-s', '--strip', dest='strip', default='none', choices=['none','lite','all'])
 
     (args, unknown) = parser.parse_known_args()
     if len(unknown) > 0:
