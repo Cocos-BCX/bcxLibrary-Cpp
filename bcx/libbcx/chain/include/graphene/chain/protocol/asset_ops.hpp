@@ -58,17 +58,17 @@ namespace graphene { namespace chain {
 
       /// A set of accounts which maintain whitelists to consult for this asset. If whitelist_authorities
       /// is non-empty, then only accounts in whitelist_authorities are allowed to hold, use, or transfer the asset.
-      flat_set<account_id_type> whitelist_authorities;
+      // flat_set<account_id_type> whitelist_authorities;
       /// A set of accounts which maintain blacklists to consult for this asset. If flags & white_list is set,
       /// an account may only send, receive, trade, etc. in this asset if none of these accounts appears in
       /// its account_object::blacklisting_accounts field. If the account is blacklisted, it may not transact in
       /// this asset even if it is also whitelisted.
-      flat_set<account_id_type> blacklist_authorities;
+      // flat_set<account_id_type> blacklist_authorities;
 
       /** defines the assets that this asset may be traded against in the market */
-      flat_set<asset_id_type>   whitelist_markets;
+      // flat_set<asset_id_type>   whitelist_markets;
       /** defines the assets that this asset may not be traded against in the market, must not overlap whitelist */
-      flat_set<asset_id_type>   blacklist_markets;
+      // flat_set<asset_id_type>   blacklist_markets;
 
       /**
        * data that describes the meaning/purpose of this asset, fee will be charged proportional to
@@ -518,10 +518,6 @@ FC_REFLECT( graphene::chain::asset_options,
             (issuer_permissions)
             (flags)
             (core_exchange_rate)
-            (whitelist_authorities)
-            (blacklist_authorities)
-            (whitelist_markets)
-            (blacklist_markets)
             (description)
             (extensions)
           )
@@ -557,7 +553,6 @@ FC_REFLECT( graphene::chain::asset_create_operation,
             (precision)
             (common_options)
             (bitasset_opts)
-            (is_prediction_market)
             (extensions)
           )
 FC_REFLECT( graphene::chain::asset_update_operation,

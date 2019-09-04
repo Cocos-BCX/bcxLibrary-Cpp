@@ -511,8 +511,8 @@ void bcxapi_p::create_asset(const std::string& symbol,
     op->common_options.description = description;
     op->common_options.max_market_fee = 0;
     op->common_options.max_supply = maxSupply;
-    op->common_options.core_exchange_rate = graphene::chain::price(graphene::chain::asset(1),
-                                                                   graphene::chain::asset(exchangeRate, asset_id_type(1)));
+    op->common_options.core_exchange_rate = graphene::chain::price(graphene::chain::asset(1 * pow(10, precision), asset_id_type(1)),
+                                                                   graphene::chain::asset(exchangeRate * 100000));
 
     get_required_fees({*op}, graphene::chain::asset_id_type())
     .then([=](const std::vector<graphene::chain::asset>& vFee) {

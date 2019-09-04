@@ -44,23 +44,23 @@ bool _is_authorized_asset(
       // must still pass other checks even if it is in allowed_assets
    }
 
-   for( const auto id : acct.blacklisting_accounts )
-   {
-      if( asset_obj.options.blacklist_authorities.find(id) != asset_obj.options.blacklist_authorities.end() )
-         return false;
-   }
-
-   if( d.head_block_time() > HARDFORK_415_TIME )
-   {
-      if( asset_obj.options.whitelist_authorities.size() == 0 )
-         return true;
-   }
-
-   for( const auto id : acct.whitelisting_accounts )
-   {
-      if( asset_obj.options.whitelist_authorities.find(id) != asset_obj.options.whitelist_authorities.end() )
-         return true;
-   }
+//   for( const auto id : acct.blacklisting_accounts )
+//   {
+//      if( asset_obj.options.blacklist_authorities.find(id) != asset_obj.options.blacklist_authorities.end() )
+//         return false;
+//   }
+//
+//   if( d.head_block_time() > HARDFORK_415_TIME )
+//   {
+//      if( asset_obj.options.whitelist_authorities.size() == 0 )
+//         return true;
+//   }
+//
+//   for( const auto id : acct.whitelisting_accounts )
+//   {
+//      if( asset_obj.options.whitelist_authorities.find(id) != asset_obj.options.whitelist_authorities.end() )
+//         return true;
+//   }
 
    return false;
 }

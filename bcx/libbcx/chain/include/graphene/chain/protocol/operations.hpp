@@ -75,12 +75,12 @@ namespace graphene { namespace chain {
             fill_order_operation,           // VIRTUAL
             account_create_operation,
             account_update_operation,
-            account_whitelist_operation,
             account_upgrade_operation,
             // account_transfer_operation,
             asset_create_operation,
             asset_update_operation,
             asset_update_bitasset_operation,
+            account_whitelist_operation,
             asset_update_feed_producers_operation,
             asset_issue_operation,
             asset_reserve_operation,

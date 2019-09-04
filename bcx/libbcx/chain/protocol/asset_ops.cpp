@@ -226,16 +226,16 @@ void asset_options::validate()const
    FC_ASSERT( core_exchange_rate.base.asset_id.instance.value == 0 ||
               core_exchange_rate.quote.asset_id.instance.value == 0 );
 
-   if(!whitelist_authorities.empty() || !blacklist_authorities.empty())
-      FC_ASSERT( flags & white_list );
-   for( auto item : whitelist_markets )
-   {
-      FC_ASSERT( blacklist_markets.find(item) == blacklist_markets.end() );
-   }
-   for( auto item : blacklist_markets )
-   {
-      FC_ASSERT( whitelist_markets.find(item) == whitelist_markets.end() );
-   }
+//   if(!whitelist_authorities.empty() || !blacklist_authorities.empty())
+//      FC_ASSERT( flags & white_list );
+//   for( auto item : whitelist_markets )
+//   {
+//      FC_ASSERT( blacklist_markets.find(item) == blacklist_markets.end() );
+//   }
+//   for( auto item : blacklist_markets )
+//   {
+//      FC_ASSERT( whitelist_markets.find(item) == whitelist_markets.end() );
+//   }
 }
 
 void asset_claim_fees_operation::validate()const {
