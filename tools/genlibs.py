@@ -519,7 +519,6 @@ def main():
                         help='Platfrom: ios(i)/mac(m)/android(a)/both(b)(default)')
     parser.add_argument('-c', '--clean', dest='clean', default='y', choices=['y','n'],
                         help='remove temp folder')
-    parser.add_argument('-s', '--strip', dest='strip', default='none', choices=['none','lite','all'])
 
     (args, unknown) = parser.parse_known_args()
     if len(unknown) > 0:
@@ -536,7 +535,7 @@ def main():
 
         # strip unused .o in libbcx.a
         package_ios_folder = os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'ios')
-        strip_libbcx_ios(os.path.join(package_ios_folder, 'lib', 'libbcx.a'), args.strip)
+        strip_libbcx_ios(os.path.join(package_ios_folder, 'lib', 'libbcx.a'), 'none')
 
     if args.platform in ['b','m'] and 'Darwin' == platform.system():
         print('>>>>> generate mac libs')
