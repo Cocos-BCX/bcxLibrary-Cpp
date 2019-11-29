@@ -21,7 +21,7 @@
 using namespace graphene;
 using namespace graphene::chain;
 
-#define BCX_SDK_VERSION_STR "0.0.1"
+#define BCX_SDK_VERSION_STR "1.1.0"
 
 NS_BCX_BEGIN
 
