@@ -18,9 +18,11 @@ namespace bcx { namespace protocol {
         };
         
         graphene::chain::asset fee;
-        graphene::chain::account_id_type owner;
+        graphene::chain::game_protocol_id_type order;
+        graphene::chain::account_id_type fee_paying_account;
+        graphene::chain::extensions_type extensions;
         
-        graphene::chain::account_id_type    fee_payer()const { return owner; }
+        graphene::chain::account_id_type    fee_payer()const { return fee_paying_account; }
         void                                validate()const;
         graphene::chain::share_type         calculate_fee(const fee_parameters_type& k)const;
     };
@@ -33,7 +35,8 @@ FC_REFLECT( bcx::protocol::nh_cancel_asset_order_operation::fee_parameters_type,
            )
 
 FC_REFLECT( bcx::protocol::nh_cancel_asset_order_operation,
-           (fee)
-           (owner)
+           (order)
+           (fee_paying_account)
+           (extensions)
            )
 

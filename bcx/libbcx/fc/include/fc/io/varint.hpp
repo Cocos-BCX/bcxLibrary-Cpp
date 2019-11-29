@@ -33,6 +33,38 @@ struct unsigned_int {
     friend bool operator>=( const unsigned_int& i, const unsigned_int& v ) { return i.value >= v.value; }
 };
 
+
+struct unsigned_int64 {
+    unsigned_int64( uint64_t v = 0 ):value(v){}
+
+    template<typename T>
+    unsigned_int64( T v ):value(v){}
+
+    template<typename T>
+    operator T()const { return static_cast<T>(value); }
+
+    unsigned_int64& operator=( uint64_t v ) { value = v; return *this; }
+
+    uint64_t value;
+
+    friend bool operator==( const unsigned_int64& i, const uint64_t& v )      { return i.value == v; }
+    friend bool operator==( const uint64_t& i, const unsigned_int64& v )      { return i       == v.value; }
+    friend bool operator==( const unsigned_int64& i, const unsigned_int64& v) { return i.value == v.value; }
+
+    friend bool operator!=( const unsigned_int64& i, const uint64_t& v )      { return i.value != v; }
+    friend bool operator!=( const uint64_t& i, const unsigned_int64& v )      { return i       != v.value; }
+    friend bool operator!=( const unsigned_int64& i, const unsigned_int64& v ){ return i.value != v.value; }
+
+    friend bool operator<( const unsigned_int64& i, const uint64_t& v )       { return i.value < v; }
+    friend bool operator<( const uint64_t& i, const unsigned_int64& v )       { return i       < v.value; }
+    friend bool operator<( const unsigned_int64& i, const unsigned_int64& v ) { return i.value < v.value; }
+
+    friend bool operator>=( const unsigned_int64& i, const uint64_t& v )      { return i.value >= v; }
+    friend bool operator>=( const uint64_t& i, const unsigned_int64& v )      { return i       >= v.value; }
+    friend bool operator>=( const unsigned_int64& i, const unsigned_int64& v ){ return i.value >= v.value; }
+};
+
+
 class variant;
 
 void to_variant( const unsigned_int& var, variant& vo, uint32_t max_depth = 1 );

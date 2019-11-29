@@ -5,6 +5,7 @@
 
 #include "./bcxconfig.hpp"
 #include "./nh_asset_info.hpp"
+#include "./protocol/signed_block.hpp"
 #include "graphene/chain/protocol/base.hpp"
 #include "graphene/chain/protocol/block.hpp"
 
@@ -70,7 +71,7 @@ struct bcxapi
      * Database
      */
     void get_block_header(unsigned int num, const std::function<void(const fc::optional<graphene::chain::block_header>&)> &cb);
-    void get_block(unsigned int num, const std::function<void(const fc::optional<graphene::chain::signed_block>&)> &cb);
+    void get_block(unsigned int num, const std::function<void(const fc::optional<bcx::protocol::signed_block>&)> &cb);
 
     /*
      * History

@@ -49,6 +49,7 @@ namespace graphene { namespace chain {
       bool                       validate_signee( const fc::ecc::public_key& expected_signee )const;
 
       signature_type             witness_signature;
+       block_id_type                 block_id;
    };
 
    struct signed_block : public signed_block_header
@@ -59,6 +60,6 @@ namespace graphene { namespace chain {
 
 } } // graphene::chain
 
-FC_REFLECT( graphene::chain::block_header, (previous)(timestamp)(witness)(transaction_merkle_root)(extensions) )
-FC_REFLECT_DERIVED( graphene::chain::signed_block_header, (graphene::chain::block_header), (witness_signature) )
+FC_REFLECT( graphene::chain::block_header, (previous)(timestamp)(witness)(transaction_merkle_root) )
+FC_REFLECT_DERIVED( graphene::chain::signed_block_header, (graphene::chain::block_header), (witness_signature)(block_id) )
 FC_REFLECT_DERIVED( graphene::chain::signed_block, (graphene::chain::signed_block_header), (transactions) )

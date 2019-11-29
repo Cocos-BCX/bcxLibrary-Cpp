@@ -36,7 +36,6 @@ FC_REFLECT( bcx::protocol::nh_transfer_asset_operation::fee_parameters_type,
            )
 
 FC_REFLECT( bcx::protocol::nh_transfer_asset_operation,
-           (fee)
            (from)
            (to)
            (nh_asset)

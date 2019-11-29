@@ -110,7 +110,7 @@ void  asset_create_operation::validate()const
    }
    if( bitasset_opts ) bitasset_opts->validate();
 
-   asset dummy = asset(1) * common_options.core_exchange_rate;
+   asset dummy = asset(1) * (*common_options.core_exchange_rate);
    FC_ASSERT(dummy.asset_id == asset_id_type(1));
    FC_ASSERT(precision <= 12);
 }
@@ -122,7 +122,7 @@ void asset_update_operation::validate()const
       FC_ASSERT(issuer != *new_issuer);
    new_options.validate();
 
-   asset dummy = asset(1, asset_to_update) * new_options.core_exchange_rate;
+   asset dummy = asset(1, asset_to_update) * (*new_options.core_exchange_rate);
    FC_ASSERT(dummy.asset_id == asset_id_type());
 }
 
@@ -222,9 +222,9 @@ void asset_options::validate()const
    FC_ASSERT( !(flags & global_settle) );
    // the witness_fed and committee_fed flags cannot be set simultaneously
    FC_ASSERT( (flags & (witness_fed_asset | committee_fed_asset)) != (witness_fed_asset | committee_fed_asset) );
-   core_exchange_rate.validate();
-   FC_ASSERT( core_exchange_rate.base.asset_id.instance.value == 0 ||
-              core_exchange_rate.quote.asset_id.instance.value == 0 );
+   core_exchange_rate->validate();
+   FC_ASSERT( core_exchange_rate->base.asset_id.instance.value == 0 ||
+              core_exchange_rate->quote.asset_id.instance.value == 0 );
 
 //   if(!whitelist_authorities.empty() || !blacklist_authorities.empty())
 //      FC_ASSERT( flags & white_list );

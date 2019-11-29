@@ -24,6 +24,7 @@
 		9A046C7D224CCBB200F11330 /* nh_create_asset_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C7B224CCBB200F11330 /* nh_create_asset_operation.cpp */; };
 		9A046C80224CCBC000F11330 /* nh_relate_world_view_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C7E224CCBC000F11330 /* nh_relate_world_view_operation.cpp */; };
 		9A2149542253501500E2247C /* game_protocol_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A2149522253501500E2247C /* game_protocol_object.cpp */; };
+		9A58188F238F7F6000A69BAC /* signed_block.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9A58188E238F7F6000A69BAC /* signed_block.hpp */; };
 		9A634E39224356DB00492138 /* boostHttpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A634E38224356DA00492138 /* boostHttpClient.cpp */; };
 		9A6764EE2238A23000FC9B2D /* Uri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A672E342238A21B00FC9B2D /* Uri.cpp */; };
 		9A6764EF2238A23000FC9B2D /* WebSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A672E362238A21B00FC9B2D /* WebSocket.cpp */; };
@@ -162,7 +163,7 @@
 		9A86EBD222814FFE007883A8 /* nh_relate_asset_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C78224CCBA300F11330 /* nh_relate_asset_operation.cpp */; };
 		9A86EBD322814FFE007883A8 /* nh_create_asset_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C7B224CCBB200F11330 /* nh_create_asset_operation.cpp */; };
 		9A86EBD422814FFE007883A8 /* nh_relate_world_view_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A046C7E224CCBC000F11330 /* nh_relate_world_view_operation.cpp */; };
-		9A86EBD522814FFE007883A8 /* nh_register_creator_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C88224DAD4E00BD8F20 /* nh_register_creator_operation.cpp */; };
+		9A86EBD522814FFE007883A8 /* nh_register_asset_creator_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C88224DAD4E00BD8F20 /* nh_register_asset_creator_operation.cpp */; };
 		9A86EBD622814FFE007883A8 /* nh_create_world_view_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C8B224DB7D200BD8F20 /* nh_create_world_view_operation.cpp */; };
 		9A86EBD722814FFE007883A8 /* game_protocol_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A2149522253501500E2247C /* game_protocol_object.cpp */; };
 		9A86EBD822814FFE007883A8 /* transaction_confirmation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AD287DC2266DA7700B52986 /* transaction_confirmation.cpp */; };
@@ -279,8 +280,25 @@
 		9A8CC67E225CA560003FA15D /* bcxconfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC67C225CA560003FA15D /* bcxconfig.cpp */; };
 		9A9A8B2E224BA6F8008BDE43 /* contract_create_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A9A8B2D224BA6F8008BDE43 /* contract_create_operation.cpp */; };
 		9AAD0D712238E51F006F8564 /* bcxdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AAD0D6F2238E51F006F8564 /* bcxdb.cpp */; };
+		9AB1AD03238D166B00DD9732 /* asset_update_restricted.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD01238D166A00DD9732 /* asset_update_restricted.cpp */; };
+		9AB1AD04238D167600DD9732 /* asset_update_restricted.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD01238D166A00DD9732 /* asset_update_restricted.cpp */; };
+		9AB1AD07238D184800DD9732 /* temporary_authority_chang.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB1AD05238D184800DD9732 /* temporary_authority_chang.hpp */; };
+		9AB1AD08238D184800DD9732 /* temporary_authority_chang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD06238D184800DD9732 /* temporary_authority_chang.cpp */; };
+		9AB1AD09238D184800DD9732 /* temporary_authority_chang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD06238D184800DD9732 /* temporary_authority_chang.cpp */; };
+		9AB1AD10238D1AA300DD9732 /* crontab_recover.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD0A238D1AA300DD9732 /* crontab_recover.cpp */; };
+		9AB1AD11238D1AA300DD9732 /* crontab_recover.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD0A238D1AA300DD9732 /* crontab_recover.cpp */; };
+		9AB1AD12238D1AA300DD9732 /* crontab_cancel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD0B238D1AA300DD9732 /* crontab_cancel.cpp */; };
+		9AB1AD13238D1AA300DD9732 /* crontab_cancel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD0B238D1AA300DD9732 /* crontab_cancel.cpp */; };
+		9AB1AD14238D1AA300DD9732 /* crontab_recover.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB1AD0C238D1AA300DD9732 /* crontab_recover.hpp */; };
+		9AB1AD15238D1AA300DD9732 /* crontab_cancel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB1AD0D238D1AA300DD9732 /* crontab_cancel.hpp */; };
+		9AB1AD16238D1AA300DD9732 /* crontab_create.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB1AD0E238D1AA300DD9732 /* crontab_create.hpp */; };
+		9AB1AD17238D1AA300DD9732 /* crontab_create.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD0F238D1AA300DD9732 /* crontab_create.cpp */; };
+		9AB1AD18238D1AA300DD9732 /* crontab_create.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD0F238D1AA300DD9732 /* crontab_create.cpp */; };
+		9AB1AD1B238D1AB300DD9732 /* update_collateral_for_gas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD19238D1AB300DD9732 /* update_collateral_for_gas.cpp */; };
+		9AB1AD1C238D1AB300DD9732 /* update_collateral_for_gas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1AD19238D1AB300DD9732 /* update_collateral_for_gas.cpp */; };
+		9AB1AD1D238D1AB300DD9732 /* update_collateral_for_gas.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB1AD1A238D1AB300DD9732 /* update_collateral_for_gas.hpp */; };
 		9AD287DE2266DA7700B52986 /* transaction_confirmation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AD287DC2266DA7700B52986 /* transaction_confirmation.cpp */; };
-		9AFF8C8A224DAD4E00BD8F20 /* nh_register_creator_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C88224DAD4E00BD8F20 /* nh_register_creator_operation.cpp */; };
+		9AFF8C8A224DAD4E00BD8F20 /* nh_register_asset_creator_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C88224DAD4E00BD8F20 /* nh_register_asset_creator_operation.cpp */; };
 		9AFF8C8D224DB7D200BD8F20 /* nh_create_world_view_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C8B224DB7D200BD8F20 /* nh_create_world_view_operation.cpp */; };
 		9AFF8C90224DEF0D00BD8F20 /* contract_call_function_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFF8C8E224DEF0D00BD8F20 /* contract_call_function_operation.cpp */; };
 /* End PBXBuildFile section */
@@ -344,6 +362,7 @@
 		9A2149532253501500E2247C /* game_protocol_object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game_protocol_object.hpp; sourceTree = "<group>"; };
 		9A4C4169223F464E00455224 /* full_account.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = full_account.hpp; sourceTree = "<group>"; };
 		9A50CBEC2251B87900ACAF07 /* nh_asset_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nh_asset_info.hpp; sourceTree = "<group>"; };
+		9A58188E238F7F6000A69BAC /* signed_block.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = signed_block.hpp; sourceTree = "<group>"; };
 		9A634E37224356DA00492138 /* boostHttpClient.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = boostHttpClient.hpp; sourceTree = "<group>"; };
 		9A634E38224356DA00492138 /* boostHttpClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boostHttpClient.cpp; sourceTree = "<group>"; };
 		9A634E3A22438B4500492138 /* account_info_for_reg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = account_info_for_reg.h; sourceTree = "<group>"; };
@@ -851,10 +870,22 @@
 		9A9A8B2D224BA6F8008BDE43 /* contract_create_operation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = contract_create_operation.cpp; sourceTree = "<group>"; };
 		9AAD0D6F2238E51F006F8564 /* bcxdb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bcxdb.cpp; sourceTree = "<group>"; };
 		9AAD0D702238E51F006F8564 /* bcxdb.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bcxdb.hpp; sourceTree = "<group>"; };
+		9AB1AD01238D166A00DD9732 /* asset_update_restricted.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asset_update_restricted.cpp; sourceTree = "<group>"; };
+		9AB1AD02238D166B00DD9732 /* asset_update_restricted.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = asset_update_restricted.hpp; sourceTree = "<group>"; };
+		9AB1AD05238D184800DD9732 /* temporary_authority_chang.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = temporary_authority_chang.hpp; sourceTree = "<group>"; };
+		9AB1AD06238D184800DD9732 /* temporary_authority_chang.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = temporary_authority_chang.cpp; sourceTree = "<group>"; };
+		9AB1AD0A238D1AA300DD9732 /* crontab_recover.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crontab_recover.cpp; sourceTree = "<group>"; };
+		9AB1AD0B238D1AA300DD9732 /* crontab_cancel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crontab_cancel.cpp; sourceTree = "<group>"; };
+		9AB1AD0C238D1AA300DD9732 /* crontab_recover.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = crontab_recover.hpp; sourceTree = "<group>"; };
+		9AB1AD0D238D1AA300DD9732 /* crontab_cancel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = crontab_cancel.hpp; sourceTree = "<group>"; };
+		9AB1AD0E238D1AA300DD9732 /* crontab_create.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = crontab_create.hpp; sourceTree = "<group>"; };
+		9AB1AD0F238D1AA300DD9732 /* crontab_create.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crontab_create.cpp; sourceTree = "<group>"; };
+		9AB1AD19238D1AB300DD9732 /* update_collateral_for_gas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = update_collateral_for_gas.cpp; sourceTree = "<group>"; };
+		9AB1AD1A238D1AB300DD9732 /* update_collateral_for_gas.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = update_collateral_for_gas.hpp; sourceTree = "<group>"; };
 		9AD287DC2266DA7700B52986 /* transaction_confirmation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = transaction_confirmation.cpp; sourceTree = "<group>"; };
 		9AD287DD2266DA7700B52986 /* transaction_confirmation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = transaction_confirmation.hpp; sourceTree = "<group>"; };
-		9AFF8C88224DAD4E00BD8F20 /* nh_register_creator_operation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = nh_register_creator_operation.cpp; sourceTree = "<group>"; };
-		9AFF8C89224DAD4E00BD8F20 /* nh_register_creator_operation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nh_register_creator_operation.hpp; sourceTree = "<group>"; };
+		9AFF8C88224DAD4E00BD8F20 /* nh_register_asset_creator_operation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = nh_register_asset_creator_operation.cpp; sourceTree = "<group>"; };
+		9AFF8C89224DAD4E00BD8F20 /* nh_register_asset_creator_operation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nh_register_asset_creator_operation.hpp; sourceTree = "<group>"; };
 		9AFF8C8B224DB7D200BD8F20 /* nh_create_world_view_operation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = nh_create_world_view_operation.cpp; sourceTree = "<group>"; };
 		9AFF8C8C224DB7D200BD8F20 /* nh_create_world_view_operation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nh_create_world_view_operation.hpp; sourceTree = "<group>"; };
 		9AFF8C8E224DEF0D00BD8F20 /* contract_call_function_operation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = contract_call_function_operation.cpp; sourceTree = "<group>"; };
@@ -921,6 +952,8 @@
 			children = (
 				9A4C4169223F464E00455224 /* full_account.hpp */,
 				9A634E3A22438B4500492138 /* account_info_for_reg.h */,
+				9AB1AD01238D166A00DD9732 /* asset_update_restricted.cpp */,
+				9AB1AD02238D166B00DD9732 /* asset_update_restricted.hpp */,
 				9A9A8B2D224BA6F8008BDE43 /* contract_create_operation.cpp */,
 				9A9A8B2C224BA6F8008BDE43 /* contract_create_operation.hpp */,
 				9A046C56224C645700F11330 /* contract_object.cpp */,
@@ -937,6 +970,12 @@
 				9A046C64224CCB2C00F11330 /* add_file_relate_account.hpp */,
 				9A046C66224CCB3F00F11330 /* create_file.cpp */,
 				9A046C67224CCB3F00F11330 /* create_file.hpp */,
+				9AB1AD0B238D1AA300DD9732 /* crontab_cancel.cpp */,
+				9AB1AD0D238D1AA300DD9732 /* crontab_cancel.hpp */,
+				9AB1AD0F238D1AA300DD9732 /* crontab_create.cpp */,
+				9AB1AD0E238D1AA300DD9732 /* crontab_create.hpp */,
+				9AB1AD0A238D1AA300DD9732 /* crontab_recover.cpp */,
+				9AB1AD0C238D1AA300DD9732 /* crontab_recover.hpp */,
 				9A046C69224CCB4E00F11330 /* fill_nh_asset_order.cpp */,
 				9A046C6A224CCB4E00F11330 /* fill_nh_asset_order.hpp */,
 				9A046C6C224CCB5D00F11330 /* nh_cancel_asset_order_operation.cpp */,
@@ -953,14 +992,19 @@
 				9A046C7C224CCBB200F11330 /* nh_create_asset_operation.hpp */,
 				9A046C7E224CCBC000F11330 /* nh_relate_world_view_operation.cpp */,
 				9A046C7F224CCBC000F11330 /* nh_relate_world_view_operation.hpp */,
-				9AFF8C88224DAD4E00BD8F20 /* nh_register_creator_operation.cpp */,
-				9AFF8C89224DAD4E00BD8F20 /* nh_register_creator_operation.hpp */,
+				9AFF8C88224DAD4E00BD8F20 /* nh_register_asset_creator_operation.cpp */,
+				9AFF8C89224DAD4E00BD8F20 /* nh_register_asset_creator_operation.hpp */,
 				9AFF8C8B224DB7D200BD8F20 /* nh_create_world_view_operation.cpp */,
 				9AFF8C8C224DB7D200BD8F20 /* nh_create_world_view_operation.hpp */,
 				9A2149522253501500E2247C /* game_protocol_object.cpp */,
 				9A2149532253501500E2247C /* game_protocol_object.hpp */,
+				9A58188E238F7F6000A69BAC /* signed_block.hpp */,
+				9AB1AD06238D184800DD9732 /* temporary_authority_chang.cpp */,
+				9AB1AD05238D184800DD9732 /* temporary_authority_chang.hpp */,
 				9AD287DC2266DA7700B52986 /* transaction_confirmation.cpp */,
 				9AD287DD2266DA7700B52986 /* transaction_confirmation.hpp */,
+				9AB1AD19238D1AB300DD9732 /* update_collateral_for_gas.cpp */,
+				9AB1AD1A238D1AB300DD9732 /* update_collateral_for_gas.hpp */,
 			);
 			path = protocol;
 			sourceTree = "<group>";
@@ -2018,6 +2062,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A58188F238F7F6000A69BAC /* signed_block.hpp in Headers */,
+				9AB1AD16238D1AA300DD9732 /* crontab_create.hpp in Headers */,
+				9AB1AD07238D184800DD9732 /* temporary_authority_chang.hpp in Headers */,
+				9AB1AD14238D1AA300DD9732 /* crontab_recover.hpp in Headers */,
+				9AB1AD1D238D1AB300DD9732 /* update_collateral_for_gas.hpp in Headers */,
+				9AB1AD15238D1AA300DD9732 /* crontab_cancel.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2104,6 +2154,7 @@
 				9A67664B2238A23200FC9B2D /* transaction.cpp in Sources */,
 				9A6765542238A23200FC9B2D /* filesystem.cpp in Sources */,
 				9A6765672238A23200FC9B2D /* logger_config.cpp in Sources */,
+				9AB1AD1B238D1AB300DD9732 /* update_collateral_for_gas.cpp in Sources */,
 				9A046C80224CCBC000F11330 /* nh_relate_world_view_operation.cpp in Sources */,
 				9A67664C2238A23200FC9B2D /* transfer.cpp in Sources */,
 				9A6765492238A23200FC9B2D /* elliptic_secp256k1.cpp in Sources */,
@@ -2116,6 +2167,7 @@
 				9A6766502238A23200FC9B2D /* witness.cpp in Sources */,
 				9A67664F2238A23200FC9B2D /* withdraw_permission.cpp in Sources */,
 				9A6766522238A23200FC9B2D /* pts_address.cpp in Sources */,
+				9AB1AD03238D166B00DD9732 /* asset_update_restricted.cpp in Sources */,
 				9A67657E2238A23200FC9B2D /* spin_lock.cpp in Sources */,
 				9A6765812238A23200FC9B2D /* thread.cpp in Sources */,
 				9A6765652238A23200FC9B2D /* log_message.cpp in Sources */,
@@ -2141,6 +2193,7 @@
 				9A6766352238A23200FC9B2D /* is_authorized_asset.cpp in Sources */,
 				9A67655A2238A23200FC9B2D /* console.cpp in Sources */,
 				9A67655B2238A23200FC9B2D /* datastream.cpp in Sources */,
+				9AB1AD10238D1AA300DD9732 /* crontab_recover.cpp in Sources */,
 				9A6765782238A23200FC9B2D /* shared_ptr.cpp in Sources */,
 				9A6766212238A23200FC9B2D /* buyback.cpp in Sources */,
 				9A6765852238A23200FC9B2D /* utf8.cpp in Sources */,
@@ -2169,6 +2222,7 @@
 				9A67665A2238A23200FC9B2D /* bcx_api.cpp in Sources */,
 				9A6765432238A23100FC9B2D /* dh.cpp in Sources */,
 				9A046C58224C645700F11330 /* contract_object.cpp in Sources */,
+				9AB1AD08238D184800DD9732 /* temporary_authority_chang.cpp in Sources */,
 				9A67657D2238A23200FC9B2D /* non_preemptable_scope_check.cpp in Sources */,
 				9A6765802238A23200FC9B2D /* task.cpp in Sources */,
 				9A046C6E224CCB5D00F11330 /* nh_cancel_asset_order_operation.cpp in Sources */,
@@ -2177,6 +2231,7 @@
 				9A6765502238A23200FC9B2D /* sha224.cpp in Sources */,
 				84A1D3F02241DB7800DA5A9F /* bcxtimer.cpp in Sources */,
 				9A67657C2238A23200FC9B2D /* mutex.cpp in Sources */,
+				9AB1AD12238D1AA300DD9732 /* crontab_cancel.cpp in Sources */,
 				9A046C6B224CCB4E00F11330 /* fill_nh_asset_order.cpp in Sources */,
 				9A67663B2238A23200FC9B2D /* proposal_object.cpp in Sources */,
 				9A67653A2238A23100FC9B2D /* _digest_common.cpp in Sources */,
@@ -2197,6 +2252,7 @@
 				9A67665B2238A23200FC9B2D /* bcxlog.cpp in Sources */,
 				9A6766452238A23200FC9B2D /* custom.cpp in Sources */,
 				9A046C62224CCB1A00F11330 /* file_signature.cpp in Sources */,
+				9AB1AD17238D1AA300DD9732 /* crontab_create.cpp in Sources */,
 				9A6765322238A23100FC9B2D /* object_database.cpp in Sources */,
 				9A67665C2238A23200FC9B2D /* bcxws.cpp in Sources */,
 				9A67653C2238A23100FC9B2D /* base36.cpp in Sources */,
@@ -2213,7 +2269,7 @@
 				9A6765842238A23200FC9B2D /* uint128.cpp in Sources */,
 				9A67655E2238A23200FC9B2D /* json.cpp in Sources */,
 				9A6765862238A23200FC9B2D /* variant.cpp in Sources */,
-				9AFF8C8A224DAD4E00BD8F20 /* nh_register_creator_operation.cpp in Sources */,
+				9AFF8C8A224DAD4E00BD8F20 /* nh_register_asset_creator_operation.cpp in Sources */,
 				9A67657A2238A23200FC9B2D /* string.cpp in Sources */,
 				9A6765402238A23100FC9B2D /* blowfish.cpp in Sources */,
 				9A6765512238A23200FC9B2D /* sha256.cpp in Sources */,
@@ -2242,6 +2298,7 @@
 				9A86EBCF22814FFE007883A8 /* nh_create_asset_order_operation.cpp in Sources */,
 				9A86EC3622815118007883A8 /* sstream.cpp in Sources */,
 				9A86EC2222815108007883A8 /* dh.cpp in Sources */,
+				9AB1AD1C238D1AB300DD9732 /* update_collateral_for_gas.cpp in Sources */,
 				9A86EBC622814FFE007883A8 /* contract_object.cpp in Sources */,
 				9A86EC01228150D3007883A8 /* confidential.cpp in Sources */,
 				9A86EC4F22815137007883A8 /* variant_object.cpp in Sources */,
@@ -2254,6 +2311,7 @@
 				9A86EC4B22815137007883A8 /* time.cpp in Sources */,
 				9A86EBD722814FFE007883A8 /* game_protocol_object.cpp in Sources */,
 				9A86EC3222815118007883A8 /* datastream.cpp in Sources */,
+				9AB1AD04238D167600DD9732 /* asset_update_restricted.cpp in Sources */,
 				9A86EBCC22814FFE007883A8 /* create_file.cpp in Sources */,
 				9A86EBC822814FFE007883A8 /* contract_call_function_operation.cpp in Sources */,
 				9A86EC2C22815108007883A8 /* sha256.cpp in Sources */,
@@ -2279,6 +2337,7 @@
 				9A86EC0E228150D3007883A8 /* worker.cpp in Sources */,
 				9A86EBDB22815006007883A8 /* assert_evaluator.cpp in Sources */,
 				9A86EC10228150E0007883A8 /* special_authority.cpp in Sources */,
+				9AB1AD11238D1AA300DD9732 /* crontab_recover.cpp in Sources */,
 				9A86EBCB22814FFE007883A8 /* add_file_relate_account.cpp in Sources */,
 				9A86EBC522814FFE007883A8 /* contract_create_operation.cpp in Sources */,
 				9A86EC2722815108007883A8 /* openssl.cpp in Sources */,
@@ -2307,6 +2366,7 @@
 				9A86EC4422815132007883A8 /* mutex.cpp in Sources */,
 				9A86EBCA22814FFE007883A8 /* file_signature.cpp in Sources */,
 				9A86EC0B228150D3007883A8 /* vote.cpp in Sources */,
+				9AB1AD09238D184800DD9732 /* temporary_authority_chang.cpp in Sources */,
 				9A86EBD922815006007883A8 /* account_evaluator.cpp in Sources */,
 				9A86EC06228150D3007883A8 /* operations.cpp in Sources */,
 				9A86EC3722815118007883A8 /* varint.cpp in Sources */,
@@ -2315,6 +2375,7 @@
 				9A86EC0C228150D3007883A8 /* withdraw_permission.cpp in Sources */,
 				9A86EC2A22815108007883A8 /* sha1.cpp in Sources */,
 				9A86EBF422815006007883A8 /* is_authorized_asset.cpp in Sources */,
+				9AB1AD13238D1AA300DD9732 /* crontab_cancel.cpp in Sources */,
 				9A86EC512281513D007883A8 /* WebSocket.cpp in Sources */,
 				9A86EC412281512C007883A8 /* stacktrace.cpp in Sources */,
 				9A86EC4D22815137007883A8 /* utf8.cpp in Sources */,
@@ -2335,6 +2396,7 @@
 				9A86EBBD22814FF5007883A8 /* bcxapi_p.cpp in Sources */,
 				9A86EC3022815118007883A8 /* buffered_iostream.cpp in Sources */,
 				9A86EC2022815108007883A8 /* city.cpp in Sources */,
+				9AB1AD18238D1AA300DD9732 /* crontab_create.cpp in Sources */,
 				9A86EC04228150D3007883A8 /* market.cpp in Sources */,
 				9A86EC3522815118007883A8 /* json.cpp in Sources */,
 				9A86EC2E2281510E007883A8 /* exception.cpp in Sources */,
@@ -2348,7 +2410,7 @@
 				9A86EC1922815108007883A8 /* _digest_common.cpp in Sources */,
 				9A86EC422281512C007883A8 /* string.cpp in Sources */,
 				9A86EC3C2281511F007883A8 /* log_message.cpp in Sources */,
-				9A86EBD522814FFE007883A8 /* nh_register_creator_operation.cpp in Sources */,
+				9A86EBD522814FFE007883A8 /* nh_register_asset_creator_operation.cpp in Sources */,
 				9A86EC09228150D3007883A8 /* transfer.cpp in Sources */,
 				9A86EC4622815132007883A8 /* spin_lock.cpp in Sources */,
 				9A86EBD222814FFE007883A8 /* nh_relate_asset_operation.cpp in Sources */,

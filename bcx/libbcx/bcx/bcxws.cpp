@@ -147,13 +147,7 @@ void bcxws::onMessage(bcx::network::WebSocket* ws, const bcx::network::WebSocket
     } else {
         BCXLOG("WS:onMessage,string: %s", data.bytes);
     }
-    
-    /**
-     FIXME:
-     交易成功后，返回数据：
-     {"method":"notice","params":[11,[{"id":"006300c92230205b30ec39099e17a07a71050197659406898102d4ae4ee77ef5",...]}}]]}
-     没有 id
-     */
+
     fc::variant v = fc::json::from_string(data.bytes);
     auto &vv = v.get_object();
     if (vv.contains("id")) {
@@ -218,7 +212,7 @@ void bcxws::_oncall(const fc::variant &v)
                     return;
                 }
             }
-            cbit->second->resolve(v.get_object()["result"]);
+            cbit->second->resolve(rst);
             _removeCallback(id);
         } else {
             BCXLOG("WS: ERROR, unhandle variant:%s", fc::json::to_pretty_string(v).c_str());

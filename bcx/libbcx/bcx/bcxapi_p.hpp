@@ -80,7 +80,7 @@ public:
      * Database
      */
     void get_block_header(unsigned int num, const std::function<void(const fc::optional<graphene::chain::block_header>&)> &cb);
-    void get_block(unsigned int num, const std::function<void(const fc::optional<graphene::chain::signed_block>&)> &cb);
+    void get_block(unsigned int num, const std::function<void(const fc::optional<bcx::protocol::signed_block>&)> &cb);
     
     /*
      * History
@@ -134,9 +134,9 @@ public:
 private:
     void query_login(const std::function<void(int)> &callback);
     ::promise::Defer query_api_id(const std::string& name, ::promise::Defer defer = promise::newPromise());
-    ::promise::Defer get_required_fees(const std::vector<graphene::chain::operation> &ops,
-                                       graphene::chain::asset_id_type id,
-                                       ::promise::Defer defer = promise::newPromise());
+//    ::promise::Defer get_required_fees(const std::vector<graphene::chain::operation> &ops,
+//                                       graphene::chain::asset_id_type id,
+//                                       ::promise::Defer defer = promise::newPromise());
     ::promise::Defer broadcast_transaction_with_callback(const graphene::chain::signed_transaction& trx,
                                                          ::promise::Defer defer = promise::newPromise());
     void query_dynamic_global_property_object();

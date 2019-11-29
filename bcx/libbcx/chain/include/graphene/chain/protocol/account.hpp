@@ -139,6 +139,8 @@ namespace graphene { namespace chain {
       };
 
       asset fee;
+       
+       optional<std::pair<uint32_t, asset>>  lock_with_vote;
       /// The account to update
       account_id_type account;
 
@@ -269,24 +271,23 @@ namespace graphene { namespace chain {
 
 } } // graphene::chain
 
-FC_REFLECT(graphene::chain::account_options, (memo_key)(voting_account)(num_witness)(num_committee)(votes)(extensions))
+FC_REFLECT(graphene::chain::account_options, (memo_key)(votes)(extensions))
 FC_REFLECT_ENUM( graphene::chain::account_whitelist_operation::account_listing,
                 (no_listing)(white_listed)(black_listed)(white_and_black_listed))
 
 FC_REFLECT(graphene::chain::account_create_operation::ext, (null_ext)(owner_special_authority)(active_special_authority)(buyback_options) )
 FC_REFLECT( graphene::chain::account_create_operation,
-            (fee)(registrar)
-            (referrer)(referrer_percent)
+            (registrar)
             (name)(owner)(active)(options)(extensions)
           )
 
 FC_REFLECT(graphene::chain::account_update_operation::ext, (null_ext)(owner_special_authority)(active_special_authority) )
 FC_REFLECT( graphene::chain::account_update_operation,
-            (fee)(account)(owner)(active)(new_options)(extensions)
+            (lock_with_vote)(account)(owner)(active)(new_options)(extensions)
           )
 
 FC_REFLECT( graphene::chain::account_upgrade_operation,
-            (fee)(account_to_upgrade)(upgrade_to_lifetime_member)(extensions) )
+            (account_to_upgrade)(upgrade_to_lifetime_member)(extensions) )
 
 FC_REFLECT( graphene::chain::account_whitelist_operation, (fee)(authorizing_account)(account_to_list)(new_listing)(extensions))
 
@@ -296,4 +297,4 @@ FC_REFLECT( graphene::chain::account_update_operation::fee_parameters_type, (fee
 FC_REFLECT( graphene::chain::account_upgrade_operation::fee_parameters_type, (membership_annual_fee)(membership_lifetime_fee) )
 FC_REFLECT( graphene::chain::account_transfer_operation::fee_parameters_type, (fee) )
 
-FC_REFLECT( graphene::chain::account_transfer_operation, (fee)(account_id)(new_owner)(extensions) )
+FC_REFLECT( graphene::chain::account_transfer_operation, (account_id)(new_owner)(extensions) )

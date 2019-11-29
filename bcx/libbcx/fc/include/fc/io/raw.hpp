@@ -179,6 +179,10 @@ namespace fc {
       } while( uint8_t(b) & 0x80 );
       vi.value = static_cast<uint64_t>(v);
     }
+    
+    template<typename Stream> inline void pack( Stream& s, const unsigned_int64& v, uint32_t _max_depth ) {
+        s.write((char*)&v, sizeof(uint64_t));
+    }
 
     template<typename Stream, typename T> inline void unpack( Stream& s, const T& vi, uint32_t _max_depth )
     {

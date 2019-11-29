@@ -54,7 +54,7 @@ namespace graphene { namespace chain {
       /// order to accept the fee. If this asset's fee pool is funded, the chain will automatically deposite fees
       /// in this asset to its accumulated fees, and withdraw from the fee pool the same amount as converted at
       /// the core exchange rate.
-      price core_exchange_rate = price(asset(), asset(0, asset_id_type(1)));
+      fc::optional<price> core_exchange_rate = price(asset(), asset(0, asset_id_type(1)));
 
       /// A set of accounts which maintain whitelists to consult for this asset. If whitelist_authorities
       /// is non-empty, then only accounts in whitelist_authorities are allowed to hold, use, or transfer the asset.
@@ -547,7 +547,6 @@ FC_REFLECT( graphene::chain::asset_reserve_operation::fee_parameters_type, (fee)
 
 
 FC_REFLECT( graphene::chain::asset_create_operation,
-            (fee)
             (issuer)
             (symbol)
             (precision)
@@ -556,7 +555,6 @@ FC_REFLECT( graphene::chain::asset_create_operation,
             (extensions)
           )
 FC_REFLECT( graphene::chain::asset_update_operation,
-            (fee)
             (issuer)
             (asset_to_update)
             (new_issuer)
@@ -571,7 +569,6 @@ FC_REFLECT( graphene::chain::asset_update_issuer_operation,
             (extensions)
           )
 FC_REFLECT( graphene::chain::asset_update_bitasset_operation,
-            (fee)
             (issuer)
             (asset_to_update)
             (new_options)
@@ -582,12 +579,12 @@ FC_REFLECT( graphene::chain::asset_update_feed_producers_operation,
           )
 FC_REFLECT( graphene::chain::asset_publish_feed_operation,
             (fee)(publisher)(asset_id)(feed)(extensions) )
-FC_REFLECT( graphene::chain::asset_settle_operation, (fee)(account)(amount)(extensions) )
+FC_REFLECT( graphene::chain::asset_settle_operation, (account)(amount)(extensions) )
 FC_REFLECT( graphene::chain::asset_settle_cancel_operation, (fee)(settlement)(account)(amount)(extensions) )
-FC_REFLECT( graphene::chain::asset_global_settle_operation, (fee)(issuer)(asset_to_settle)(settle_price)(extensions) )
+FC_REFLECT( graphene::chain::asset_global_settle_operation, (issuer)(asset_to_settle)(settle_price)(extensions) )
 FC_REFLECT( graphene::chain::asset_issue_operation,
-            (fee)(issuer)(asset_to_issue)(issue_to_account)(memo)(extensions) )
+            (issuer)(asset_to_issue)(issue_to_account)(memo)(extensions) )
 FC_REFLECT( graphene::chain::asset_reserve_operation,
-            (fee)(payer)(amount_to_reserve)(extensions) )
+            (payer)(amount_to_reserve)(extensions) )
 
-FC_REFLECT( graphene::chain::asset_fund_fee_pool_operation, (fee)(from_account)(asset_id)(amount)(extensions) );
+FC_REFLECT( graphene::chain::asset_fund_fee_pool_operation, (from_account)(asset_id)(amount)(extensions) );

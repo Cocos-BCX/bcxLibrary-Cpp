@@ -64,6 +64,7 @@ namespace graphene { namespace chain {
       /// The account which owns the committee_member. This account pays the fee for this operation.
       account_id_type                       committee_member_account;
       optional< string >                    new_url;
+       bool work_status;
 
       account_id_type fee_payer()const { return committee_member_account; }
       void            validate()const;
@@ -100,7 +101,7 @@ FC_REFLECT( graphene::chain::committee_member_update_global_parameters_operation
 
 
 FC_REFLECT( graphene::chain::committee_member_create_operation,
-            (fee)(committee_member_account)(url) )
+            (committee_member_account)(url) )
 FC_REFLECT( graphene::chain::committee_member_update_operation,
-            (fee)(committee_member)(committee_member_account)(new_url) )
+            (committee_member)(committee_member_account)(new_url)(work_status) )
 FC_REFLECT( graphene::chain::committee_member_update_global_parameters_operation, (fee)(new_parameters) );

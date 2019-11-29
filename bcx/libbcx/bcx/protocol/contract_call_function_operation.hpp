@@ -39,7 +39,6 @@ FC_REFLECT( bcx::protocol::contract_call_function_operation::fee_parameters_type
            )
 
 FC_REFLECT( bcx::protocol::contract_call_function_operation,
-           (fee)
            (caller)
            (contract_id)
            (function_name)

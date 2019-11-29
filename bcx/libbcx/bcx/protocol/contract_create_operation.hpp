@@ -38,7 +38,6 @@ FC_REFLECT( bcx::protocol::contract_create_operation::fee_parameters_type,
            )
 
 FC_REFLECT( bcx::protocol::contract_create_operation,
-           (fee)
            (owner)
            (name)
            (data)

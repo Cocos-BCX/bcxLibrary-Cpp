@@ -34,6 +34,7 @@ namespace graphene { namespace db {
    using  fc::flat_map;
    using  fc::variant;
    using  fc::unsigned_int;
+   using  fc::unsigned_int64;
 
    struct object_id_type
    {
@@ -129,7 +130,8 @@ namespace graphene { namespace db {
 
       friend size_t hash_value( object_id v ) { return std::hash<uint64_t>()(v.instance.value); }
 
-      unsigned_int instance;
+      //unsigned_int instance;
+      unsigned_int64 instance;
    };
 
 } } // graphene::db

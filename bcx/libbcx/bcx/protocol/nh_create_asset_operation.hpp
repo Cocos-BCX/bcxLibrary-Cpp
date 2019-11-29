@@ -38,7 +38,6 @@ FC_REFLECT( bcx::protocol::nh_create_asset_operation::fee_parameters_type,
            )
 
 FC_REFLECT( bcx::protocol::nh_create_asset_operation,
-           (fee)
            (fee_paying_account)
            (owner)
            (asset_id)

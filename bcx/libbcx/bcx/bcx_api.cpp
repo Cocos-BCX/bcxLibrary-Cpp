@@ -158,7 +158,7 @@ void bcxapi::get_block_header(unsigned int num, const std::function<void(const f
     my->get_block_header(num, cb);
 }
 
-void bcxapi::get_block(unsigned int num, const std::function<void(const fc::optional<graphene::chain::signed_block>&)> &cb) {
+void bcxapi::get_block(unsigned int num, const std::function<void(const fc::optional<bcx::protocol::signed_block>&)> &cb) {
     my->get_block(num, cb);
 }
 

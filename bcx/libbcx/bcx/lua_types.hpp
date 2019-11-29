@@ -11,10 +11,10 @@ namespace bcx
 #define LUATYPE(T)                       \
     typedef struct lua_##T               \
     {                                    \
-        T baseValue;                     \
+        T v;                     \
         lua_##T(T v)             \
         {                                \
-            this->baseValue = v; \
+            this->v = v; \
         }                                \
         lua_##T() {}                     \
     } lua_##T;
@@ -96,10 +96,10 @@ typedef static_variant<
 typedef std::map<lua_key, lua_types> lua_map;
 typedef struct lua_table
 {
-    lua_map baseValue;
+    lua_map v;
     lua_table(lua_map v)
     {
-        this->baseValue = v;
+        this->v = v;
     }
     lua_table(){};
 } lua_table;
@@ -178,7 +178,7 @@ typedef struct lua_key
                 ad = a.key.get<LUATYPE_NAME(int)>();
                 LUATYPE_NAME(int)
                 bd = b.key.get<LUATYPE_NAME(int)>();
-                return ad.baseValue == bd.baseValue;
+                return ad.v == bd.v;
             }
             case 1:
             {
@@ -186,7 +186,7 @@ typedef struct lua_key
                 ad = a.key.get<LUATYPE_NAME(number)>();
                 LUATYPE_NAME(number)
                 bd = b.key.get<LUATYPE_NAME(number)>();
-                return ad.baseValue == bd.baseValue;
+                return ad.v == bd.v;
             }
             case 2:
             {
@@ -194,7 +194,7 @@ typedef struct lua_key
                 ad = a.key.get<LUATYPE_NAME(string)>();
                 LUATYPE_NAME(string)
                 bd = b.key.get<LUATYPE_NAME(string)>();
-                return ad.baseValue == bd.baseValue;
+                return ad.v == bd.v;
             }
             default:
                 return false;
@@ -214,7 +214,7 @@ typedef struct lua_key
                 ad = a.key.get<LUATYPE_NAME(int)>();
                 LUATYPE_NAME(int)
                 bd = b.key.get<LUATYPE_NAME(int)>();
-                return ad.baseValue < bd.baseValue;
+                return ad.v < bd.v;
             }
             case 1:
             {
@@ -222,7 +222,7 @@ typedef struct lua_key
                 ad = a.key.get<LUATYPE_NAME(number)>();
                 LUATYPE_NAME(number)
                 bd = b.key.get<LUATYPE_NAME(number)>();
-                return ad.baseValue < bd.baseValue;
+                return ad.v < bd.v;
             }
             case 2:
             {
@@ -230,7 +230,7 @@ typedef struct lua_key
                 ad = a.key.get<LUATYPE_NAME(string)>();
                 LUATYPE_NAME(string)
                 bd = b.key.get<LUATYPE_NAME(string)>();
-                return ad.baseValue < bd.baseValue;
+                return ad.v < bd.v;
             }
             default:
                 return false;
@@ -248,8 +248,8 @@ FC_REFLECT(bcx::SKeyFunctionData, //(arg_num)(ret_num)
            (is_var_arg)(arglist)              //(retlist)
 )
 FC_REFLECT(bcx::LUATYPE_NAME(key), (key))
-FC_REFLECT(bcx::LUATYPE_NAME(bool), (baseValue))
-FC_REFLECT(bcx::LUATYPE_NAME(int64_t), (baseValue))
-FC_REFLECT(bcx::LUATYPE_NAME(string), (baseValue))
-FC_REFLECT(bcx::LUATYPE_NAME(double), (baseValue))
-FC_REFLECT(bcx::LUATYPE_NAME(table), (baseValue))
+FC_REFLECT(bcx::LUATYPE_NAME(bool), (v))
+FC_REFLECT(bcx::LUATYPE_NAME(int64_t), (v))
+FC_REFLECT(bcx::LUATYPE_NAME(string), (v))
+FC_REFLECT(bcx::LUATYPE_NAME(double), (v))
+FC_REFLECT(bcx::LUATYPE_NAME(table), (v))

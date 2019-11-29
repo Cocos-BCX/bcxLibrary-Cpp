@@ -275,9 +275,9 @@ FC_REFLECT( graphene::chain::blind_output,
 FC_REFLECT( graphene::chain::transfer_to_blind_operation,
             (fee)(amount)(from)(blinding_factor)(outputs) )
 FC_REFLECT( graphene::chain::transfer_from_blind_operation,
-            (fee)(amount)(to)(blinding_factor)(inputs) )
+            (amount)(to)(blinding_factor)(inputs) )
 FC_REFLECT( graphene::chain::blind_transfer_operation,
-            (fee)(inputs)(outputs) )
+            (inputs)(outputs) )
 FC_REFLECT( graphene::chain::transfer_to_blind_operation::fee_parameters_type, (fee)(price_per_output) )
 FC_REFLECT( graphene::chain::transfer_from_blind_operation::fee_parameters_type, (fee) )
 FC_REFLECT( graphene::chain::blind_transfer_operation::fee_parameters_type, (fee)(price_per_output) )

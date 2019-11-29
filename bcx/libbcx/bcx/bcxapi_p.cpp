@@ -23,7 +23,7 @@
 #include "./protocol/transaction_confirmation.hpp"
 #include "./protocol/account_info_for_reg.h"
 #include "./protocol/contract_create_operation.hpp"
-#include "./protocol/nh_register_creator_operation.hpp"
+#include "./protocol/nh_register_asset_creator_operation.hpp"
 #include "./protocol/nh_create_world_view_operation.hpp"
 
 #include "lua_types.hpp"
@@ -129,14 +129,7 @@ void bcxapi_p::changePassword(const std::string &account,
         op->account = this->_db.current_full_account.account.get_id();
         op->owner = graphene::chain::authority(1, graphene::chain::public_key_type(ownerPubKey), 1);
         op->active = graphene::chain::authority(1, graphene::chain::public_key_type(activePubKey), 1);
-        
-        return this->get_required_fees({*op}, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
+
         return this->send_operation({*op});
     })
     .then([=](fc::variant v) {
@@ -169,14 +162,7 @@ void bcxapi_p::upgradeAccount(const std::function<void(int)> &callback) {
     op->account_to_upgrade = _db.current_full_account.account.get_id();
     op->upgrade_to_lifetime_member = true;
 
-    get_required_fees({*op}, graphene::chain::asset_id_type())
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
-        return this->send_operation({*op});
-    })
+    send_operation({*op})
     .then([=](fc::variant v) {
         callback(SUCCESS);
     })
@@ -366,9 +352,11 @@ void bcxapi_p::transfer(const std::string& to,
 
     op->from = _db.current_full_account.account.get_id();
 
-    graphene::chain::memo_data memodata;
-    memodata.set_message(fc::ecc::private_key(), fc::ecc::public_key(), memo_);
-    op->memo = memodata;
+    if (memo_.length() > 0) {
+        graphene::chain::memo_data memodata;
+        memodata.set_message(fc::ecc::private_key(), fc::ecc::public_key(), memo_);
+        op->memo = memodata;
+    }
 
     query_get_full_accounts(to)
     .then([=](const fc::variant& v) {
@@ -386,13 +374,6 @@ void bcxapi_p::transfer(const std::string& to,
         op->amount = graphene::chain::asset(mount, asset.get_id());
         asset = assets.at(1);
 
-        return this->get_required_fees({*op}, asset.get_id());
-    })
-    .then([this, op](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
         return this->send_operation({*op});
     })
     .then([=](fc::variant v) {
@@ -514,14 +495,7 @@ void bcxapi_p::create_asset(const std::string& symbol,
     op->common_options.core_exchange_rate = graphene::chain::price(graphene::chain::asset(1 * pow(10, precision), asset_id_type(1)),
                                                                    graphene::chain::asset(exchangeRate * 100000));
 
-    get_required_fees({*op}, graphene::chain::asset_id_type())
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
-        return this->send_operation({*op});
-    })
+    send_operation({*op})
     .then([=](fc::variant v) {
         callback(SUCCESS);
     })
@@ -563,11 +537,6 @@ void bcxapi_p::update_asset(const std::string& symbol,
     if (!description.empty()) {
         op->new_options.description = description;
     }
-    if (0 != exchangeRate) {
-        op->new_options.core_exchange_rate
-            = graphene::chain::price(graphene::chain::asset(1),
-                                     graphene::chain::asset(exchangeRate, asset_id_type(1)));
-    }
     
     lookup_asset_symbols({symbol})
     .then([=](std::vector<graphene::chain::asset_object>& assets) {
@@ -577,14 +546,12 @@ void bcxapi_p::update_asset(const std::string& symbol,
         const graphene::chain::asset_object& asset = assets.at(0);
         op->asset_to_update = asset.get_id();
         op->issuer = asset.issuer;
-        
-        return this->get_required_fees({*op}, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
+        if (0 != exchangeRate) {
+            op->new_options.core_exchange_rate
+                = graphene::chain::price(graphene::chain::asset(1, asset.get_id()),
+                                         graphene::chain::asset(exchangeRate, asset_id_type()));
         }
-        op->fee = vFee[0];
+
         return this->send_operation({*op});
     })
     .then([=](fc::variant v) {
@@ -641,13 +608,6 @@ void bcxapi_p::issue_asset(const std::string& account,
         const graphene::chain::asset_object& asset = assets.at(0);
         op->asset_to_issue.asset_id = asset.get_id();
 
-        return this->get_required_fees({*op}, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
         return this->send_operation({*op});
     })
     .then([=](fc::variant v) {
@@ -694,14 +654,7 @@ void bcxapi_p::reserve_asset(const std::string& symbol,
         }
         const graphene::chain::asset_object& asset = assets.at(0);
         op->amount_to_reserve.asset_id = asset.get_id();
-        
-        return this->get_required_fees({*op}, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
+
         return this->send_operation({*op});
     })
     .then([=](fc::variant v) {
@@ -748,22 +701,22 @@ void bcxapi_p::get_block_header(unsigned int num, const std::function<void(const
     });
 }
 
-void bcxapi_p::get_block(unsigned int num, const std::function<void(const fc::optional<graphene::chain::signed_block>&)> &cb) {
+void bcxapi_p::get_block(unsigned int num, const std::function<void(const fc::optional<bcx::protocol::signed_block>&)> &cb) {
     fc::variants params;
     params.push_back(num);
     
     _ws.send_call(_db.dbAPIId, "get_block", params)
     .then([=](fc::variant v) {
         //TODO resutl->block_id is not exist on bts
-        if (cb) { cb(v.as<fc::optional<signed_block>>(BCX_PACK_MAX_DEPTH)); }
+        if (cb) { cb(v.as<fc::optional<bcx::protocol::signed_block>>(BCX_PACK_MAX_DEPTH)); }
     }).fail([=](const std::exception &e) {
-        if (cb) cb(fc::optional<signed_block>());
+        if (cb) cb(fc::optional<bcx::protocol::signed_block>());
         bcx::log("std exception:%s", e.what());
     }).fail([=](const fc::exception &e) {
-        if (cb) cb(fc::optional<signed_block>());
-        bcx::log("fc exception:%s", e.what());
+        if (cb) cb(fc::optional<bcx::protocol::signed_block>());
+        bcx::log("fc exception:%s", e.to_detail_string().c_str());
     }).fail([=](void) {
-        if (cb) cb(fc::optional<signed_block>());
+        if (cb) cb(fc::optional<bcx::protocol::signed_block>());
         // std::exception_ptr p = std::current_exception();
         bcx::log("unknow error");
     });
@@ -818,14 +771,7 @@ void bcxapi_p::create_contract(const std::string& name, const std::string& contr
     op->data = contract_source;
     op->contract_authority = _db.current_full_account.account.owner.get_keys().at(0);
     
-    get_required_fees({*op}, graphene::chain::asset_id_type())
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
-        return this->send_operation({*op});
-    })
+    send_operation({*op})
     .then([=](fc::variant v) {
         callback(SUCCESS);
     })
@@ -903,29 +849,29 @@ void bcxapi_p::query_login(const std::function<void(int)> &callback) {
     return defer;
 }
 
-::promise::Defer bcxapi_p::get_required_fees(const std::vector<graphene::chain::operation> &ops,
-                                           graphene::chain::asset_id_type id,
-                                           ::promise::Defer defer) {
-    fc::variants params;
-    fc::variant vops;
-    fc::to_variant(ops, vops, BCX_PACK_MAX_DEPTH);
-    params.push_back(vops);
-    fc::variant idops;
-    fc::to_variant(id, idops);
-    params.push_back(idops);
-    
-    _ws.send_call(_db.dbAPIId, "get_required_fees", params)
-    .then([defer](const fc::variant v) {
-        // auto rst = v.get_object()["result"].as<std::vector<fc::variant>>(BCX_PACK_MAX_DEPTH);
-        auto rst = v.as<std::vector<graphene::chain::asset>>(BCX_PACK_MAX_DEPTH);
-        defer.resolve(rst);
-    })
-    .fail([=](int error) {
-        defer.reject(error);
-    });
-    
-    return defer;
-}
+//::promise::Defer bcxapi_p::get_required_fees(const std::vector<graphene::chain::operation> &ops,
+//                                           graphene::chain::asset_id_type id,
+//                                           ::promise::Defer defer) {
+//    fc::variants params;
+//    fc::variant vops;
+//    fc::to_variant(ops, vops, BCX_PACK_MAX_DEPTH);
+//    params.push_back(vops);
+//    fc::variant idops;
+//    fc::to_variant(id, idops);
+//    params.push_back(idops);
+//
+//    _ws.send_call(_db.dbAPIId, "get_required_fees", params)
+//    .then([defer](const fc::variant v) {
+//        // auto rst = v.get_object()["result"].as<std::vector<fc::variant>>(BCX_PACK_MAX_DEPTH);
+//        auto rst = v.as<std::vector<graphene::chain::asset>>(BCX_PACK_MAX_DEPTH);
+//        defer.resolve(rst);
+//    })
+//    .fail([=](int error) {
+//        defer.reject(error);
+//    });
+//
+//    return defer;
+//}
 
 ::promise::Defer bcxapi_p::broadcast_transaction_with_callback(const graphene::chain::signed_transaction& trx,
                                                                ::promise::Defer defer) {
@@ -1202,19 +1148,11 @@ fc::optional<fc::ecc::private_key> bcxapi_p::get_private_key_by_public(const gra
 
     op->name = account;
     op->registrar = _db.current_full_account.account.get_id();
-    op->referrer = _db.current_full_account.account.get_id();
     op->owner = graphene::chain::authority(1, graphene::chain::public_key_type(ownerPubKey), 1);
     op->active = graphene::chain::authority(1, graphene::chain::public_key_type(activePubKey), 1);
     op->options.memo_key = memoPubKey;
 
-    get_required_fees({*op}, graphene::chain::asset_id_type())
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw "get request fee result size is 0";
-        }
-        op->fee = vFee[0];
-        return this->send_operation({*op});
-    })
+    send_operation({*op})
     .then([defer](fc::variant v) {
         defer.resolve(true, "");
     })
@@ -1330,14 +1268,10 @@ void bcxapi_p::update_contract(const std::string& name_or_id, const std::string&
         op->contract_id = co.get_id();
         op->reviser = co.owner;
 
-        return this->get_required_fees({*op}, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
         return this->send_operation({*op});
+    })
+    .then([callback](const fc::variant& v) {
+        callback(SUCCESS);
     })
     .fail([callback](const fc::rpc::error_object& eo) {
         bcx::log("block chain error:%lld,%s", eo.code, eo.message.data());
@@ -1414,14 +1348,7 @@ void bcxapi_p::call_contract_function(const std::string& nameOrId,
     .then([=](fc::variant var) {
         auto co = var.as<bcx::protocol::contract_object>(BCX_PACK_MAX_DEPTH);
         op->contract_id = co.get_id();
-        
-        return this->get_required_fees({*op}, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
+
         return this->send_operation({*op});
     })
     .then([=](fc::variant v) {
@@ -1456,19 +1383,12 @@ void bcxapi_p::nh_register_creator(const std::function<void(int)> &callback) {
         callback(ERROR_NOT_LOGIN);
         return;
     }
-    std::shared_ptr<bcx::protocol::nh_register_creator_operation> op =
-        std::make_shared<bcx::protocol::nh_register_creator_operation>();
+    std::shared_ptr<bcx::protocol::nh_register_asset_creator_operation> op =
+        std::make_shared<bcx::protocol::nh_register_asset_creator_operation>();
     
     op->fee_paying_account = _db.current_full_account.account.get_id();
 
-    get_required_fees({*op}, graphene::chain::asset_id_type())
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
-        return this->send_operation({*op});
-    })
+    send_operation({*op})
     .then([=](fc::variant v) {
         callback(SUCCESS);
     })
@@ -1499,14 +1419,7 @@ void bcxapi_p::nh_create_world_view(const std::string& name , const std::functio
     op->fee_paying_account = _db.current_full_account.account.get_id();
     op->world_view = name;
 
-    get_required_fees({*op}, graphene::chain::asset_id_type())
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
-        return this->send_operation({*op});
-    })
+    send_operation({*op})
     .then([=](fc::variant v) {
         callback(SUCCESS);
     })
@@ -1542,14 +1455,7 @@ void bcxapi_p::nh_relate_world_view(const std::string& name , const std::functio
     op->view_owner = _db.current_full_account.account.get_id();
     op->world_view = name;
     
-    get_required_fees({*op}, graphene::chain::asset_id_type())
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        op->fee = vFee[0];
-        return this->send_operation({*op});
-    })
+    send_operation({*op})
     .then([=](fc::variant v) {
         callback(SUCCESS);
     })
@@ -1613,19 +1519,6 @@ void bcxapi_p::nh_creat_asset(const std::vector<bcx::nh_asset_create_info>& nh_a
             }
         }
 
-        return get_required_fees(*ops, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        if (ops->size() != vFee.size()) {
-            throw ERROR_UNKNOW;
-        }
-        for (int i = 0; i < ops->size(); i++) {
-            auto &caop = ops->at(i).get<bcx::protocol::nh_create_asset_operation>();
-            caop.fee = vFee[i];
-        }
         return this->send_operation(*ops);
     })
     .then([=](fc::variant v) {
@@ -1689,20 +1582,7 @@ void bcxapi_p::nh_delete_asset(const std::vector<std::string>& ids_or_hashs, con
 
             ops->push_back(op);
         }
-        
-        return get_required_fees(*ops, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (vFee.size() < 1) {
-            throw std::string("get request fee result size is 0");
-        }
-        if (ops->size() != vFee.size()) {
-            throw ERROR_UNKNOW;
-        }
-        for (int i = 0; i < ops->size(); i++) {
-            auto &daop = ops->at(i).get<bcx::protocol::nh_delete_asset_operation>();
-            daop.fee = vFee[i];
-        }
+
         return this->send_operation(*ops);
     })
     .then([=](fc::variant v) {
@@ -1762,14 +1642,6 @@ void bcxapi_p::nh_transfer_asset(const std::string id_or_hash,
 
             op->nh_asset = asset->id;
         }
-
-        return get_required_fees({*op}, graphene::chain::asset_id_type());
-    })
-    .then([=](const std::vector<graphene::chain::asset>& vFee) {
-        if (1 != vFee.size()) {
-            throw std::string("get request fee result size is not 1");
-        }
-        op->fee = vFee[0];
 
         return this->send_operation({*op});
     })

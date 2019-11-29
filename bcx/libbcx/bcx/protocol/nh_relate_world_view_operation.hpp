@@ -36,10 +36,9 @@ FC_REFLECT( bcx::protocol::nh_relate_world_view_operation::fee_parameters_type,
            )
 
 FC_REFLECT( bcx::protocol::nh_relate_world_view_operation,
-           (fee)
            (related_account)
-           (view_owner)
            (world_view)
+           (view_owner)
            )
 
 
