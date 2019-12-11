@@ -39,7 +39,7 @@ namespace fc {
       std::vector<logger_config>   loggers;
    };
 
-   void configure_logging( const fc::path& log_config );
+   // void configure_logging( const fc::path& log_config );
    bool configure_logging( const logging_config& l );
 }
 

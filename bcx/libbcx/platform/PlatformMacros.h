@@ -1,25 +1,6 @@
-#ifndef __PLATFORM_MACROS_H__
-#define __PLATFORM_MACROS_H__
+#pragma once
 
 #include "./PlatformDefine.h"
-
-
-/// @name namespace cocos2d
-/// @{
-#ifdef __cplusplus
-    #define NS_BCX_BEGIN                     namespace bcx {
-    #define NS_BCX_END                       }
-    #define USING_NS_BCX                     using namespace bcx
-    #define NS_BCX                           ::bcx
-#else
-    #define NS_BCX_BEGIN
-    #define NS_BCX_END
-    #define USING_NS_BCX
-    #define NS_BCX
-#endif 
-//  end of namespace group
-/// @}
-
 
 #define BCX_SAFE_DELETE(p)           do { delete (p); (p) = nullptr; } while(0)
 #define BCX_SAFE_DELETE_ARRAY(p)     do { if(p) { delete[] (p); (p) = nullptr; } } while(0)
@@ -65,4 +46,3 @@
 #define BCX_UNUSED
 #endif
 
-#endif // __PLATFORM_MACROS_H__

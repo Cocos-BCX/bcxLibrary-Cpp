@@ -1,15 +1,16 @@
+#include <thread>
 #include <fc/crypto/aes.hpp>
 #include <fc/crypto/openssl.hpp>
 #include <fc/exception/exception.hpp>
 #include <fc/fwd_impl.hpp>
 
-#include <fc/io/fstream.hpp>
+//#include <fc/io/fstream.hpp>
 #include <fc/io/raw.hpp>
 
 #include <fc/log/logger.hpp>
 
-#include <fc/thread/thread.hpp>
-#include <boost/thread/mutex.hpp>
+//#include <fc/thread/thread.hpp>
+//#include <boost/thread/mutex.hpp>
 #include <openssl/opensslconf.h>
 #ifndef OPENSSL_THREADS
 # error "OpenSSL must be configured to support threads"
@@ -343,41 +344,41 @@ std::vector<char> aes_decrypt( const fc::sha512& key, const std::vector<char>& c
 /** encrypts plain_text and then includes a checksum that enables us to verify the integrety of
  * the file / key prior to decryption. 
  */
-void              aes_save( const fc::path& file, const fc::sha512& key, std::vector<char> plain_text )
-{ try {
-   auto cipher = aes_encrypt( key, plain_text );
-   fc::sha512::encoder check_enc;
-   fc::raw::pack( check_enc, key );
-   fc::raw::pack( check_enc, cipher );
-   auto check = check_enc.result();
+// void              aes_save( const fc::path& file, const fc::sha512& key, std::vector<char> plain_text )
+// { try {
+//    auto cipher = aes_encrypt( key, plain_text );
+//    fc::sha512::encoder check_enc;
+//    fc::raw::pack( check_enc, key );
+//    fc::raw::pack( check_enc, cipher );
+//    auto check = check_enc.result();
 
-   fc::ofstream out(file);
-   fc::raw::pack( out, check );
-   fc::raw::pack( out, cipher );
-} FC_RETHROW_EXCEPTIONS( warn, "", ("file",file) ) }
+//    fc::ofstream out(file);
+//    fc::raw::pack( out, check );
+//    fc::raw::pack( out, cipher );
+// } FC_RETHROW_EXCEPTIONS( warn, "", ("file",file) ) }
 
 /**
  *  recovers the plain_text saved via aes_save()
  */
-std::vector<char> aes_load( const fc::path& file, const fc::sha512& key )
-{ try {
-   FC_ASSERT( fc::exists( file ) );
+// std::vector<char> aes_load( const fc::path& file, const fc::sha512& key )
+// { try {
+//    FC_ASSERT( fc::exists( file ) );
 
-   fc::ifstream in( file, fc::ifstream::binary );
-   fc::sha512 check;
-   std::vector<char> cipher;
+//    fc::ifstream in( file, fc::ifstream::binary );
+//    fc::sha512 check;
+//    std::vector<char> cipher;
 
-   fc::raw::unpack( in, check );
-   fc::raw::unpack( in, cipher );
+//    fc::raw::unpack( in, check );
+//    fc::raw::unpack( in, cipher );
 
-   fc::sha512::encoder check_enc;
-   fc::raw::pack( check_enc, key );
-   fc::raw::pack( check_enc, cipher );
+//    fc::sha512::encoder check_enc;
+//    fc::raw::pack( check_enc, key );
+//    fc::raw::pack( check_enc, cipher );
 
-   FC_ASSERT( check_enc.result() == check );
+//    FC_ASSERT( check_enc.result() == check );
 
-   return aes_decrypt( key, cipher );
-} FC_RETHROW_EXCEPTIONS( warn, "", ("file",file) ) }
+//    return aes_decrypt( key, cipher );
+// } FC_RETHROW_EXCEPTIONS( warn, "", ("file",file) ) }
 
 /* This stuff has to go somewhere, I guess this is as good a place as any...
   OpenSSL isn't thread-safe unless you give it access to some mutexes,
@@ -386,7 +387,7 @@ std::vector<char> aes_load( const fc::path& file, const fc::sha512& key )
 */
 struct openssl_thread_config
 {
-  static boost::mutex* openssl_mutexes;
+//  static boost::mutex* openssl_mutexes;
   static unsigned long get_thread_id();
   static void locking_callback(int mode, int type, const char *file, int line);
   openssl_thread_config();
@@ -394,23 +395,26 @@ struct openssl_thread_config
 };
 openssl_thread_config openssl_thread_config_manager;
 
-boost::mutex*         openssl_thread_config::openssl_mutexes = nullptr;
+//boost::mutex*         openssl_thread_config::openssl_mutexes = nullptr;
 
 unsigned long openssl_thread_config::get_thread_id()
 {
 #ifdef _WIN32
   return (unsigned long)::GetCurrentThreadId();
 #else
-  return (unsigned long)(&fc::thread::current());    // TODO: should expose boost thread id
+//  return (unsigned long)(&fc::thread::current());    // TODO: should expose boost thread id
+    std::stringstream ss;
+    ss << std::this_thread::get_id();
+    return std::stoull(ss.str());
 #endif
 }
 
 void openssl_thread_config::locking_callback(int mode, int type, const char *file, int line)
 {
-  if (mode & CRYPTO_LOCK)
-    openssl_mutexes[type].lock();
-  else
-    openssl_mutexes[type].unlock();
+//  if (mode & CRYPTO_LOCK)
+//    openssl_mutexes[type].lock();
+//  else
+//    openssl_mutexes[type].unlock();
 }
 
 // Warning: Things get complicated if third-party libraries also try to install their their own 
@@ -422,7 +426,7 @@ openssl_thread_config::openssl_thread_config()
   if (CRYPTO_get_id_callback() == NULL &&
       CRYPTO_get_locking_callback() == NULL)
   {
-    openssl_mutexes = new boost::mutex[CRYPTO_num_locks()];
+//    openssl_mutexes = new boost::mutex[CRYPTO_num_locks()];
     CRYPTO_set_id_callback(&get_thread_id);
     CRYPTO_set_locking_callback(&locking_callback);
   }
@@ -433,8 +437,8 @@ openssl_thread_config::~openssl_thread_config()
   {
     CRYPTO_set_id_callback(NULL);
     CRYPTO_set_locking_callback(NULL);
-    delete[] openssl_mutexes;
-    openssl_mutexes = nullptr;
+//    delete[] openssl_mutexes;
+//    openssl_mutexes = nullptr;
   }
 }
 

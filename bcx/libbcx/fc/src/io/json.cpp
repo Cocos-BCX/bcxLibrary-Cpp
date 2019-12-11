@@ -2,7 +2,7 @@
 #include <fc/exception/exception.hpp>
 #include <fc/io/iostream.hpp>
 #include <fc/io/buffered_iostream.hpp>
-#include <fc/io/fstream.hpp>
+//#include <fc/io/fstream.hpp>
 #include <fc/io/sstream.hpp>
 #include <fc/log/logger.hpp>
 #include <cstdint>
@@ -10,7 +10,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <boost/filesystem/fstream.hpp>
+//#include <boost/filesystem/fstream.hpp>
 
 namespace fc
 {
@@ -738,6 +738,7 @@ namespace fc
 	   return pretty_print(to_string(v, format, max_depth), 2);
    }
 
+/*
    void json::save_to_file( const variant& v, const fc::path& fi, bool pretty, output_formatting format, uint32_t max_depth )
    {
       if( pretty )
@@ -758,6 +759,8 @@ namespace fc
       fc::buffered_istream bin( in );
       return from_stream( bin, ptype, max_depth );
    }
+*/
+
    variant json::from_stream( buffered_istream& in, parse_type ptype, uint32_t max_depth )
    {
       switch( ptype )

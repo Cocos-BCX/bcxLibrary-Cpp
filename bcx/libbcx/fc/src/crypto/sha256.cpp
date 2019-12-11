@@ -1,3 +1,4 @@
+#include <iostream>
 #include <fc/crypto/hex.hpp>
 #include <fc/crypto/hmac.hpp>
 #include <fc/fwd_impl.hpp>
@@ -54,6 +55,12 @@ namespace fc {
     }
 
     void sha256::encoder::write( const char* d, uint32_t dlen ) {
+      std::cout << ">>> " << dlen << ": ";
+      for(int i = 0; i < dlen; i++) {
+          char c = d[i];
+          printf("%02X ", c);
+      }
+      std::cout << std::endl;
       SHA256_Update( &my->ctx, d, dlen); 
     }
     sha256 sha256::encoder::result() {

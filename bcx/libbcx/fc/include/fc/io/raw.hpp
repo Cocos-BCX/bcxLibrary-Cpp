@@ -8,7 +8,7 @@
 #include <fc/smart_ref_fwd.hpp>
 #include <fc/array.hpp>
 #include <fc/time.hpp>
-#include <fc/filesystem.hpp>
+//#include <fc/filesystem.hpp>
 #include <fc/exception/exception.hpp>
 #include <fc/safe.hpp>
 #include <fc/io/raw_fwd.hpp>
@@ -71,21 +71,21 @@ namespace fc {
        msg = vmsg.as<log_message>( std::min( _max_depth, uint32_t(FC_MAX_LOG_OBJECT_DEPTH) ) );
     }
 
-    template<typename Stream>
-    inline void pack( Stream& s, const fc::path& tp, uint32_t _max_depth )
-    {
-       FC_ASSERT( _max_depth > 0 );
-       fc::raw::pack( s, tp.generic_string(), _max_depth - 1 );
-    }
+   //  template<typename Stream>
+   //  inline void pack( Stream& s, const fc::path& tp, uint32_t _max_depth )
+   //  {
+   //     FC_ASSERT( _max_depth > 0 );
+   //     fc::raw::pack( s, tp.generic_string(), _max_depth - 1 );
+   //  }
 
-    template<typename Stream>
-    inline void unpack( Stream& s, fc::path& tp, uint32_t _max_depth )
-    {
-       FC_ASSERT( _max_depth > 0 );
-       std::string p;
-       fc::raw::unpack( s, p, _max_depth - 1 );
-       tp = p;
-    }
+   //  template<typename Stream>
+   //  inline void unpack( Stream& s, fc::path& tp, uint32_t _max_depth )
+   //  {
+   //     FC_ASSERT( _max_depth > 0 );
+   //     std::string p;
+   //     fc::raw::unpack( s, p, _max_depth - 1 );
+   //     tp = p;
+   //  }
 
     template<typename Stream>
     inline void pack( Stream& s, const fc::time_point_sec& tp, uint32_t _max_depth )

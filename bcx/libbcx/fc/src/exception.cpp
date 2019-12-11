@@ -1,6 +1,6 @@
 #include <fc/exception/exception.hpp>
 #include <boost/exception/all.hpp>
-#include <fc/io/sstream.hpp>
+//#include <fc/io/sstream.hpp>
 #include <fc/log/logger.hpp>
 #include <fc/io/json.hpp>
 
@@ -163,7 +163,7 @@ namespace fc
     */
    string exception::to_detail_string( log_level ll )const
    {
-      fc::stringstream ss;
+      std::stringstream ss;
       ss << variant(my->_code).as_string() <<" " << my->_name << ": " <<my->_what<<"\n";
       for( auto itr = my->_elog.begin(); itr != my->_elog.end();  )
       {
@@ -188,7 +188,7 @@ namespace fc
     */
    string exception::to_string( log_level ll )const
    {
-      fc::stringstream ss;
+      std::stringstream ss;
       ss << what() << ":";
       for( auto itr = my->_elog.begin(); itr != my->_elog.end(); ++itr )
       {

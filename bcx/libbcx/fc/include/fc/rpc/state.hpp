@@ -1,7 +1,7 @@
 #pragma once
 #include <fc/variant.hpp>
 #include <functional>
-#include <fc/thread/future.hpp>
+//#include <fc/thread/future.hpp>
 
 namespace fc { namespace rpc {
    struct request
@@ -31,6 +31,7 @@ namespace fc { namespace rpc {
       optional<error_object> error;
    };
 
+/*
    class state
    {
       public:
@@ -56,6 +57,8 @@ namespace fc { namespace rpc {
          std::unordered_map<std::string, method>                    _methods;
          std::function<variant(const string&,const variants&)>                    _unhandled;
    };
+*/
+
 } }  // namespace  fc::rpc
 
 FC_REFLECT( fc::rpc::request, (id)(method)(params) );

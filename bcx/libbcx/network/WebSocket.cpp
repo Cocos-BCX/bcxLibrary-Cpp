@@ -7,6 +7,7 @@
 
 #include "./WebSocket.hpp"
 #include "./Uri.hpp"
+#include "../bcx/BCXImp.hpp"
 
 #ifdef __APPLE__
 #include "../3rd/websockets/include/ios/libwebsockets.h"
@@ -15,8 +16,6 @@
 #else
 #include "../3rd/websockets/include/android/libwebsockets.h"
 #endif
-
-#include "bcx/bcx_api.hpp"
 
 #define NS_NETWORK_BEGIN namespace bcx { namespace network {
 #define NS_NETWORK_END }}
@@ -239,8 +238,8 @@ public:
     // Quits websocket thread.
     void quitWebSocketThread();
     
-    // Sends message to Cocos thread. It's needed to be invoked in Websocket thread.
-    void sendMessageToCocosThread(const std::function<void()>& cb);
+    // Sends message to main thread. It's needed to be invoked in Websocket thread.
+    void sendMessageToMainThread(const std::function<void()>& cb);
     
     // Sends message to Websocket thread. It's needs to be invoked in Cocos thread.
     void sendMessageToWebSocketThread(WsMessage *msg);
@@ -399,10 +398,8 @@ void WsThreadHelper::wsThreadEntryFunc()
     LOGD("WebSocket thread exit, helper instance: %p\n", this);
 }
 
-void WsThreadHelper::sendMessageToCocosThread(const std::function<void()>& cb)
-{
-    //TODO
-    bcxapi::instance().performFunctionInCocosThread(cb);
+void WsThreadHelper::sendMessageToMainThread(const std::function<void()>& cb) {
+    BCXImp::getInstance()->performFunctionInMainThread(cb);
 }
 
 void WsThreadHelper::sendMessageToWebSocketThread(WsMessage *msg)
@@ -1114,7 +1111,7 @@ int WebSocket::onClientReceivedData(void* in, ssize_t len)
         }
         
         std::shared_ptr<std::atomic<bool>> isDestroyed = _isDestroyed;
-        __wsHelper->sendMessageToCocosThread([this, frameData, frameSize, isBinary, isDestroyed](){
+        __wsHelper->sendMessageToMainThread([this, frameData, frameSize, isBinary, isDestroyed](){
             // In UI thread
             LOGD("Notify data len %d to Cocos thread.\n", (int)frameSize);
             
@@ -1160,7 +1157,7 @@ int WebSocket::onConnectionOpened()
     }
     
     std::shared_ptr<std::atomic<bool>> isDestroyed = _isDestroyed;
-    __wsHelper->sendMessageToCocosThread([this, isDestroyed](){
+    __wsHelper->sendMessageToMainThread([this, isDestroyed](){
         if (*isDestroyed)
         {
             LOGD("WebSocket instance was destroyed!\n");
@@ -1186,7 +1183,7 @@ int WebSocket::onConnectionError()
     }
     
     std::shared_ptr<std::atomic<bool>> isDestroyed = _isDestroyed;
-    __wsHelper->sendMessageToCocosThread([this, isDestroyed](){
+    __wsHelper->sendMessageToMainThread([this, isDestroyed](){
         if (*isDestroyed)
         {
             LOGD("WebSocket instance was destroyed!\n");
@@ -1238,9 +1235,7 @@ int WebSocket::onConnectionClosed()
             {
                 LOGD("onConnectionClosed, WebSocket (%p) is closing by server.\n", this);
             }
-        }
-        else
-        {
+        } else {
             LOGD("onConnectionClosed, WebSocket (%p) is closing by server.\n", this);
         }
         
@@ -1248,7 +1243,7 @@ int WebSocket::onConnectionClosed()
     }
     
     std::shared_ptr<std::atomic<bool>> isDestroyed = _isDestroyed;
-    __wsHelper->sendMessageToCocosThread([this, isDestroyed](){
+    __wsHelper->sendMessageToMainThread([this, isDestroyed](){
         if (*isDestroyed)
         {
             LOGD("WebSocket instance (%p) was destroyed!\n", this);

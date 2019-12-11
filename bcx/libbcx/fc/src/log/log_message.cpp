@@ -2,9 +2,9 @@
 #include <fc/exception/exception.hpp>
 #include <fc/variant.hpp>
 #include <fc/time.hpp>
-#include <fc/thread/thread.hpp>
-#include <fc/thread/task.hpp>
-#include <fc/filesystem.hpp>
+//#include <fc/thread/thread.hpp>
+//#include <fc/thread/task.hpp>
+//#include <fc/filesystem.hpp>
 #include <fc/io/stdio.hpp>
 #include <fc/io/json.hpp>
 
@@ -49,7 +49,7 @@ namespace fc
    :my( std::make_shared<detail::log_context_impl>() )
    {
       my->level       = ll;
-      my->file        = fc::path(file).filename().generic_string(); // TODO truncate filename
+      // my->file        = fc::path(file).filename().generic_string(); // TODO truncate filename
       my->line        = line;
       my->method      = method;
       my->timestamp   = time_point::now();

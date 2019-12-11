@@ -1,12 +1,12 @@
 #include <fc/log/appender.hpp>
 #include <fc/log/logger.hpp>
-#include <fc/thread/unique_lock.hpp>
+//#include <fc/thread/unique_lock.hpp>
 #include <unordered_map>
 #include <string>
-#include <fc/thread/spin_lock.hpp>
-#include <fc/thread/scoped_lock.hpp>
+//#include <fc/thread/spin_lock.hpp>
+//#include <fc/thread/scoped_lock.hpp>
 #include <fc/log/console_appender.hpp>
-#include <fc/log/file_appender.hpp>
+//#include <fc/log/file_appender.hpp>
 #include <fc/log/gelf_appender.hpp>
 #include <fc/variant.hpp>
 #include "console_defines.h"
@@ -23,8 +23,8 @@ namespace fc {
      return lm;
    }
    appender::ptr appender::get( const fc::string& s ) {
-     static fc::spin_lock appender_spinlock;
-      scoped_lock<spin_lock> lock(appender_spinlock);
+//     static fc::spin_lock appender_spinlock;
+//      scoped_lock<spin_lock> lock(appender_spinlock);
       return get_appender_map()[s];
    }
    bool  appender::register_appender( const fc::string& type, const appender_factory::ptr& f )
@@ -45,7 +45,7 @@ namespace fc {
    }
    
    static bool reg_console_appender = appender::register_appender<console_appender>( "console" );
-   static bool reg_file_appender = appender::register_appender<file_appender>( "file" );
+//   static bool reg_file_appender = appender::register_appender<file_appender>( "file" );
    static bool reg_gelf_appender = appender::register_appender<gelf_appender>( "gelf" );
 
 } // namespace fc

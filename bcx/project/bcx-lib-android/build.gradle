@@ -3,8 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
 
-
-
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
@@ -16,11 +14,9 @@ android {
         // https://developer.android.com/studio/projects/gradle-external-native-builds.html
         externalNativeBuild {
             cmake {
-//                arguments "-DBOOST_ROOT=/usr/local/opt/boost@1.60"
                 arguments "-DBOOST_ROOT=${buildscript.sourceFile.parent}/../../libbcx/3rd/boost/android/"
                 arguments "-DOPENSSL_ROOT_DIR=${buildscript.sourceFile.parent}/../../libbcx/3rd/openssl"
                 arguments "-DTHRID_LIB_DIR=${buildscript.sourceFile.parent}/../../libbcx/3rd"
-                // arguments "-DBoost_DEBUG=ON"
                 arguments "-DCMAKE_BUILD_TYPE=Release"
                 cppFlags "-std=c++11", "-frtti", "-fexceptions"
                 abiFilters "armeabi-v7a", "arm64-v8a", "x86" // armeabi-v7a arm64-v8a x86 x86_64
@@ -37,7 +33,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path "CMakeLists.txt"
+            path "../../libbcx/CMakeLists.txt"
         }
     }
 

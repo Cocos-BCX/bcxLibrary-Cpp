@@ -1,8 +1,8 @@
 #include <fc/crypto/openssl.hpp>
 
-#include <fc/filesystem.hpp>
+//#include <fc/filesystem.hpp>
 
-#include <boost/filesystem/path.hpp>
+//#include <boost/filesystem/path.hpp>
 
 #include <cstdlib>
 #include <string>
@@ -18,17 +18,17 @@ namespace  fc
           ERR_load_crypto_strings(); 
           OpenSSL_add_all_algorithms();
 
-          const boost::filesystem::path& boostPath = _configurationFilePath;
-          if(boostPath.empty() == false)
-          {
-            std::string varSetting("OPENSSL_CONF=");
-            varSetting += _configurationFilePath.to_native_ansi_path();
-#if defined(WIN32)
-            _putenv((char*)varSetting.c_str());
-#else
-            putenv((char*)varSetting.c_str());
-#endif
-          }
+//          const boost::filesystem::path& boostPath = _configurationFilePath;
+//          if(boostPath.empty() == false)
+//          {
+//            std::string varSetting("OPENSSL_CONF=");
+//            varSetting += _configurationFilePath.to_native_ansi_path();
+//#if defined(WIN32)
+//            _putenv((char*)varSetting.c_str());
+//#else
+//            putenv((char*)varSetting.c_str());
+//#endif
+//          }
 
           OPENSSL_config(nullptr);
        }
@@ -40,11 +40,11 @@ namespace  fc
        }
     };
 
-    path openssl_scope::_configurationFilePath;
+//    path openssl_scope::_configurationFilePath;
 
     void store_configuration_path(const path& filePath)
     {
-      openssl_scope::_configurationFilePath = filePath;
+//      openssl_scope::_configurationFilePath = filePath;
     }
    
     int init_openssl()

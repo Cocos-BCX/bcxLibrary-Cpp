@@ -1,3 +1,4 @@
+#include <cstring>
 #include <fc/exception/exception.hpp>
 #include "_digest_common.hpp"
 

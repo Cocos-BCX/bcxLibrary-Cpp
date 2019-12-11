@@ -1,5 +1,0 @@
-*.log
-*.debhelper
-*.substvars
-files
-tmp/*

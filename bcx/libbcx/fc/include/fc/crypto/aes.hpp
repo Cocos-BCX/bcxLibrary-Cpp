@@ -51,11 +51,11 @@ namespace fc {
     /** encrypts plain_text and then includes a checksum that enables us to verify the integrety of
      * the file / key prior to decryption. 
      */
-    void              aes_save( const fc::path& file, const fc::sha512& key, std::vector<char> plain_text );
+    // void              aes_save( const fc::path& file, const fc::sha512& key, std::vector<char> plain_text );
 
     /**
      *  recovers the plain_text saved via aes_save()
      */
-    std::vector<char> aes_load( const fc::path& file, const fc::sha512& key );
+    // std::vector<char> aes_load( const fc::path& file, const fc::sha512& key );
 
 } // namespace fc 

@@ -1,17 +1,10 @@
-#ifndef __PLATFORM_CONFIG_H__
-#define __PLATFORM_CONFIG_H__
-
-/**
-  Config of cocos2d-x project, per target platform.
-
-  THIS FILE MUST NOT INCLUDE ANY OTHER FILE
-*/
+#pragma once
 
 //////////////////////////////////////////////////////////////////////////
 // pre configure
 //////////////////////////////////////////////////////////////////////////
 
-// define supported target platform macro which CC uses.
+// define supported target platform macro which BCX uses.
 #define BCX_PLATFORM_UNKNOWN            0
 #define BCX_PLATFORM_IOS                1
 #define BCX_PLATFORM_ANDROID            2
@@ -135,6 +128,3 @@
 #define BCX_PACK_MAX_DEPTH 1000
 #endif
 
-
-/// @endcond
-#endif  // __PLATFORM_CONFIG_H__

@@ -6,9 +6,9 @@
 #include <fc/io/json.hpp>
 #include <fc/exception/exception.hpp>
 #include <fc/io/iostream.hpp>
-#include <fc/io/buffered_iostream.hpp>
-#include <fc/io/fstream.hpp>
-#include <fc/io/sstream.hpp>
+//#include <fc/io/buffered_iostream.hpp>
+//#include <fc/io/fstream.hpp>
+//#include <fc/io/sstream.hpp>
 #include <fc/log/logger.hpp>
 #include <fc/string.hpp>
 //#include <utfcpp/utf8.h>
@@ -16,7 +16,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <boost/filesystem/fstream.hpp>
+//#include <boost/filesystem/fstream.hpp>
 
 namespace fc { namespace json_relaxed
 {
@@ -241,7 +241,7 @@ namespace fc { namespace json_relaxed
 
        return {};
    }
-   
+
    struct CharValueTable
    {
        public:
