@@ -1,4 +1,2 @@
 include ':app'
-
-include ':bcx-lib'
-project(':bcx-lib').projectDir = new File(settingsDir, '../../bcx/project/bcx-lib-android')
+rootProject.name='BCX'

@@ -231,15 +231,7 @@ def copyIOSXHeader(package_path):
     bcx_lib_folder = os.path.join(CUR_DIR, '..', 'bcx', 'libbcx')
 
     headers = [
-        'bcx.hpp',
-        'bcx/bcx_api.hpp',
-        'bcx/errors.h',
-        'bcx/bcxlog.hpp',
-        'bcx/bcxconfig.hpp',
-        'bcx/lua_types.hpp',
-        'bcx/nh_asset_info.hpp',
-        'bcx/protocol',
-        'platform',
+        'BCX.hpp'
     ]
 
     # copy header
@@ -249,12 +241,6 @@ def copyIOSXHeader(package_path):
         makeSureDirs(os.path.dirname(dst))
         unicopy(os.path.join(bcx_lib_folder, header), dst)
 
-    unicopy(os.path.join(bcx_lib_folder, 'chain/include/graphene/chain'),
-        os.path.join(dst_include_folder, 'graphene/chain'))
-    unicopy(os.path.join(bcx_lib_folder, 'db/include/graphene/db'),
-        os.path.join(dst_include_folder, 'graphene/db'))
-    unicopy(os.path.join(bcx_lib_folder, 'fc/include/fc'),
-        os.path.join(dst_include_folder, 'fc'))
     unicopy(os.path.join(bcx_lib_folder, '3rd/boost/ios/include/boost'),
         os.path.join(dst_include_folder, 'boost'))
     unicopy(os.path.join(bcx_lib_folder, '3rd/openssl/include/ios/openssl'),
@@ -516,7 +502,7 @@ def preEnvCheck():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', dest='platform', default='b', choices=['i', 'm', 'a', 'w', 'b'],
-                        help='Platfrom: ios(i)/mac(m)/android(a)/both(b)(default)')
+                        help='Platfrom: ios(i)/mac(m)/android(a)/win(w)/both(b)(default)')
     parser.add_argument('-c', '--clean', dest='clean', default='y', choices=['y','n'],
                         help='remove temp folder')
 
@@ -534,8 +520,8 @@ def main():
         genIOSLibs()
 
         # strip unused .o in libbcx.a
-        package_ios_folder = os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'ios')
-        strip_libbcx_ios(os.path.join(package_ios_folder, 'lib', 'libbcx.a'), 'none')
+        # package_ios_folder = os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'ios')
+        # strip_libbcx_ios(os.path.join(package_ios_folder, 'lib', 'libbcx.a'), 'none')
 
     if args.platform in ['b','m'] and 'Darwin' == platform.system():
         print('>>>>> generate mac libs')
