@@ -3,6 +3,9 @@ package com.sdkbox.test.bcx
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -31,58 +34,77 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getCount(): Int {
-            return _mainActivity._testcases.size
+            return _mainActivity.nativeTestCasesCount()
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view = View.inflate(_context, android.R.layout.simple_list_item_1,null)
             val textView: TextView =view.findViewById(android.R.id.text1)
-            textView.text= _mainActivity._testcases.values.elementAt(position)
+            textView.text = _mainActivity.nativeTestCaseName(position)
 
             return  view
         }
 
     }
 
-    private val _tag = "BCX"
-    private var _testcases: Map<String, String> = emptyMap()
+    private var mHandler: Handler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initTestCases()
+        mHandler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message?) {
+                super.handleMessage(msg)
+                when (msg?.what) {
+                    MSG_LOOP -> {
+                        nativeLoop()
+                        mHandler?.sendEmptyMessageDelayed(MSG_LOOP, 10)
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
 
+        sendToNative("init")
 
         testList.adapter = TestCaseAdapter(this, this)
 
         testList.setOnItemClickListener { parent, view, position, id ->
-            val element = _testcases.entries.elementAt(position)
-            Log.d(_tag, element.toString())
-            sendToNative(element.key)
+            val element = nativeTestCaseName(position)
+            Log.d(TAG, "to test: $element")
+            sendToNative(element)
         }
+
+        mHandler?.sendEmptyMessageDelayed(MSG_LOOP, 100)
     }
 
-    fun initTestCases() {
-        _testcases = mapOf(
-            "login" to "Login",
-            "transfer" to "Transfer"
-        )
+    private fun showLog(s:String) {
+        var txts = logView.text.split("\n").toMutableList()
+        while (txts.size > 3) {
+            txts.removeAt(0)
+        }
+        txts.add(s)
+        logView.text = txts.joinToString("\n")
     }
 
     fun nativeCallBack(s:String) {
         runOnUiThread {
-            Log.d(_tag, s);
+            showLog(s)
         }
     }
 
-    external fun nativeInit()
     external fun nativeLoop()
+    external fun nativeTestCasesCount(): Int
+    external fun nativeTestCaseName(idx:Int): String
     external fun sendToNative(s:String): String
 
     companion object {
 
-        // Used to load the 'native-lib' library on application startup.
+        const val TAG = "BCX"
+        const val MSG_LOOP = 1001
+
         init {
             System.loadLibrary("native-lib")
         }

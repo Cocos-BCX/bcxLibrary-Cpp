@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../../Classes)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../bcx/libbcx)
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../bcx/libbcx)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -51,6 +51,11 @@ set_target_properties(libcrypto PROPERTIES
         IMPORTED_LOCATION ${THRID_DIR}/openssl/prebuilt/android/${ANDROID_ABI}/libcrypto.a)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../bcx/libbcx libbcx)
+
+target_include_directories(native-lib
+        PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../bcx/libbcx
+        )
 
 target_link_libraries( # Specifies the target library.
         native-lib

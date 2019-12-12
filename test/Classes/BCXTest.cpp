@@ -21,14 +21,20 @@ void BCXTest::init() {
     });
 }
 
-const std::vector<std::string> BCXTest::getTestCases() {
-    std::vector<std::string> tests;
-    tests.reserve(_testMap.size());
-    for(const auto& kv : _testMap) {
-        tests.push_back(kv.first);
+int BCXTest::getTestCasesCount() {
+    return _testCaseNames.size();
+}
+
+const std::string& BCXTest::getTestCasesName(int idx) {
+    if (idx >= 0 && idx < _testCaseNames.size()) {
+        return _testCaseNames[idx];
     }
 
-    return tests;
+    return "";
+}
+
+const std::vector<std::string> BCXTest::getTestCases() {
+    return _testCaseNames;
 }
 
 void BCXTest::runTestCase(const std::string& funName) {
@@ -67,4 +73,9 @@ void BCXTest::createTestCasesMap() {
             });
         }}
     };
+
+    _testCaseNames.reserve(_testMap.size());
+    for(const auto& kv : _testMap) {
+        _testCaseNames.push_back(kv.first);
+    }
 }

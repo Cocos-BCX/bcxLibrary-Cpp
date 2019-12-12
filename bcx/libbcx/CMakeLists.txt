@@ -14,9 +14,10 @@ add_library(bcx STATIC
 
 # ndk log
 find_library(log-lib log)
+target_link_libraries(bcx ${log-lib})
 
 target_include_directories(bcx
-    PUBLIC
+    PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/openssl/include/android
     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/secp256k1/include
@@ -26,15 +27,18 @@ target_include_directories(bcx
     ${CMAKE_CURRENT_SOURCE_DIR}/fc/include
 )
 
-target_link_libraries(bcx
-    PUBLIC
-    ${log-lib}
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rd/zlib/prebuilt/android/${ANDROID_ABI}/libz.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rd/openssl/prebuilt/android/${ANDROID_ABI}/libssl.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rd/openssl/prebuilt/android/${ANDROID_ABI}/libcrypto.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rd/secp256k1/prebuilt/android/${ANDROID_ABI}/libsecp256k1.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rd/uv/prebuilt/android/${ANDROID_ABI}/libuv_a.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rd/websockets/prebuilt/android/${ANDROID_ABI}/libwebsockets.a
-)
+add_subdirectory(3rd)
+target_link_libraries(bcx external)
+
+# target_link_libraries(bcx
+#     PUBLIC
+#     ${log-lib}
+#     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/zlib/prebuilt/android/${ANDROID_ABI}/libz.a
+#     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/openssl/prebuilt/android/${ANDROID_ABI}/libssl.a
+#     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/openssl/prebuilt/android/${ANDROID_ABI}/libcrypto.a
+#     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/secp256k1/prebuilt/android/${ANDROID_ABI}/libsecp256k1.a
+#     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/uv/prebuilt/android/${ANDROID_ABI}/libuv_a.a
+#     ${CMAKE_CURRENT_SOURCE_DIR}/3rd/websockets/prebuilt/android/${ANDROID_ABI}/libwebsockets.a
+# )
 
 MESSAGE(STATUS "Finished bcx_lib module configuration...")

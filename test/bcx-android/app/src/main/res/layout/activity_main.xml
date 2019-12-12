@@ -30,7 +30,7 @@
     <TextView
         android:id="@+id/logView"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_margin="5dp"
         android:text="LogShowHere"
         app:layout_constraintBottom_toBottomOf="parent"
