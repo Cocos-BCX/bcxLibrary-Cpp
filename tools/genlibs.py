@@ -220,7 +220,7 @@ def genIOSLibs():
         exit(1)
     makeSureDirs(os.path.join(package_ios_folder, 'lib'))
     shutil.copy(src_lib, os.path.join(package_ios_folder, 'lib'))
-    ios_lib_folder = os.path.join(ios_project_folder, '..', '..', 'libbcx')
+    # ios_lib_folder = os.path.join(ios_project_folder, '..', '..', 'libbcx')
 
     # copy ios header
     copyIOSXHeader(package_ios_folder)
@@ -329,7 +329,10 @@ def get_suitable_tool(ndk_root, abi, cmd):
 
     path = os.path.join(path, 'prebuilt')
 
-    path = os.path.join(path, 'darwin-x86_64')
+    if 'Windows' == platform.system():
+        path = os.path.join(path, 'windows-x86_64')
+    else:
+        path = os.path.join(path, 'darwin-x86_64')
 
     if 'armeabi' == abi:
         path = os.path.join(path, 'arm-linux-androideabi')
@@ -348,6 +351,8 @@ def get_suitable_tool(ndk_root, abi, cmd):
     path = os.path.join(path, 'bin')
 
     path = os.path.join(path, cmd)
+    if 'Windows' == platform.system():
+        path += ".exe"
 
     if not os.path.isfile(path):
         print("ERROR! can't find ndk tool {}".format(path))
@@ -356,17 +361,16 @@ def get_suitable_tool(ndk_root, abi, cmd):
     return path
 
 def compileAndroidLibs(sample_proj_path, lib_proj_path, output_path):
-    ndk_root = get_ndk_root()
-    if not ndk_root:
-        print('can not find NDK_ROOT')
-        sys.exit(1)
-
     print('>>>>> compile bcx lib for android')
-    build_cmd = "./gradlew :bcx-lib:assembleRelease"
-    run(build_cmd, cwd=sample_proj_path)
+    ndk_root = get_ndk_root()
+    if 'Windows' == platform.system():
+        build_cmd = ".\gradlew.bat assembleRelease"
+    else:
+        build_cmd = "./gradlew :bcx-lib:assembleRelease"
+    # run(build_cmd, cwd=sample_proj_path)
 
     mode_str = 'release'
-    mode_folder = os.path.join(lib_proj_path, ".externalNativeBuild", "cmake", mode_str)
+    mode_folder = os.path.join(lib_proj_path, ".cxx", "cmake", mode_str)
     abis = get_suitbale_abis(mode_folder, ["armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"])
 
     def find_a_file(folder):
@@ -375,77 +379,45 @@ def compileAndroidLibs(sample_proj_path, lib_proj_path, output_path):
                 return os.path.join(folder, f)
         return None
 
-    tmp_folder = os.path.join(CUR_DIR, 'tmp', 'android')
     for abi_str in abis:
         libs_folder = os.path.join(mode_folder, abi_str, "libbcx")
 
-        lib_bcxapi = find_a_file(os.path.join(libs_folder, 'bcx'))
-        lib_chain = find_a_file(os.path.join(libs_folder, 'chain'))
-        lib_db = find_a_file(os.path.join(libs_folder, 'db'))
-        lib_fc = find_a_file(os.path.join(libs_folder, 'fc'))
-        lib_network = find_a_file(os.path.join(libs_folder, 'network'))
+        lib_bcxapi = find_a_file(libs_folder)
 
-        print('>>>>> generate bcx lib for android ' + abi_str)
-        output_lib = os.path.join(output_path, abi_str, 'libbcx.a')
-
-        ar_command = get_suitable_tool(ndk_root, abi_str, "ar")
-
-        makeFolderEmpty(tmp_folder)
-        makeFolderEmpty(os.path.dirname(output_lib))
-        # extra .a
-        run("%s x %s" % (ar_command, lib_bcxapi), cwd=tmp_folder)
-        run("%s x %s" % (ar_command, lib_chain), cwd=tmp_folder)
-        run("%s x %s" % (ar_command, lib_db), cwd=tmp_folder)
-        run("%s x %s" % (ar_command, lib_fc), cwd=tmp_folder)
-        run("%s x %s" % (ar_command, lib_network), cwd=tmp_folder)
-        # pack .a
-        o_files = file_lines()
-        run("%s qcs %s %s" % (ar_command, output_lib, ' '.join(o_files)), cwd=tmp_folder)
-
-        strip_command = get_suitable_tool(ndk_root, abi_str, "strip")
-        run("{} -S {}".format(strip_command, output_lib))
-
-        # lipo_cmd = "lipo -create -output \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"" % (output_lib, lib_bcxapi, lib_chain, lib_db, lib_fc, lib_network)
-        # run(lipo_cmd)
+        output_lib = os.path.join(output_path, 'prebuilt', 'android', abi_str, 'libbcx.a')
+        if os.path.exists(lib_bcxapi):
+            print('>>>>> strip bcx lib for android ' + abi_str)
+            unicopy(os.path.realpath(lib_bcxapi), output_lib)
+            strip_command = get_suitable_tool(ndk_root, abi_str, "strip")
+            run("{} -S {}".format(strip_command, output_lib))
 
 def copyAndroidHeader(android_package_root):
-    abis = get_suitbale_abis(android_package_root, ["armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"])
+    bcx_lib_folder = os.path.join(CUR_DIR, '..', 'bcx', 'libbcx')
+    headers = [
+        'BCX.hpp'
+    ]
 
-    # copy ios header
-    unicopy(os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'ios', 'include')),
-        os.path.join(android_package_root, 'include'))
+    # copy header
+    dst_include_folder = os.path.join(android_package_root, 'include')
+    for header in headers:
+        dst = os.path.join(dst_include_folder, header)
+        makeSureDirs(os.path.dirname(dst))
+        unicopy(os.path.join(bcx_lib_folder, header), dst)
 
-    # remove boost, will use Boost-For-Android's header files
-    makeFolderEmpty(os.path.join(android_package_root, 'include', 'boost'))
-
-    # copy boost headers
-    boost_include_dir = os.path.realpath(os.path.join(CUR_DIR, '../bcx/libbcx/3rd/boost/android/include/boost'))
-    for header in boost_android_headers:
-        f = os.path.join(boost_include_dir, header)
-        unicopy(f, os.path.join(android_package_root, 'include', 'boost', header))
-    # unicopy(boost_include_dir, os.path.join(android_package_root, 'include', 'boost'))
-
-    for abi_str in abis:
-        # copy boost .a
-        unicopy(os.path.realpath(
-            os.path.join(CUR_DIR, '../bcx/libbcx/3rd/boost/android/lib', abi_str, 'libboost.a')),
-            os.path.join(android_package_root, abi_str))
-
-        # copy secp256k1 .a
-        unicopy(os.path.realpath(
-            os.path.join(CUR_DIR, '..', 'bcx', 'libbcx', '3rd', 'secp256k1', 'prebuilt', 'android', abi_str, 'libsecp256k1.a')),
-            os.path.join(android_package_root, abi_str))
+    # copy 3rd
+    unicopy(os.path.join(bcx_lib_folder, '3rd'), os.path.join(os.path.dirname(android_package_root), '3rd'))
 
 def genAndroidLibs():
-    android_lib_project_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx', 'project', 'bcx-lib-android'))
+    # android_lib_project_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx', 'project', 'bcx-lib-android'))
     android_sample_project_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'test', 'bcx-android'))
-    package_android_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'android'))
+    android_lib_project_folder = os.path.realpath(os.path.join(android_sample_project_folder, 'app'))
+    bcx_package_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'bcx'))
 
     makeFolderEmpty(os.path.join(CUR_DIR, 'tmp'))
 
-    compileAndroidLibs(android_sample_project_folder, android_lib_project_folder, package_android_folder)
+    compileAndroidLibs(android_sample_project_folder, android_lib_project_folder, bcx_package_folder)
 
-    copyAndroidHeader(package_android_folder)
+    copyAndroidHeader(bcx_package_folder)
 
     makeFolderEmpty(os.path.join(CUR_DIR, 'tmp'))
 
@@ -485,19 +457,20 @@ def genWindowsLibs():
         f = os.path.join(boost_include_dir, header)
         unicopy(f, os.path.join(package_win_folder, 'include', 'boost', header))
 
-def preEnvCheck():
+def preEnvCheckNDK():
     ndk_root = get_ndk_root()
     if not ndk_root:
         print('can not find env NDK_ROOT')
         sys.exit(1)
-    if 'Windows' == platform.system():
-        boost_root = os.path.realpath(os.path.join(CUR_DIR, '..', '..', 'boost_1_64_0'))
-        if not os.path.exists(boost_root):
-            print('can not find boost_1_64_0 for windows at path:')
-            print(boost_root)
-            print('you can download from this link:')
-            print('https://sourceforge.net/projects/boost/files/boost-binaries/1.64.0/boost_1_64_0-msvc-14.1-32.exe/download')
-            sys.exit(1)
+
+def preEnvCheckWindows():
+    boost_root = os.path.realpath(os.path.join(CUR_DIR, '..', '..', 'boost_1_64_0'))
+    if not os.path.exists(boost_root):
+        print('can not find boost_1_64_0 for windows at path:')
+        print(boost_root)
+        print('you can download from this link:')
+        print('https://sourceforge.net/projects/boost/files/boost-binaries/1.64.0/boost_1_64_0-msvc-14.1-32.exe/download')
+        sys.exit(1)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -511,9 +484,6 @@ def main():
         print("unknown arguments: %s" % unknown)
         parser.print_help()
         return
-
-    print('>>>>> env check')
-    preEnvCheck()
 
     if args.platform in ['b','i'] and 'Darwin' == platform.system():
         print('>>>>> generate ios libs')
@@ -529,10 +499,12 @@ def main():
 
     if args.platform in ['b','a']:
         print('>>>>> generate android libs')
+        preEnvCheckNDK()
         genAndroidLibs()
 
     if args.platform in ['b','w'] and 'Windows' == platform.system():
         print('>>>>> generate windows libs')
+        preEnvCheckWindows()
         genWindowsLibs()
 
     if args.clean == 'y':
