@@ -35,10 +35,10 @@ static BCXTest BT;
 
 - (void)showTestCases {
     int x = 60, y = 50;
-    auto funcs = BT.getTestCases();
-    for (auto fun : funcs) {
+    auto testCasesCount = BT.getTestCasesCount();
+    for (int i = 0; i < testCasesCount; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-        [button setTitle:[NSString stringWithUTF8String:fun.c_str()] forState:UIControlStateNormal];
+        [button setTitle:[NSString stringWithUTF8String:BT.getTestCasesName(i).c_str()] forState:UIControlStateNormal];
         button.center = CGPointMake(x, y);
         [button sizeToFit];
         [button addTarget:self action:@selector(testCasePressed:) forControlEvents:UIControlEventTouchUpInside];

@@ -3,7 +3,7 @@
 #include "BCX.hpp"
 
 // public
-BCXTest::BCXTest() {
+BCXTest::BCXTest() : emptyString("") {
 }
 
 void BCXTest::init() {
@@ -22,7 +22,7 @@ void BCXTest::init() {
 }
 
 int BCXTest::getTestCasesCount() {
-    return _testCaseNames.size();
+    return (int)_testCaseNames.size();
 }
 
 const std::string& BCXTest::getTestCasesName(int idx) {
@@ -30,7 +30,7 @@ const std::string& BCXTest::getTestCasesName(int idx) {
         return _testCaseNames[idx];
     }
 
-    return "";
+    return emptyString;
 }
 
 const std::vector<std::string> BCXTest::getTestCases() {

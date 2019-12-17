@@ -24,4 +24,5 @@ private:
     std::function<void(const std::string& s)> _nativeLog;
     std::map<std::string, std::function<void(void)> > _testMap;
     std::vector<std::string> _testCaseNames;
+    std::string emptyString;
 };
