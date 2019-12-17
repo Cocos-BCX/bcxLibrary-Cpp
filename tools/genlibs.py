@@ -206,7 +206,7 @@ def rmTmpIf():
 
 def genIOSLibs():
     ios_project_folder = os.path.join(CUR_DIR, '..', 'bcx', 'project', 'bcx-lib-ios')
-    package_ios_folder = os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'ios')
+    package_ios_folder = os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'bcx')
 
     makeFolderEmpty(os.path.join(CUR_DIR, 'tmp'))
 
@@ -218,8 +218,8 @@ def genIOSLibs():
     if not os.path.exists(src_lib):
         print('ERROR! libbcx.a is not exist')
         exit(1)
-    makeSureDirs(os.path.join(package_ios_folder, 'lib'))
-    shutil.copy(src_lib, os.path.join(package_ios_folder, 'lib'))
+    makeSureDirs(os.path.join(package_ios_folder, 'prebuilt', 'ios'))
+    shutil.copy(src_lib, os.path.join(package_ios_folder, 'prebuilt', 'ios'))
     # ios_lib_folder = os.path.join(ios_project_folder, '..', '..', 'libbcx')
 
     # copy ios header
@@ -240,11 +240,6 @@ def copyIOSXHeader(package_path):
         dst = os.path.join(dst_include_folder, header)
         makeSureDirs(os.path.dirname(dst))
         unicopy(os.path.join(bcx_lib_folder, header), dst)
-
-    unicopy(os.path.join(bcx_lib_folder, '3rd/boost/ios/include/boost'),
-        os.path.join(dst_include_folder, 'boost'))
-    unicopy(os.path.join(bcx_lib_folder, '3rd/openssl/include/ios/openssl'),
-        os.path.join(dst_include_folder, 'openssl'))
 
 def genMacLibs():
     ios_project_folder = os.path.join(CUR_DIR, '..', 'bcx', 'project', 'bcx-lib-ios')
@@ -406,9 +401,6 @@ def copyAndroidHeader(android_package_root):
         makeSureDirs(os.path.dirname(dst))
         unicopy(os.path.join(bcx_lib_folder, header), dst)
 
-    # copy 3rd
-    unicopy(os.path.join(bcx_lib_folder, '3rd'), os.path.join(os.path.dirname(android_package_root), '3rd'))
-
 def genAndroidLibs():
     # android_lib_project_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx', 'project', 'bcx-lib-android'))
     android_sample_project_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'test', 'bcx-android'))
@@ -459,6 +451,11 @@ def genWindowsLibs():
         f = os.path.join(boost_include_dir, header)
         unicopy(f, os.path.join(package_win_folder, 'include', 'boost', header))
 
+def syncThirdLibs():
+    bcx_lib_folder = os.path.join(CUR_DIR, '..', 'bcx', 'libbcx')
+    bcx_package_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package'))
+    unicopy(os.path.join(bcx_lib_folder, '3rd'), os.path.join(bcx_package_folder, '3rd'))
+
 def preEnvCheckNDK():
     ndk_root = get_ndk_root()
     if not ndk_root:
@@ -487,9 +484,12 @@ def main():
         parser.print_help()
         return
 
+    isGenLib = False
+
     if args.platform in ['b','i'] and 'Darwin' == platform.system():
         print('>>>>> generate ios libs')
         genIOSLibs()
+        isGenLib = True
 
         # strip unused .o in libbcx.a
         # package_ios_folder = os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package', 'ios')
@@ -499,18 +499,23 @@ def main():
         print('>>>>> generate mac libs')
         print('will support this platform soon')
         # genMacLibs()
+        isGenLib = True
 
     if args.platform in ['b','a']:
         print('>>>>> generate android libs')
         preEnvCheckNDK()
         genAndroidLibs()
+        isGenLib = True
 
     if args.platform in ['b','w'] and 'Windows' == platform.system():
         print('>>>>> generate windows libs')
         print('will support this platform soon')
         # preEnvCheckWindows()
         # genWindowsLibs()
+        isGenLib = True
 
+    if isGenLib:
+        syncThirdLibs()
     if args.clean == 'y':
         rmTmpIf()
 
