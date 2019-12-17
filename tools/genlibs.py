@@ -366,8 +366,8 @@ def compileAndroidLibs(sample_proj_path, lib_proj_path, output_path):
     if 'Windows' == platform.system():
         build_cmd = ".\gradlew.bat assembleRelease"
     else:
-        build_cmd = "./gradlew :bcx-lib:assembleRelease"
-    # run(build_cmd, cwd=sample_proj_path)
+        build_cmd = "./gradlew assembleRelease"
+    run(build_cmd, cwd=sample_proj_path)
 
     mode_str = 'release'
     mode_folder = os.path.join(lib_proj_path, ".cxx", "cmake", mode_str)
@@ -383,6 +383,8 @@ def compileAndroidLibs(sample_proj_path, lib_proj_path, output_path):
         libs_folder = os.path.join(mode_folder, abi_str, "libbcx")
 
         lib_bcxapi = find_a_file(libs_folder)
+        if not lib_bcxapi:
+            break
 
         output_lib = os.path.join(output_path, 'prebuilt', 'android', abi_str, 'libbcx.a')
         if os.path.exists(lib_bcxapi):
@@ -495,7 +497,8 @@ def main():
 
     if args.platform in ['b','m'] and 'Darwin' == platform.system():
         print('>>>>> generate mac libs')
-        genMacLibs()
+        print('will support this platform soon')
+        # genMacLibs()
 
     if args.platform in ['b','a']:
         print('>>>>> generate android libs')
@@ -504,8 +507,9 @@ def main():
 
     if args.platform in ['b','w'] and 'Windows' == platform.system():
         print('>>>>> generate windows libs')
-        preEnvCheckWindows()
-        genWindowsLibs()
+        print('will support this platform soon')
+        # preEnvCheckWindows()
+        # genWindowsLibs()
 
     if args.clean == 'y':
         rmTmpIf()
