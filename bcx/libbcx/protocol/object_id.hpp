@@ -44,6 +44,17 @@ struct object_id {
     operator object_id_type()const { return object_id_type( SpaceID, TypeID, instance.value ); }
     explicit operator uint64_t()const { return object_id_type( *this ).number; }
 
+    // for std::set
+    bool operator< (const object_id & objId) const {
+        if (space_id != objId.space_id) {
+            return space_id < objId.space_id;
+        }
+        if (type_id != objId.type_id) {
+            return type_id < objId.type_id;
+        }
+        return instance < objId.instance;
+    }
+    
     //unsigned_int instance;
     fc::unsigned_int64 instance;
 };

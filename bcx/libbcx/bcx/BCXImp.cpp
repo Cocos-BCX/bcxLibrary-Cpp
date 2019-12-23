@@ -80,6 +80,9 @@ BCXImp* BCXImp::getInstance() {
     return gInstance;
 }
 
+BCXImp::BCXImp() {
+}
+
 void BCXImp::init(const Config& cfg) {
     std::cout << "BCXImp::init" << std::endl;
     _cfg = cfg;
@@ -134,7 +137,7 @@ void BCXImp::disconnect() {
     _ws.close();
 }
 
-void BCXImp::login(const std::string& account, const std::string& password, const std::function<void(std::string&)>& cb) {
+void BCXImp::login(const std::string& account, const std::string& password, const std::function<void(const std::string&)>& cb) {
     getFullAccounts(account)
     .then([=](const Response& resp) {
         const fc::variant& v = resp.data;
@@ -179,8 +182,137 @@ void BCXImp::login(const std::string& account, const std::string& password, cons
 
 }
 
+void BCXImp::logout() {
+    _chainData.savedKeys.clear();
+}
+
+bool BCXImp::isLogin() {
+    return _chainData.savedKeys.size() > 0;
+}
+
+void BCXImp::getFullAccount(const std::string& nameOrId, const std::function<void(const std::string&)>& cb) {
+    getFullAccounts(nameOrId)
+    .then([=](const Response& resp) {
+        std::string s = "";
+        s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::createAccount(const std::string& name, const std::string& pw, const std::function<void(const std::string&)> &cb) {
+}
+
+void BCXImp::changePassword(const std::string& account,
+                         const std::string& oldPW,
+                         const std::string& newPW,
+                         const std::function<void(const std::string&)> &cb) {
+    std::shared_ptr<bcx::protocol::account_update_operation> op = std::make_shared<bcx::protocol::account_update_operation>();
+
+    getFullAccounts(account)
+    .then([=](const Response& resp) {
+        const fc::variant& v = resp.data;
+        std::map<std::string, bcx::protocol::full_account> accountMap;
+        v.as(accountMap, BCX_PACK_MAX_DEPTH);
+        const bcx::protocol::full_account& fa = accountMap[account];
+
+        fc::ecc::private_key ownerPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "owner" + oldPW));
+        fc::ecc::public_key ownerPubKey = ownerPriKey.get_public_key();
+        fc::ecc::private_key activePriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "active" + oldPW));
+        fc::ecc::public_key activePubKey = activePriKey.get_public_key();
+        fc::ecc::private_key memoPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "memo" + oldPW));
+        fc::ecc::public_key memoPubKey = memoPriKey.get_public_key();
+
+        bool loginSuc = false;
+        for (auto it : fa.account.owner.key_auths) {
+            if (it.first == bcx::protocol::public_key_type(ownerPubKey)) {
+                loginSuc = true;
+                break;
+            }
+        }
+        
+        for (auto it : fa.account.active.key_auths) {
+            if (it.first == bcx::protocol::public_key_type(activePubKey)) {
+                loginSuc = true;
+                break;
+            }
+        }
+
+        Response r = Response::createResponse(Errors::Error_Auth_Fail);
+        RETURN_REJECT_DEFER_IF(!loginSuc, r)
+
+        std::string s = "";
+        fc::ecc::private_key newOwnerPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "owner" + newPW));
+        fc::ecc::public_key newOwnerPubKey = ownerPriKey.get_public_key();
+        fc::ecc::private_key newActivePriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "active" + newPW));
+        fc::ecc::public_key newActivePubKey = activePriKey.get_public_key();
+
+        op->account = fa.account.get_id();
+        op->owner = bcx::protocol::authority(1, bcx::protocol::public_key_type(newOwnerPubKey), 1);
+        op->active = bcx::protocol::authority(1, bcx::protocol::public_key_type(newActivePubKey), 1);
+
+        return sendOperation({*op});
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::upgradeAccount(const std::function<void(const std::string&)>& cb) {
+}
+
+void BCXImp::getChainId(const std::function<void(const std::string&)>& cb) {
+    Response resp = Response::createResponse(Errors::Error_Success, _chainData.chainID);
+    std::string s = fc::json::to_string(resp);
+    cb(s);
+}
+
+void BCXImp::getObjects(const std::vector<std::string> &ids, const std::function<void(const std::string&)>& cb) {
+    this->getObjects(ids)
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::getKeyReferences(const std::function<void(const std::string&)>& cb) {
+    if (!cb) {
+        return;
+    }
+
+    auto opk = getCurrentPrivateKey("owner");
+    if (!opk.valid()) {
+        std::string s = fc::json::to_string(Response::createResponse(Errors::Error_Not_Login));
+        cb(s);
+        return;
+    }
+
+    fc::ecc::private_key priKey = *opk;
+    fc::ecc::public_key ownerKey = priKey.get_public_key();
+    
+    auto p2 = bcx::protocol::public_key_type(ownerKey);
+    auto publicKey = fc::variant(p2, (uint32_t)BCX_PACK_MAX_DEPTH);
+//    std::string s = fc::json::to_string(publicKey, fc::json::stringify_large_ints_and_doubles, BCX_PACK_MAX_DEPTH);
+
+    fc::variants var;
+    var.push_back(publicKey);
+    fc::variants var2;
+    var2.push_back(var);
+
+    _ws.send_call(2, "get_key_references", var2)
+    .then([=](const fc::variant& v) {
+        Response resp = Response::createResponse(v);
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
 void BCXImp::transfer(const std::string& toAccount, const std::string& symbol, int mount, const std::string& memo,
-                      const std::function<void(std::string&)>& cb) {
+                      const std::function<void(const std::string&)>& cb) {
     CHECK_LOGIN
     
     std::shared_ptr<bcx::protocol::transfer_operation> op = std::make_shared<bcx::protocol::transfer_operation>();
@@ -463,11 +595,5 @@ bool BCXImp::isChainAPIOpen() {
     }
 }
 
-bool BCXImp::isLogin() {
-    if (_chainData.savedKeys.size() > 0) {
-        return true;
-    }
-    return false;
-}
 
 }

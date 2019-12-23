@@ -1,21 +1,25 @@
 #pragma once
 
 #include "../../fc/include/fc/static_variant.hpp"
+#include "./account.hpp"
+#include "./market.hpp"
+#include "./placehoder.hpp"
 #include "./transfer.hpp"
+
 
 namespace bcx {
 
 namespace protocol {
 
 typedef fc::static_variant<
-    transfer_operation
-//    limit_order_create_operation,
-//    limit_order_cancel_operation,
-//    call_order_update_operation,
-//    fill_order_operation,
-//    account_create_operation,
-//    account_update_operation,
-//    account_upgrade_operation,
+    transfer_operation,
+    limit_order_create_operation,
+    limit_order_cancel_operation,
+    call_order_update_operation,
+    fill_order_operation,
+    account_create_operation,
+    account_update_operation,
+    account_upgrade_operation,
 //    asset_create_operation,
 //    asset_update_operation,
 //    bcx::protocol::asset_update_restricted,
@@ -79,6 +83,7 @@ typedef fc::static_variant<
 //    fba_distribute_operation,
 //    asset_claim_pool_operation,
 //    asset_update_issuer_operation
+    ph_operation
     > operation;
 
 } // namespace protocol

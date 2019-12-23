@@ -27,13 +27,28 @@ class BCXImp {
 public:
     
     static BCXImp* getInstance();
+    
+    BCXImp();
 
     void init(const Config& cfg);
     void connect(const std::function<void(const std::string&)>& connectStatus);
     void disconnect();
-    void login(const std::string& account, const std::string& password, const std::function<void(std::string&)>& cb);
+    void login(const std::string& account, const std::string& password, const std::function<void(const std::string&)>& cb);
+    void logout();
+    bool isLogin();
+    void getFullAccount(const std::string& nameOrId, const std::function<void(const std::string&)>& cb);
+    void createAccount(const std::string& name, const std::string& pw, const std::function<void(const std::string&)>& cb);
+    void changePassword(const std::string& account,
+                        const std::string& oldPW,
+                        const std::string& newPW,
+                        const std::function<void(const std::string&)>& cb);
+    void upgradeAccount(const std::function<void(const std::string&)>& cb);
+    void getChainId(const std::function<void(const std::string&)>& cb);
+    void getObjects(const std::vector<std::string> &ids, const std::function<void(const std::string&)>& cb);
+    void getKeyReferences(const std::function<void(const std::string&)>& cb);
+
     void transfer(const std::string& toAccount, const std::string& symbol, int mount, const std::string& memo,
-                  const std::function<void(std::string&)>& cb);
+                  const std::function<void(const std::string&)>& cb);
 
     void performFunctionInMainThread(const std::function<void()>& f);
     void loop();
@@ -49,7 +64,6 @@ private:
     fc::optional<fc::ecc::private_key> getCurrentPrivateKey(const std::string& role);
     void resetChainData();
     bool isChainAPIOpen();
-    bool isLogin();
 
 private:
     static BCXImp* gInstance;

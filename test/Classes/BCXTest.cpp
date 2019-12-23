@@ -63,7 +63,7 @@ void BCXTest::log(const std::string& s) {
 void BCXTest::createTestCasesMap() {
     _testMap = {
         {"1.0.login", [this]() {
-            bcx::BCX::login("hugo1111", "111111", [this](std::string& json) {
+            bcx::BCX::login("hugo1111", "111111", [this](const std::string& json) {
                 this->log(json);
             });
         }},
