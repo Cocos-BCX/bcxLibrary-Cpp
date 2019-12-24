@@ -1,9 +1,11 @@
 #pragma once
 
+#include <string>
 #include "./base.hpp"
 #include "./config.hpp"
 #include "./types.hpp"
 #include "./asset.hpp"
+#include "./memo.hpp"
 
 #pragma once
 
@@ -77,6 +79,52 @@ struct bitasset_options {
 
 };
 
+struct asset_create_operation {
+   /// This account must sign and pay the fee for this operation. Later, this account may update the asset
+   account_id_type         issuer;
+   /// The ticker symbol of this asset
+   std::string                  symbol;
+   /// Number of digits to the right of decimal point, must be less than or equal to 12
+   uint8_t                 precision = 0;
+
+   /// Options common to all assets.
+   ///
+   /// @note common_options.core_exchange_rate technically needs to store the asset ID of this new asset. Since this
+   /// ID is not known at the time this operation is created, create this price as though the new asset has instance
+   /// ID 1, and the chain will overwrite it with the new asset's ID.
+   asset_options              common_options;
+   /// Options only available for BitAssets. MUST be non-null if and only if the @ref market_issued flag is set in
+   /// common_options.flags
+   fc::optional<bitasset_options> bitasset_opts;
+
+   extensions_type extensions;
+};
+
+struct asset_update_operation {
+   account_id_type issuer;
+   asset_id_type   asset_to_update;
+
+   /// If the asset is to be given a new issuer, specify his ID here.
+   fc::optional<account_id_type>   new_issuer;
+   asset_options               new_options;
+   extensions_type             extensions;
+};
+
+struct asset_issue_operation {
+   account_id_type  issuer; ///< Must be asset_to_issue->asset_id->issuer
+   asset            asset_to_issue;
+   account_id_type  issue_to_account;
+
+   /** user provided data encrypted to the memo key of the "to" account */
+   fc::optional<memo_data>  memo;
+   extensions_type      extensions;
+};
+
+struct asset_reserve_operation {
+   account_id_type   payer;
+   asset             amount_to_reserve;
+   extensions_type   extensions;
+};
 
 } // namespace protocol
 
@@ -103,4 +151,27 @@ FC_REFLECT( bcx::protocol::bitasset_options,
             (short_backing_asset)
             (extensions)
 )
+
+FC_REFLECT( bcx::protocol::asset_create_operation,
+            (issuer)
+            (symbol)
+            (precision)
+            (common_options)
+            (bitasset_opts)
+            (extensions)
+)
+
+FC_REFLECT( bcx::protocol::asset_update_operation,
+            (issuer)
+            (asset_to_update)
+            (new_issuer)
+            (new_options)
+            (extensions)
+)
+
+FC_REFLECT( bcx::protocol::asset_issue_operation,
+            (issuer)(asset_to_issue)(issue_to_account)(memo)(extensions) )
+
+FC_REFLECT( bcx::protocol::asset_reserve_operation,
+            (payer)(amount_to_reserve)(extensions) )
 

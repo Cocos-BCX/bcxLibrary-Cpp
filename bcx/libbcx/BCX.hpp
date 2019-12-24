@@ -56,6 +56,29 @@ public:
      */
     static void transfer(const std::string& toAccount, const std::string& symbol, int mount, const std::string& memo,
                          const std::function<void(const std::string&)>& cb);
+    static void lookupAssetSymbols(const std::vector<std::string>& symbolsOrIds,
+                                   const std::function<void(const std::string&)>& cb);
+    static void listAssets(const std::string& lowerBoundSymbol, int limit,
+                           const std::function<void(const std::string&)>& cb);
+    static void createAsset(const std::string& symbol,
+                            long long maxSupply,
+                            int precision,
+                            float exchangeRate,
+                            const std::string& description,
+                            const std::function<void(const std::string&)>& cb);
+    static void updateAsset(const std::string& symbol,
+                            long long maxSupply,
+                            float exchangeRate,
+                            const std::string& description,
+                            const std::function<void(const std::string&)>& cb);
+    static void issueAsset(const std::string& account,
+                           const int mount,
+                           const std::string& symbol,
+                           const std::string& memo,
+                           const std::function<void(const std::string&)>& cb);
+    static void reserveAsset(const std::string& symbol,
+                             const int mount,
+                             const std::function<void(const std::string&)>& cb);
 
     /*
      * Block

@@ -389,6 +389,180 @@ void BCXImp::transfer(const std::string& toAccount, const std::string& symbol, i
     
 }
 
+void BCXImp::lookupAssetSymbols(const std::vector<std::string>& symbolsOrIds,
+                            const std::function<void(const std::string&)>& cb) {
+    lookupAssetSymbols(symbolsOrIds)
+    .then([=](const fc::variant& v) {
+        Response resp = Response::createResponse(v);
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::listAssets(const std::string& lowerBoundSymbol, int limit,
+                    const std::function<void(const std::string&)>& cb) {
+    fc::variants params = {lowerBoundSymbol, limit};
+
+    _ws.send_call(_chainData.dbAPIID, "lookup_asset_symbols", params)
+    .then([=](const fc::variant& v) {
+        Response resp = Response::createResponse(v);
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::createAsset(const std::string& symbol,
+                    long long maxSupply,
+                    int precision,
+                    float exchangeRate,
+                    const std::string& description,
+                    const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::asset_create_operation> op = std::make_shared<bcx::protocol::asset_create_operation>();
+
+    op->issuer = _chainData.fullAccount.account.get_id();
+    op->precision = precision;
+    op->symbol = symbol;
+    op->common_options.description = description;
+    op->common_options.max_market_fee = 0;
+    op->common_options.max_supply = maxSupply;
+    op->common_options.core_exchange_rate = bcx::protocol::price(bcx::protocol::asset(1 * pow(10, precision), bcx::protocol::asset_id_type(1)),
+                                                                 bcx::protocol::asset(exchangeRate * 100000));
+
+    sendOperation({*op})
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::updateAsset(const std::string& symbol,
+                    long long maxSupply,
+                    float exchangeRate,
+                    const std::string& description,
+                    const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::asset_update_operation> op = std::make_shared<bcx::protocol::asset_update_operation>();
+
+    if (0 != maxSupply) {
+        op->new_options.max_supply = maxSupply;
+    }
+    if (!description.empty()) {
+        op->new_options.description = description;
+    }
+
+    lookupAssetSymbols({symbol})
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+        
+        const fc::variant& v = resp.data;
+        auto asset_objects = v.as<std::vector<bcx::protocol::asset_object>>(BCX_PACK_MAX_DEPTH);
+
+        Response r = Response::createResponse(Errors::Error_Error);
+        RETURN_REJECT_DEFER_IF(1 != asset_objects.size(), r)
+
+        const bcx::protocol::asset_object& asset = asset_objects.at(0);
+        op->asset_to_update = asset.get_id();
+        op->issuer = asset.issuer;
+        if (0 != exchangeRate) {
+            op->new_options.core_exchange_rate = bcx::protocol::price(bcx::protocol::asset(1, asset.get_id()),
+                                                                      bcx::protocol::asset(exchangeRate, bcx::protocol::asset_id_type()));
+        }
+
+        return this->sendOperation({*op});
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+
+}
+
+void BCXImp::issueAsset(const std::string& account,
+                    const int mount,
+                    const std::string& symbol,
+                    const std::string& memo,
+                    const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::asset_issue_operation> op = std::make_shared<bcx::protocol::asset_issue_operation>();
+
+    bcx::protocol::memo_data memodata;
+    memodata.set_message(fc::ecc::private_key(), fc::ecc::public_key(), memo);
+    op->memo = memodata;
+    op->issuer = _chainData.fullAccount.account.get_id();
+    op->asset_to_issue = bcx::protocol::asset(mount);
+
+    getAccountByName(account)
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        auto account_object = v.as<bcx::protocol::account_object>(BCX_PACK_MAX_DEPTH);
+
+        op->issue_to_account = account_object.get_id();
+
+        return lookupAssetSymbols({symbol});
+    })
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        auto asset_objects = v.as<std::vector<bcx::protocol::asset_object>>(BCX_PACK_MAX_DEPTH);
+
+        Response r = Response::createResponse(Errors::Error_Error);
+        RETURN_REJECT_DEFER_IF(1 != asset_objects.size(), r)
+
+        const bcx::protocol::asset_object& asset = asset_objects.at(0);
+        op->asset_to_issue.asset_id = asset.get_id();
+
+        return this->sendOperation({*op});
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::reserveAsset(const std::string& symbol,
+                    const int mount,
+                    const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::asset_reserve_operation> op = std::make_shared<bcx::protocol::asset_reserve_operation>();
+
+    op->payer = _chainData.fullAccount.account.get_id();
+    op->amount_to_reserve = bcx::protocol::asset(mount);
+
+    lookupAssetSymbols({symbol})
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        auto asset_objects = v.as<std::vector<bcx::protocol::asset_object>>(BCX_PACK_MAX_DEPTH);
+
+        Response r = Response::createResponse(Errors::Error_Error);
+        RETURN_REJECT_DEFER_IF(1 != asset_objects.size(), r)
+
+        const bcx::protocol::asset_object& asset = asset_objects.at(0);
+        op->amount_to_reserve.asset_id = asset.get_id();
+
+        return this->sendOperation({*op});
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
 void BCXImp::performFunctionInMainThread(const std::function<void()>& f) {
     _looper.performFunctionInMainThread(f);
 }
@@ -559,7 +733,7 @@ void BCXImp::loop() {
 ::promise::Defer BCXImp::createAccountByAccount(const std::string &account, const std::string &pw) {
     promise::Defer d = promise::newPromise();
 
-    std::shared_ptr<bcx::protocol::account_create_operation> op = std::make_shared<bcx::protocol::account_create_operation>();
+    bcx::protocol::account_create_operation op = bcx::protocol::account_create_operation();
 
     fc::ecc::private_key ownerPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "owner" + pw));
     fc::ecc::public_key ownerPubKey = ownerPriKey.get_public_key();
@@ -568,13 +742,13 @@ void BCXImp::loop() {
     fc::ecc::private_key memoPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "memo" + pw));
     fc::ecc::public_key memoPubKey = memoPriKey.get_public_key();
 
-    op->name = account;
-    op->registrar = _chainData.fullAccount.account.get_id();
-    op->owner = bcx::protocol::authority(1, bcx::protocol::public_key_type(ownerPubKey), 1);
-    op->active = bcx::protocol::authority(1, bcx::protocol::public_key_type(activePubKey), 1);
-    op->options.memo_key = memoPubKey;
+    op.name = account;
+    op.registrar = _chainData.fullAccount.account.get_id();
+    op.owner = bcx::protocol::authority(1, bcx::protocol::public_key_type(ownerPubKey), 1);
+    op.active = bcx::protocol::authority(1, bcx::protocol::public_key_type(activePubKey), 1);
+    op.options.memo_key = memoPubKey;
 
-    sendOperation({*op})
+    sendOperation({op})
     .then([=](const Response& resp) {
         d.resolve(resp);
     })
@@ -588,6 +762,20 @@ void BCXImp::loop() {
 
     //TODO create account with faucet need implement
     throw fc::invalid_arg_exception();
+
+    return d;
+}
+
+::promise::Defer BCXImp::getAccountByName(const std::string &name) {
+    promise::Defer d = promise::newPromise();
+
+    fc::variants params = {name};
+
+    _ws.send_call(_chainData.dbAPIID, "get_account_by_name", params)
+    .then([this, d](const fc::variant v) {
+        d.resolve(Response::createResponse(v));
+    })
+    HANDLE_DEFER_FAIL
 
     return d;
 }

@@ -2,6 +2,7 @@
 
 #include "../../fc/include/fc/static_variant.hpp"
 #include "./account.hpp"
+#include "../asset_ops.hpp"
 #include "./market.hpp"
 #include "./placehoder.hpp"
 #include "./transfer.hpp"
@@ -20,13 +21,13 @@ typedef fc::static_variant<
     account_create_operation,
     account_update_operation,
     account_upgrade_operation,
-//    asset_create_operation,
-//    asset_update_operation,
-//    bcx::protocol::asset_update_restricted,
-//    asset_update_bitasset_operation,
-//    asset_update_feed_producers_operation,
-//    asset_issue_operation,
-//    asset_reserve_operation,
+    asset_create_operation,
+    asset_update_operation,
+    asset_update_restricted,
+    asset_update_bitasset_operation,
+    asset_update_feed_producers_operation,
+    asset_issue_operation,
+    asset_reserve_operation,
 //    asset_settle_operation,
 //    asset_global_settle_operation,
 //    asset_publish_feed_operation,

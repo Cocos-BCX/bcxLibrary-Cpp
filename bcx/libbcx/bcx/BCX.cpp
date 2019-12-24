@@ -64,6 +64,47 @@ void BCX::transfer(const std::string& toAccount, const std::string& symbol, int 
     BCXImp::getInstance()->transfer(toAccount, symbol, mount, memo, cb);
 }
 
+void BCX::lookupAssetSymbols(const std::vector<std::string>& symbolsOrIds,
+                            const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->lookupAssetSymbols(symbolsOrIds, cb);
+}
+
+void BCX::listAssets(const std::string& lowerBoundSymbol, int limit,
+                    const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->listAssets(lowerBoundSymbol, limit, cb);
+}
+
+void BCX::createAsset(const std::string& symbol,
+                    long long maxSupply,
+                    int precision,
+                    float exchangeRate,
+                    const std::string& description,
+                    const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->createAsset(symbol, maxSupply, precision, exchangeRate, description, cb);
+}
+
+void BCX::updateAsset(const std::string& symbol,
+                    long long maxSupply,
+                    float exchangeRate,
+                    const std::string& description,
+                    const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->updateAsset(symbol, maxSupply, exchangeRate, description, cb);
+}
+
+void BCX::issueAsset(const std::string& account,
+                    const int mount,
+                    const std::string& symbol,
+                    const std::string& memo,
+                    const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->issueAsset(account, mount, symbol, memo, cb);
+}
+
+void BCX::reserveAsset(const std::string& symbol,
+                    const int mount,
+                    const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->reserveAsset(symbol, mount, cb);
+}
+
 std::string BCX::getVersion() {
     return BCX_SDK_VERSION_STR;
 }

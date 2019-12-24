@@ -49,6 +49,29 @@ public:
 
     void transfer(const std::string& toAccount, const std::string& symbol, int mount, const std::string& memo,
                   const std::function<void(const std::string&)>& cb);
+    void lookupAssetSymbols(const std::vector<std::string>& symbolsOrIds,
+                            const std::function<void(const std::string&)>& cb);
+    void listAssets(const std::string& lowerBoundSymbol, int limit,
+                    const std::function<void(const std::string&)>& cb);
+    void createAsset(const std::string& symbol,
+                    long long maxSupply,
+                    int precision,
+                    float exchangeRate,
+                    const std::string& description,
+                    const std::function<void(const std::string&)>& cb);
+    void updateAsset(const std::string& symbol,
+                    long long maxSupply,
+                    float exchangeRate,
+                    const std::string& description,
+                    const std::function<void(const std::string&)>& cb);
+    void issueAsset(const std::string& account,
+                    const int mount,
+                    const std::string& symbol,
+                    const std::string& memo,
+                    const std::function<void(const std::string&)>& cb);
+    void reserveAsset(const std::string& symbol,
+                    const int mount,
+                    const std::function<void(const std::string&)>& cb);
 
     void performFunctionInMainThread(const std::function<void()>& f);
     void loop();
@@ -63,6 +86,8 @@ private:
     ::promise::Defer broadcastTransactionWithCallback(const bcx::protocol::signed_transaction& trx);
     ::promise::Defer createAccountByAccount(const std::string &account, const std::string &pw);
     ::promise::Defer createAccountByFaucet(const std::string &account, const std::string &pw);
+    ::promise::Defer getAccountByName(const std::string &name);
+
     fc::optional<fc::ecc::private_key> getCurrentPrivateKey(const std::string& role);
     void resetChainData();
     bool isChainAPIOpen();
