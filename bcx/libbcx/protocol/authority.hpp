@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./types.hpp"
+#include "./address.hpp"
 
 namespace bcx {
 
@@ -26,8 +27,9 @@ struct authority {
     }
 
     uint32_t                              weight_threshold = 0;
-//    std::map<account_id_type,weight_type> account_auths;
+    std::map<account_id_type,weight_type> account_auths;
     std::map<public_key_type, weight_type> key_auths;
+    std::map<address,weight_type>         address_auths;
 };
 
 } // namespace protocol
@@ -36,6 +38,8 @@ struct authority {
 
 FC_REFLECT( bcx::protocol::authority,
            (weight_threshold)
+           (account_auths)
            (key_auths)
+           (address_auths)
            )
 

@@ -4,6 +4,7 @@
 #include <fc/crypto/sha256.hpp>
 #include <fc/crypto/elliptic.hpp>
 #include <fc/io/json.hpp>
+#include <fc/rpc/state.hpp>
 
 #include "./BCXImp.hpp"
 #include "./Response.hpp"
@@ -16,14 +17,17 @@
 #include "../protocol/operations/transfer.hpp"
 #include "../protocol/transaction.hpp"
 
-#define CHECK_LOGIN \
-if (!isLogin() && nullptr != cb) { \
+#define CHECK_LOGIN(CALLBACK) \
+if (!isLogin() && nullptr != CALLBACK) { \
     std::string s = fc::json::to_string(Response::createResponse(Errors::Error_Not_Login)); \
-    cb(s); \
+    CALLBACK(s); \
     return; \
 }
 
 #define HANDLE_DEFER_FAIL \
+.fail([d](const fc::rpc::error_object& e) { \
+    d.reject(Response::createResponse(e)); \
+}) \
 .fail([d](const Response& resp) { \
     d.reject(resp); \
 }) \
@@ -201,6 +205,17 @@ void BCXImp::getFullAccount(const std::string& nameOrId, const std::function<voi
 }
 
 void BCXImp::createAccount(const std::string& name, const std::string& pw, const std::function<void(const std::string&)> &cb) {
+    ::promise::Defer defer;
+    if (isLogin()) {
+        defer = createAccountByAccount(name, pw);
+    } else {
+        defer = createAccountByFaucet(name, pw);
+    }
+    defer.then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
 }
 
 void BCXImp::changePassword(const std::string& account,
@@ -243,15 +258,15 @@ void BCXImp::changePassword(const std::string& account,
 
         std::string s = "";
         fc::ecc::private_key newOwnerPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "owner" + newPW));
-        fc::ecc::public_key newOwnerPubKey = ownerPriKey.get_public_key();
+        fc::ecc::public_key newOwnerPubKey = newOwnerPriKey.get_public_key();
         fc::ecc::private_key newActivePriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "active" + newPW));
-        fc::ecc::public_key newActivePubKey = activePriKey.get_public_key();
+        fc::ecc::public_key newActivePubKey = newActivePriKey.get_public_key();
 
         op->account = fa.account.get_id();
         op->owner = bcx::protocol::authority(1, bcx::protocol::public_key_type(newOwnerPubKey), 1);
         op->active = bcx::protocol::authority(1, bcx::protocol::public_key_type(newActivePubKey), 1);
 
-        return sendOperation({*op});
+        return sendOperation({*op}, ownerPriKey);
     })
     .then([=](const Response& resp) {
         std::string s = fc::json::to_string(resp);
@@ -261,6 +276,19 @@ void BCXImp::changePassword(const std::string& account,
 }
 
 void BCXImp::upgradeAccount(const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::account_upgrade_operation> op = std::make_shared<bcx::protocol::account_upgrade_operation>();
+
+    op->account_to_upgrade = _chainData.fullAccount.account.get_id();
+    op->upgrade_to_lifetime_member = true;
+
+    sendOperation({*op})
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
 }
 
 void BCXImp::getChainId(const std::function<void(const std::string&)>& cb) {
@@ -313,7 +341,7 @@ void BCXImp::getKeyReferences(const std::function<void(const std::string&)>& cb)
 
 void BCXImp::transfer(const std::string& toAccount, const std::string& symbol, int mount, const std::string& memo,
                       const std::function<void(const std::string&)>& cb) {
-    CHECK_LOGIN
+    CHECK_LOGIN(cb)
     
     std::shared_ptr<bcx::protocol::transfer_operation> op = std::make_shared<bcx::protocol::transfer_operation>();
     op->from = _chainData.fullAccount.account.get_id();
@@ -488,7 +516,7 @@ void BCXImp::loop() {
     return d;
 }
 
-::promise::Defer BCXImp::sendOperation(const std::vector<bcx::protocol::operation>& ops) {
+::promise::Defer BCXImp::sendOperation(const std::vector<bcx::protocol::operation>& ops, const fc::optional<fc::ecc::private_key>& oSignKey) {
 //    promise::Defer d = promise::newPromise();
 
     std::shared_ptr<bcx::protocol::signed_transaction> trx = std::make_shared<bcx::protocol::signed_transaction>();
@@ -499,60 +527,17 @@ void BCXImp::loop() {
     fc::time_point_sec t = fc::time_point::now();
     t += 10;
     trx->set_expiration(t);
-    
-    fc::optional<fc::ecc::private_key> opk = getCurrentPrivateKey("active");
+
+    fc::optional<fc::ecc::private_key> opk = oSignKey;
+    if (!opk.valid()) {
+        opk = getCurrentPrivateKey("active");
+    }
     Response resp = Response::createResponse(Errors::Error_Error, "not find active key");
     RETURN_REJECT_DEFER_IF(!opk.valid(), resp)
 
     trx->sign(*opk, protocol::chain_id_type(_chainData.chainID));
     
     return broadcastTransactionWithCallback(*trx);
-
-    /*
-    query_get_potential_signatures(*trx)
-    .then([=](const std::set<graphene::chain::public_key_type> &pkeys) {
-        fc::optional<fc::ecc::private_key> opk;
-        if (0 == pkeys.size()) {
-            opk = this->get_current_private_key("active");
-        } else {
-            for (const auto& it : pkeys) {
-                opk = get_private_key_by_public(it);
-                if (opk.valid()) {
-                    break;
-                }
-            }
-        }
-        if (!opk.valid()) {
-            throw std::string("private key not found");
-        }
-        trx->sign(*opk, chain_id_type(this->_db.chain_id));
-        trx->validate();
-
-        return this->broadcast_transaction_with_callback(*trx);
-    })
-    .then([defer](const fc::variant& v) {
-        defer.resolve(v);
-    })
-    .fail([defer](const fc::rpc::error_object& e) {
-        defer.reject(e);
-    })
-    .fail([=](const std::exception& e) {
-        defer.reject(e);
-    })
-    .fail([defer](const std::string& e) {
-        defer.reject(e);
-    })
-    .fail([defer](const fc::rpc::error_object& e) {
-        defer.reject(e);
-    })
-    .fail([=](int error) {
-        defer.reject(error);
-    })
-    .fail([defer] {
-        defer.reject("unknow error");
-    });
-     */
-
 }
 
 ::promise::Defer BCXImp::broadcastTransactionWithCallback(const bcx::protocol::signed_transaction& trx) {
@@ -567,6 +552,42 @@ void BCXImp::loop() {
         d.resolve(Response::createResponse(v));
     })
     HANDLE_DEFER_FAIL
+
+    return d;
+}
+
+::promise::Defer BCXImp::createAccountByAccount(const std::string &account, const std::string &pw) {
+    promise::Defer d = promise::newPromise();
+
+    std::shared_ptr<bcx::protocol::account_create_operation> op = std::make_shared<bcx::protocol::account_create_operation>();
+
+    fc::ecc::private_key ownerPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "owner" + pw));
+    fc::ecc::public_key ownerPubKey = ownerPriKey.get_public_key();
+    fc::ecc::private_key activePriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "active" + pw));
+    fc::ecc::public_key activePubKey = activePriKey.get_public_key();
+    fc::ecc::private_key memoPriKey = fc::ecc::private_key::generate_from_seed(fc::sha256::hash(account + "memo" + pw));
+    fc::ecc::public_key memoPubKey = memoPriKey.get_public_key();
+
+    op->name = account;
+    op->registrar = _chainData.fullAccount.account.get_id();
+    op->owner = bcx::protocol::authority(1, bcx::protocol::public_key_type(ownerPubKey), 1);
+    op->active = bcx::protocol::authority(1, bcx::protocol::public_key_type(activePubKey), 1);
+    op->options.memo_key = memoPubKey;
+
+    sendOperation({*op})
+    .then([=](const Response& resp) {
+        d.resolve(resp);
+    })
+    HANDLE_DEFER_FAIL
+
+    return d;
+}
+
+::promise::Defer BCXImp::createAccountByFaucet(const std::string &account, const std::string &pw) {
+    promise::Defer d = promise::newPromise();
+
+    //TODO create account with faucet need implement
+    throw fc::invalid_arg_exception();
 
     return d;
 }

@@ -2,6 +2,7 @@
 
 #include "../BCX.hpp"
 #include "../fc/include/fc/reflect/reflect.hpp"
+#include "../fc/include/fc/rpc/state.hpp"
 #include "../fc/include/fc/variant.hpp"
 
 namespace bcx {
@@ -16,6 +17,7 @@ struct Response {
     static Response createResponse(Errors e);
     static Response createResponse(Errors e, const std::string& s);
     static Response createResponse(const fc::variant& data);
+    static Response createResponse(const fc::rpc::error_object& e);
 };
 
 }

@@ -67,6 +67,21 @@ void BCXTest::createTestCasesMap() {
                 this->log(json);
             });
         }},
+        {"1.1.create account", [this]() {
+            bcx::BCX::createAccount("huang", "111111", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"1.2.change password", [this]() {
+            bcx::BCX::changePassword("hugo1111", "222222", "111111", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"1.3.upgrade account", [this]() {
+            bcx::BCX::upgradeAccount([this](const std::string& json) {
+                this->log(json);
+            });
+        }},
         {"2.0.transfer", [this]() {
             bcx::BCX::transfer("huang", "COCOS", 33, "", [this](const std::string& json) {
                 this->log(json);

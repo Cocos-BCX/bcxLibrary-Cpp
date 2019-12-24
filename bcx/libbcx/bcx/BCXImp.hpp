@@ -59,8 +59,10 @@ private:
     ::promise::Defer getFullAccounts(const std::string &nameOrId);
     ::promise::Defer getObjects(const std::vector<std::string> &ids);
     ::promise::Defer lookupAssetSymbols(const std::vector<std::string>& symbols_or_ids);
-    ::promise::Defer sendOperation(const std::vector<bcx::protocol::operation>& ops);
+    ::promise::Defer sendOperation(const std::vector<bcx::protocol::operation>& ops, const fc::optional<fc::ecc::private_key>& oSignKey = fc::optional<fc::ecc::private_key>());
     ::promise::Defer broadcastTransactionWithCallback(const bcx::protocol::signed_transaction& trx);
+    ::promise::Defer createAccountByAccount(const std::string &account, const std::string &pw);
+    ::promise::Defer createAccountByFaucet(const std::string &account, const std::string &pw);
     fc::optional<fc::ecc::private_key> getCurrentPrivateKey(const std::string& role);
     void resetChainData();
     bool isChainAPIOpen();

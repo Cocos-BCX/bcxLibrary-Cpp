@@ -22,6 +22,7 @@ enum Errors {
     Error_Net_Connect,
     Error_Net_Disconnect,
     Error_Net_Error,
+    Error_BCX_Error,
     Error_Max
 };
 

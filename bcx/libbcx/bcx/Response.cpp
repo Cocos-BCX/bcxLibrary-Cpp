@@ -1,4 +1,6 @@
 #include "Response.hpp"
+#include "../fc/include/fc/io/json.hpp"
+#include "../fc/include/fc/reflect/variant.hpp"
 
 namespace bcx {
 
@@ -84,6 +86,15 @@ Response Response::createResponse(const fc::variant& data) {
 
     return resp;
 }
+
+Response Response::createResponse(const fc::rpc::error_object& e) {
+    Response resp;
+    resp.code = Errors::Error_BCX_Error;
+    resp.msg = fc::json::to_string(e);
+
+    return resp;
+}
+
 
 }
 
