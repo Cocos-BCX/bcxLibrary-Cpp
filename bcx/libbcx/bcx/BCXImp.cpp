@@ -14,6 +14,7 @@
 
 #include "../protocol/types.hpp"
 #include "../protocol/asset_object.hpp"
+#include "../protocol/contract_object.hpp"
 #include "../protocol/operations/transfer.hpp"
 #include "../protocol/transaction.hpp"
 
@@ -588,6 +589,104 @@ void BCXImp::getBlock(unsigned int num, const std::function<void(const std::stri
     HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
 }
 
+void BCXImp::createContract(const std::string& name, const std::string& contractSource, const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    bcx::protocol::contract_create_operation op;
+    
+    op.owner = _chainData.fullAccount.account.get_id();
+    op.name = name;
+    op.data = contractSource;
+    const auto& opk = getCurrentPrivateKey("active");
+    op.contract_authority = (*opk).get_public_key();
+    
+    sendOperation({op})
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::getContract(const std::string& nameOrId, const std::function<void(const std::string&)>& cb) {
+    getContract(nameOrId)
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::updateContract(const std::string& nameOrId, const std::string& contractSource, const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::contract_revise_operation> op = std::make_shared<bcx::protocol::contract_revise_operation>();
+    
+    op->data = contractSource;
+
+    getContract(nameOrId)
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        auto co = v.as<bcx::protocol::contract_object>(BCX_PACK_MAX_DEPTH);
+
+        Response r = Response::createResponse(Errors::Error_Error);
+        RETURN_REJECT_DEFER_IF((co.owner != _chainData.fullAccount.account.get_id()), r)
+
+        op->contract_id = co.id;
+        op->reviser = co.owner;
+
+        return this->sendOperation({*op});
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+    
+}
+
+void BCXImp::getTransactionById(const std::string& trxId, const std::function<void(const std::string&)>& cb) {
+}
+
+void BCXImp::callContractFunction(const std::string& nameOrId, const std::string& functionName,
+                                  const contract_params& params, int runTime,
+                                  const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::contract_call_function_operation> op = std::make_shared<bcx::protocol::contract_call_function_operation>();
+
+    op->caller = _chainData.fullAccount.account.get_id();
+    op->function_name = functionName;
+
+    op->value_list.clear();
+    for (const auto& it : params) {
+        op->value_list.push_back(luaValue2Types(it));
+    }
+
+    getContract(nameOrId)
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        auto co = v.as<bcx::protocol::contract_object>(BCX_PACK_MAX_DEPTH);
+
+        Response r = Response::createResponse(Errors::Error_Error);
+        RETURN_REJECT_DEFER_IF((co.owner != _chainData.fullAccount.account.get_id()), r)
+
+        op->contract_id = co.id;
+
+        return this->sendOperation({*op});
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+
 void BCXImp::performFunctionInMainThread(const std::function<void()>& f) {
     _looper.performFunctionInMainThread(f);
 }
@@ -797,8 +896,27 @@ void BCXImp::loop() {
     fc::variants params = {name};
 
     _ws.send_call(_chainData.dbAPIID, "get_account_by_name", params)
-    .then([this, d](const fc::variant v) {
+    .then([d](const fc::variant& v) {
         d.resolve(Response::createResponse(v));
+    })
+    HANDLE_DEFER_FAIL
+
+    return d;
+}
+
+::promise::Defer BCXImp::getContract(const std::string& nameOrId) {
+    promise::Defer d = promise::newPromise();
+
+    fc::variants params;
+    params.push_back(nameOrId);
+
+    _ws.send_call(2, "get_contract", params)
+    .then([=](const fc::variant& v) {
+        bcx::protocol::contract_object co;
+        v.as(co, BCX_PACK_MAX_DEPTH);
+
+        d.resolve(Response::createResponse(v));
+        
     })
     HANDLE_DEFER_FAIL
 
@@ -829,5 +947,43 @@ bool BCXImp::isChainAPIOpen() {
     }
 }
 
+bcx::protocol::lua_types BCXImp::luaValue2Types(bcx::lua_value lv) {
+    bcx::protocol::lua_types lt;
+
+    switch (lv.tag) {
+        case 1: {
+            lt = bcx::protocol::lua_int(lv.i);
+            break;
+        }
+        case 2: {
+            lt = bcx::protocol::lua_number(lv.n);
+            break;
+        }
+        case 3: {
+            lt = bcx::protocol::lua_string(lv.s);
+            break;
+        }
+        case 4: {
+            lt = bcx::protocol::lua_bool(lv.b);
+            break;
+        }
+        case 5: {
+            bcx::protocol::lua_map map;
+            
+            for (const auto& item : lv.t) {
+                bcx::protocol::lua_types ltk = bcx::protocol::lua_string(item.first);
+                bcx::protocol::lua_types ltv = luaValue2Types(item.second);
+                map[bcx::protocol::lua_key(ltk)] = ltv;
+            }
+
+            lt = bcx::protocol::lua_table(map);
+            break;
+        }
+        default:
+            break;
+    }
+
+    return lt;
+}
 
 }

@@ -21,6 +21,11 @@ struct object_id_type {
    bool     is_null()const { return number == 0; }
    explicit operator uint64_t()const { return number; }
 
+   friend bool  operator == ( const object_id_type& a, const object_id_type& b ) { return a.number == b.number; }
+   friend bool  operator != ( const object_id_type& a, const object_id_type& b ) { return a.number != b.number; }
+   friend bool  operator < ( const object_id_type& a, const object_id_type& b ) { return a.number < b.number; }
+   friend bool  operator > ( const object_id_type& a, const object_id_type& b ) { return a.number > b.number; }
+
    explicit operator std::string() const {
        return fc::to_string(space()) + "." + fc::to_string(type()) + "." + fc::to_string(instance());
    }
@@ -45,15 +50,27 @@ struct object_id {
     explicit operator uint64_t()const { return object_id_type( *this ).number; }
 
     // for std::set
-    bool operator< (const object_id & objId) const {
-        if (space_id != objId.space_id) {
-            return space_id < objId.space_id;
-        }
-        if (type_id != objId.type_id) {
-            return type_id < objId.type_id;
-        }
-        return instance < objId.instance;
-    }
+//    bool operator< (const object_id & objId) const {
+//        if (space_id != objId.space_id) {
+//            return space_id < objId.space_id;
+//        }
+//        if (type_id != objId.type_id) {
+//            return type_id < objId.type_id;
+//        }
+//        return instance < objId.instance;
+//    }
+
+    friend bool  operator == ( const object_id& a, const object_id& b ) { return a.instance == b.instance; }
+    friend bool  operator != ( const object_id& a, const object_id& b ) { return a.instance != b.instance; }
+    friend bool  operator == ( const object_id_type& a, const object_id& b ) { return a == object_id_type(b); }
+    friend bool  operator != ( const object_id_type& a, const object_id& b ) { return a != object_id_type(b); }
+    friend bool  operator == ( const object_id& b, const object_id_type& a ) { return a == object_id_type(b); }
+    friend bool  operator != ( const object_id& b, const object_id_type& a ) { return a != object_id_type(b); }
+
+    friend bool  operator < ( const object_id& a, const object_id& b ) { return a.instance.value < b.instance.value; }
+    friend bool  operator > ( const object_id& a, const object_id& b ) { return a.instance.value > b.instance.value; }
+
+    friend size_t hash_value( object_id v ) { return std::hash<uint64_t>()(v.instance.value); }
     
     //unsigned_int instance;
     fc::unsigned_int64 instance;

@@ -113,6 +113,29 @@ void BCX::getBlock(unsigned int num, const std::function<void(const std::string&
     BCXImp::getInstance()->getBlock(num, cb);
 }
 
+void BCX::createContract(const std::string& name, const std::string& contractSource, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->createContract(name, contractSource, cb);
+}
+
+void BCX::getContract(const std::string& nameOrId, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->getContract(nameOrId, cb);
+}
+
+void BCX::updateContract(const std::string& nameOrId, const std::string& contractSource, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->updateContract(nameOrId, contractSource, cb);
+}
+
+void BCX::getTransactionById(const std::string& trxId, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->getTransactionById(trxId, cb);
+}
+
+void BCX::callContractFunction(const std::string& nameOrId, const std::string& functionName,
+                               const contract_params& params, int runTime,
+                               const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->callContractFunction(nameOrId, functionName, params, runTime, cb);
+}
+
+
 std::string BCX::getVersion() {
     return BCX_SDK_VERSION_STR;
 }

@@ -75,6 +75,14 @@ public:
     void getBlockHeader(unsigned int num, const std::function<void(const std::string&)>& cb);
     void getBlock(unsigned int num, const std::function<void(const std::string&)>& cb);
 
+    void createContract(const std::string& name, const std::string& contractSource, const std::function<void(const std::string&)>& cb);
+    void getContract(const std::string& nameOrId, const std::function<void(const std::string&)>& cb);
+    void updateContract(const std::string& nameOrId, const std::string& contractSource, const std::function<void(const std::string&)>& cb);
+    void getTransactionById(const std::string& trxId, const std::function<void(const std::string&)>& cb);
+    void callContractFunction(const std::string& nameOrId, const std::string& functionName,
+                              const contract_params& params, int runTime,
+                              const std::function<void(const std::string&)>& cb);
+
     void performFunctionInMainThread(const std::function<void()>& f);
     void loop();
 
@@ -89,10 +97,12 @@ private:
     ::promise::Defer createAccountByAccount(const std::string &account, const std::string &pw);
     ::promise::Defer createAccountByFaucet(const std::string &account, const std::string &pw);
     ::promise::Defer getAccountByName(const std::string &name);
+    ::promise::Defer getContract(const std::string& nameOrId);
 
     fc::optional<fc::ecc::private_key> getCurrentPrivateKey(const std::string& role);
     void resetChainData();
     bool isChainAPIOpen();
+    bcx::protocol::lua_types luaValue2Types(bcx::lua_value v);
 
 private:
     static BCXImp* gInstance;

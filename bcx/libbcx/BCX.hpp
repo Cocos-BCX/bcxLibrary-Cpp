@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <map>
 
 namespace bcx {
 
@@ -25,6 +27,67 @@ enum Errors {
     Error_BCX_Error,
     Error_Max
 };
+
+typedef int lua_int;
+typedef double lua_number;
+typedef std::string lua_string;
+typedef bool lua_bool;
+
+class lua_value;
+
+typedef std::map<lua_string, lua_value> lua_table;
+
+class lua_value {
+public:
+    lua_value(lua_int i): tag(1) { i = i; }
+    lua_value(lua_number n): tag(2)  { n = n; }
+    lua_value(lua_string s): tag(3) { s = s; }
+    lua_value(lua_bool b): tag(4) { b = b; }
+    lua_value(lua_table t): tag(5) { t = t; }
+    
+    lua_value(const lua_value& lv) {
+        tag = lv.tag;
+        switch (lv.tag) {
+            case 1: { i = lv.i; break; }
+            case 2: { n = lv.n; break; }
+            case 3: { s = lv.s; break; }
+            case 4: { b = lv.b; break; }
+            case 5: { t = lv.t; break; }
+            default: break;
+        }
+    }
+    ~lua_value() {
+        switch (tag) {
+            case 3: { s = ""; break; }
+            case 5: { t.clear(); break; }
+            default: break;
+        }
+    }
+    lua_value operator=( const lua_value& lv ) {
+        if( this == &lv ) return *this;
+        tag = lv.tag;
+        switch (lv.tag) {
+            case 1: { i = lv.i; break; }
+            case 2: { n = lv.n; break; }
+            case 3: { s = lv.s; break; }
+            case 4: { b = lv.b; break; }
+            case 5: { t = lv.t; break; }
+            default: break;
+        }
+        return *this;
+    }
+
+    int tag;
+    union {
+        lua_int i;
+        lua_number n;
+        lua_string s;
+        lua_bool b;
+        lua_table t;
+    };
+};
+
+typedef std::vector<lua_value> contract_params;
 
 class BCX {
 
@@ -83,7 +146,18 @@ public:
      */
     static void getBlockHeader(unsigned int num, const std::function<void(const std::string&)>& cb);
     static void getBlock(unsigned int num, const std::function<void(const std::string&)>& cb);
-    
+
+    /*
+     * Contract
+     */
+    static void createContract(const std::string& name, const std::string& contractSource, const std::function<void(const std::string&)>& cb);
+    static void getContract(const std::string& nameOrId, const std::function<void(const std::string&)>& cb);
+    static void updateContract(const std::string& nameOrId, const std::string& contractSource, const std::function<void(const std::string&)>& cb);
+    static void getTransactionById(const std::string& trxId, const std::function<void(const std::string&)>& cb);
+    static void callContractFunction(const std::string& nameOrId, const std::string& functionName,
+                                     const contract_params& params, int runTime,
+                                     const std::function<void(const std::string&)>& cb);
+
     /*
      * Utils
      */

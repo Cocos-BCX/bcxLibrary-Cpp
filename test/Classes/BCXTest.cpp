@@ -121,6 +121,100 @@ void BCXTest::createTestCasesMap() {
             bcx::BCX::getBlock(62260, [this](const std::string& json) {
                 this->log(json);
             });
+        }},
+        {"4.0.create contract", [this]() {
+            std::string contractSource = "\
+function set_public_data(key, val) \
+    public_data[key] = val \
+\
+    write_list={public_data={[key]=true}} \
+    chainhelper:write_chain() \
+end \
+\
+function get_public_data(key) \
+    read_list={public_data={[key]=true}} \
+    chainhelper:read_chain() \
+\
+    chainhelper:log(public_data[key]) \
+end \
+\
+function set_private_data(key, val) \
+    private_data[key] = val \
+\
+    write_list={private_data={[key]=true}} \
+    chainhelper:write_chain() \
+end \
+\
+function get_private_data(key) \
+    read_list={private_data={[key]=true}} \
+    chainhelper:read_chain() \
+\
+    chainhelper:log(private_data[key]) \
+end \
+\
+function dump_params(param1, param2) \
+    chainhelper:log('param1:' .. cjson.encode(param1) .. ' param2:' .. param2) \
+end \
+\
+function set_permissions_flag(flag) \
+    assert(is_owner(), \"You are not owner\") \
+\
+    log('set permissions finish'); \
+end";
+            bcx::BCX::createContract("contract.test01", contractSource, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"4.1.get contract", [this]() {
+            bcx::BCX::getContract("contract.test01", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"4.2.update contract", [this]() {
+            std::string contractSource = "\
+function set_public_data(key, val) \
+    public_data[key] = val \
+\
+    write_list={public_data={[key]=true}} \
+    chainhelper:write_chain() \
+end \
+\
+function get_public_data(key) \
+    read_list={public_data={[key]=true}} \
+    chainhelper:read_chain() \
+\
+    chainhelper:log(public_data[key]) \
+end \
+\
+function set_private_data(key, val) \
+    private_data[key] = val \
+\
+    write_list={private_data={[key]=true}} \
+    chainhelper:write_chain() \
+end \
+\
+function get_private_data(key) \
+    read_list={private_data={[key]=true}} \
+    chainhelper:read_chain() \
+\
+    chainhelper:log(private_data[key]) \
+end \
+\
+function dump_params(param1, param2) \
+    chainhelper:log('param1:' .. cjson.encode(param1) .. ' param2:' .. param2) \
+end \
+\
+function set_permissions_flag(flag) \
+    assert(is_owner(), \"You are not owner\") \
+\
+    log('set permissions finish'); \
+end";
+
+            bcx::BCX::updateContract("contract.test01", contractSource, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"4.3.call contract]", [this]() {
         }}
     };
 
