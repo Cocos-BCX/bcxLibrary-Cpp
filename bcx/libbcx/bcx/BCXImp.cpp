@@ -392,8 +392,7 @@ void BCXImp::transfer(const std::string& toAccount, const std::string& symbol, i
 void BCXImp::lookupAssetSymbols(const std::vector<std::string>& symbolsOrIds,
                             const std::function<void(const std::string&)>& cb) {
     lookupAssetSymbols(symbolsOrIds)
-    .then([=](const fc::variant& v) {
-        Response resp = Response::createResponse(v);
+    .then([=](const Response& resp) {
         std::string s = fc::json::to_string(resp);
         cb(s);
     })
@@ -680,9 +679,9 @@ void BCXImp::loop() {
     fc::variant mparams;
     fc::to_variant(symbols_or_ids, mparams, BCX_PACK_MAX_DEPTH);
     params.push_back(mparams);
-    
+
     _ws.send_call(_chainData.dbAPIID, "lookup_asset_symbols", params)
-    .then([this, d](const fc::variant v) {
+    .then([d](const fc::variant v) {
         d.resolve(Response::createResponse(v));
     })
     HANDLE_DEFER_FAIL

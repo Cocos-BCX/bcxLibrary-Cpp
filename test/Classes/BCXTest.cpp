@@ -86,6 +86,36 @@ void BCXTest::createTestCasesMap() {
             bcx::BCX::transfer("huang", "COCOS", 33, "", [this](const std::string& json) {
                 this->log(json);
             });
+        }},
+        {"2.1.lookup symbols", [this]() {
+            bcx::BCX::lookupAssetSymbols({"COCOS"}, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"2.2.list assets", [this]() {
+            bcx::BCX::listAssets("A", 9, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"2.3.create asset", [this]() {
+            bcx::BCX::createAsset("SDKBOX", 1000, 5, 10, "test asset", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"2.4.update asset", [this]() {
+            bcx::BCX::updateAsset("SDKBOX", 1000, 10, "update test asset", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"2.5.issue asset", [this]() {
+            bcx::BCX::issueAsset("hugo0001", 3, "SDKBOX", "memo", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"2.6.reserve asset", [this]() {
+            bcx::BCX::reserveAsset("SDKBOX", 3, [this](const std::string& json) {
+                this->log(json);
+            });
         }}
     };
 

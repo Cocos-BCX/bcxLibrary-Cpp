@@ -81,7 +81,7 @@ Response Response::createResponse(Errors e, const std::string& s) {
 Response Response::createResponse(const fc::variant& data) {
     Response resp;
     resp.code = Errors::Error_Success;
-    resp.msg = "";
+    resp.msg = fc::json::to_string(data);
     resp.data = data;
 
     return resp;
