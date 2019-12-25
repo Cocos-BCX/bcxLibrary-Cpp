@@ -69,10 +69,10 @@ void BCX::lookupAssetSymbols(const std::vector<std::string>& symbolsOrIds,
     BCXImp::getInstance()->lookupAssetSymbols(symbolsOrIds, cb);
 }
 
-void BCX::listAssets(const std::string& lowerBoundSymbol, int limit,
-                    const std::function<void(const std::string&)>& cb) {
-    BCXImp::getInstance()->listAssets(lowerBoundSymbol, limit, cb);
-}
+//void BCX::listAssets(const std::string& lowerBoundSymbol, int limit,
+//                    const std::function<void(const std::string&)>& cb) {
+//    BCXImp::getInstance()->listAssets(lowerBoundSymbol, limit, cb);
+//}
 
 void BCX::createAsset(const std::string& symbol,
                     long long maxSupply,
@@ -103,6 +103,14 @@ void BCX::reserveAsset(const std::string& symbol,
                     const int mount,
                     const std::function<void(const std::string&)>& cb) {
     BCXImp::getInstance()->reserveAsset(symbol, mount, cb);
+}
+
+void BCX::getBlockHeader(unsigned int num, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->getBlockHeader(num, cb);
+}
+
+void BCX::getBlock(unsigned int num, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->getBlock(num, cb);
 }
 
 std::string BCX::getVersion() {

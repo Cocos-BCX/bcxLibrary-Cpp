@@ -58,8 +58,6 @@ public:
                          const std::function<void(const std::string&)>& cb);
     static void lookupAssetSymbols(const std::vector<std::string>& symbolsOrIds,
                                    const std::function<void(const std::string&)>& cb);
-    static void listAssets(const std::string& lowerBoundSymbol, int limit,
-                           const std::function<void(const std::string&)>& cb);
     static void createAsset(const std::string& symbol,
                             long long maxSupply,
                             int precision,
@@ -83,6 +81,8 @@ public:
     /*
      * Block
      */
+    static void getBlockHeader(unsigned int num, const std::function<void(const std::string&)>& cb);
+    static void getBlock(unsigned int num, const std::function<void(const std::string&)>& cb);
     
     /*
      * Utils

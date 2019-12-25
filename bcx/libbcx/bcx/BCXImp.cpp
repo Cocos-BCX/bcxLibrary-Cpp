@@ -562,6 +562,32 @@ void BCXImp::reserveAsset(const std::string& symbol,
     HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
 }
 
+void BCXImp::getBlockHeader(unsigned int num, const std::function<void(const std::string&)>& cb) {
+    fc::variants params;
+    params.push_back(num);
+    
+    _ws.send_call(_chainData.dbAPIID, "get_block_header", params)
+    .then([=](const fc::variant& v) {
+        Response resp = Response::createResponse(v);
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::getBlock(unsigned int num, const std::function<void(const std::string&)>& cb) {
+    fc::variants params;
+    params.push_back(num);
+
+    _ws.send_call(_chainData.dbAPIID, "get_block", params)
+    .then([=](const fc::variant& v) {
+        Response resp = Response::createResponse(v);
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
 void BCXImp::performFunctionInMainThread(const std::function<void()>& f) {
     _looper.performFunctionInMainThread(f);
 }

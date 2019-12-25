@@ -72,6 +72,8 @@ public:
     void reserveAsset(const std::string& symbol,
                     const int mount,
                     const std::function<void(const std::string&)>& cb);
+    void getBlockHeader(unsigned int num, const std::function<void(const std::string&)>& cb);
+    void getBlock(unsigned int num, const std::function<void(const std::string&)>& cb);
 
     void performFunctionInMainThread(const std::function<void()>& f);
     void loop();

@@ -92,28 +92,33 @@ void BCXTest::createTestCasesMap() {
                 this->log(json);
             });
         }},
-        {"2.2.list assets", [this]() {
-            bcx::BCX::listAssets("A", 9, [this](const std::string& json) {
-                this->log(json);
-            });
-        }},
-        {"2.3.create asset", [this]() {
+        {"2.2.create asset", [this]() {
             bcx::BCX::createAsset("SDKBOX", 1000, 5, 10, "test asset", [this](const std::string& json) {
                 this->log(json);
             });
         }},
-        {"2.4.update asset", [this]() {
+        {"2.3.update asset", [this]() {
             bcx::BCX::updateAsset("SDKBOX", 1000, 10, "update test asset", [this](const std::string& json) {
                 this->log(json);
             });
         }},
-        {"2.5.issue asset", [this]() {
-            bcx::BCX::issueAsset("hugo0001", 3, "SDKBOX", "memo", [this](const std::string& json) {
+        {"2.4.issue asset", [this]() {
+            bcx::BCX::issueAsset("hugo0001", 3, "SDKBOX", "", [this](const std::string& json) {
                 this->log(json);
             });
         }},
-        {"2.6.reserve asset", [this]() {
+        {"2.5.reserve asset", [this]() {
             bcx::BCX::reserveAsset("SDKBOX", 3, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"3.0.get block header", [this]() {
+            bcx::BCX::getBlockHeader(62260, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"3.1.get block", [this]() {
+            bcx::BCX::getBlock(62260, [this](const std::string& json) {
                 this->log(json);
             });
         }}
