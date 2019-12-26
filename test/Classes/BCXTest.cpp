@@ -214,7 +214,29 @@ end";
                 this->log(json);
             });
         }},
-        {"4.3.call contract]", [this]() {
+        {"4.3.call contract", [this]() {
+            std::string funName = "dump_params";
+            bcx::contract_params params;
+
+            //param1
+            bcx::lua_table tab;
+            tab[bcx::lua_string("string")] = bcx::lua_value(bcx::lua_string("3331"));
+            tab[bcx::lua_string("int")] = bcx::lua_value(bcx::lua_int(2));
+            tab[bcx::lua_string("bool")] = bcx::lua_value(bcx::lua_bool(true));
+            tab[bcx::lua_string("number")] = bcx::lua_value(bcx::lua_number(3.1415));
+            bcx::lua_value v = tab;
+            params.push_back(bcx::lua_value(tab));
+
+            //param2
+            params.push_back(bcx::lua_string("sdkbox1"));
+
+//            funName = "set_public_data";
+//            params.push_back(bcx::lua_string("k1"));
+//            params.push_back(bcx::lua_string("v1"));
+
+            bcx::BCX::callContractFunction("contract.test01", funName, params, 5, [this](const std::string& json) {
+                this->log(json);
+            });
         }}
     };
 

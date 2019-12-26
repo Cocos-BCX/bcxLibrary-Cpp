@@ -39,42 +39,60 @@ typedef std::map<lua_string, lua_value> lua_table;
 
 class lua_value {
 public:
-    lua_value(lua_int i): tag(1) { i = i; }
-    lua_value(lua_number n): tag(2)  { n = n; }
-    lua_value(lua_string s): tag(3) { s = s; }
-    lua_value(lua_bool b): tag(4) { b = b; }
-    lua_value(lua_table t): tag(5) { t = t; }
-    
+    lua_value(): tag(0) { }
+    lua_value(const lua_int& i): tag(1) { this->i = i; }
+    lua_value(const lua_number& n): tag(2)  { this->n = n; }
+    lua_value(const lua_string& str): tag(3) { new (&s) lua_string; s = str; }
+    lua_value(const lua_bool& b): tag(4) { this->b = b; }
+    lua_value(const lua_table& tab): tag(5) {
+        new (&t) lua_table;
+        t = tab;
+    }
     lua_value(const lua_value& lv) {
         tag = lv.tag;
         switch (lv.tag) {
             case 1: { i = lv.i; break; }
             case 2: { n = lv.n; break; }
-            case 3: { s = lv.s; break; }
+            case 3: { new (&s) lua_string; s = lv.s; break; }
             case 4: { b = lv.b; break; }
-            case 5: { t = lv.t; break; }
+            case 5: { new (&t) lua_table; t = lv.t; break; }
             default: break;
         }
     }
     ~lua_value() {
         switch (tag) {
-            case 3: { s = ""; break; }
-            case 5: { t.clear(); break; }
+            case 3: { s.~lua_string(); break; }
+            case 5: { t.~lua_table(); break; }
             default: break;
         }
+        tag = 0;
     }
-    lua_value operator=( const lua_value& lv ) {
+
+    lua_value& operator=( const lua_value& lv ) {
         if( this == &lv ) return *this;
         tag = lv.tag;
         switch (lv.tag) {
             case 1: { i = lv.i; break; }
             case 2: { n = lv.n; break; }
-            case 3: { s = lv.s; break; }
+            case 3: { new (&s) lua_string; s = lv.s; break; }
             case 4: { b = lv.b; break; }
-            case 5: { t = lv.t; break; }
+            case 5: { new (&t) lua_table; t = lv.t; break; }
             default: break;
         }
         return *this;
+    }
+    lua_value& operator=( lua_value&& lv ) {
+       if( this == &lv ) return *this;
+       tag = lv.tag;
+       switch (lv.tag) {
+           case 1: { i = lv.i; break; }
+           case 2: { n = lv.n; break; }
+           case 3: { new (&s) lua_string; s = lv.s; break; }
+           case 4: { b = lv.b; break; }
+           case 5: { new (&t) lua_table; t = lv.t; break; }
+           default: break;
+       }
+       return *this;
     }
 
     int tag;
