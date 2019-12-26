@@ -5,6 +5,7 @@
 #include "./contract.hpp"
 #include "../asset_ops.hpp"
 #include "./market.hpp"
+#include "./nhasset.hpp"
 #include "./placehoder.hpp"
 #include "./transfer.hpp"
 

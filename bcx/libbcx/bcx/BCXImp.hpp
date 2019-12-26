@@ -83,6 +83,14 @@ public:
                               const contract_params& params, int runTime,
                               const std::function<void(const std::string&)>& cb);
 
+    void NHRegisterCreator(const std::function<void(const std::string&)>& cb);
+    void NHCreateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb);
+    void NHRelateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb);
+    void NHCreatAsset(const std::vector<bcx::NHAssetCreateInfo>& NHAssets, const std::function<void(const std::string&)>& cb);
+    void NHDeleteAsset(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb);
+    void NHTransferAsset(const std::string IDOrHash, const std::string ToAccount, const std::function<void(const std::string&)>& cb);
+    void NHLookupAssets(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb);
+
     void performFunctionInMainThread(const std::function<void()>& f);
     void loop();
 
@@ -98,6 +106,8 @@ private:
     ::promise::Defer createAccountByFaucet(const std::string &account, const std::string &pw);
     ::promise::Defer getAccountByName(const std::string &name);
     ::promise::Defer getContract(const std::string& nameOrId);
+    ::promise::Defer lookupNHAsset(const std::vector<std::string>& idsOrHashs);
+    ::promise::Defer lookupAccountNames(const std::vector<std::string> &names);
 
     fc::optional<fc::ecc::private_key> getCurrentPrivateKey(const std::string& role);
     void resetChainData();

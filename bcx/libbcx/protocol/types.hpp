@@ -117,6 +117,7 @@ class account_object;
 class asset_object;
 class limit_order_object;
 class contract_object;
+class game_protocol_object;
 
 
 typedef object_id< protocol_ids, account_object_type,            account_object>               account_id_type;
@@ -134,7 +135,7 @@ typedef object_id< protocol_ids, limit_order_object_type,        limit_order_obj
 //typedef object_id< protocol_ids, worker_object_type,             worker_object>                worker_id_type;
 //typedef object_id< protocol_ids, balance_object_type,            balance_object>               balance_id_type;
 typedef object_id< protocol_ids, contract_object_type, contract_object>               contract_id_type;
-//typedef object_id< game_protocol_ids, game_item_object_type, bcx::protocol::game_protocol_object> game_protocol_id_type;
+typedef object_id< game_protocol_ids, game_item_object_type, bcx::protocol::game_protocol_object> game_protocol_id_type;
 
 class asset_dynamic_data_object;
 class asset_bitasset_data_object;

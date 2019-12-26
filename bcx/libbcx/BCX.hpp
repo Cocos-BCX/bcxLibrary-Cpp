@@ -17,6 +17,7 @@ enum Errors {
     Error_Error,
     Error_Unknow,
     Error_Not_Login,
+    Error_Not_Own,
     Error_Auth_Fail,
     Error_API_Disable,
     Error_Chain_Exception,
@@ -27,6 +28,14 @@ enum Errors {
     Error_BCX_Error,
     Error_Max
 };
+
+struct NHAssetCreateInfo {
+    std::string assetName;
+    std::string worldView;
+    std::string baseDescribe;
+    std::string owner;
+};
+
 
 typedef int lua_int;
 typedef double lua_number;
@@ -175,6 +184,17 @@ public:
     static void callContractFunction(const std::string& nameOrId, const std::string& functionName,
                                      const contract_params& params, int runTime,
                                      const std::function<void(const std::string&)>& cb);
+
+    /*
+     * NH Asset
+     */
+    static void NHRegisterCreator(const std::function<void(const std::string&)>& cb);
+    static void NHCreateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb);
+    static void NHRelateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb);
+    static void NHCreatAsset(const std::vector<bcx::NHAssetCreateInfo>& NHAssets, const std::function<void(const std::string&)>& cb);
+    static void NHDeleteAsset(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb);
+    static void NHTransferAsset(const std::string IDOrHash, const std::string ToAccount, const std::function<void(const std::string&)>& cb);
+    static void NHLookupAssets(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb);
 
     /*
      * Utils

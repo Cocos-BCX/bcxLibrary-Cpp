@@ -237,6 +237,51 @@ end";
             bcx::BCX::callContractFunction("contract.test01", funName, params, 5, [this](const std::string& json) {
                 this->log(json);
             });
+        }},
+        {"5.0.NH register creator", [this]() {
+            bcx::BCX::NHRegisterCreator([this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"5.1.NH create world view", [this]() {
+            bcx::BCX::NHCreateWorldView("SDKBox", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"5.2.NH relate world view", [this]() {
+            bcx::BCX::NHRelateWorldView("SDKBox", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"5.3.NH create asset", [this]() {
+            std::vector<bcx::NHAssetCreateInfo> acis;
+
+            bcx::NHAssetCreateInfo aci;
+            aci.assetName = "COCOS";
+            aci.baseDescribe = "{\"name\":\"Knife\"}";
+            aci.worldView = "SDKBox";
+            aci.owner = "hugo1111";
+
+            acis.push_back(aci);
+
+            bcx::BCX::NHCreatAsset(acis, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"5.4.NH delete asset", [this]() {
+            bcx::BCX::NHDeleteAsset({"4.2.9"}, [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"5.5.NH transfer asset", [this]() {
+            bcx::BCX::NHTransferAsset("4.2.9", "huang", [this](const std::string& json) {
+                this->log(json);
+            });
+        }},
+        {"5.6.NH lookup asset", [this]() {
+            bcx::BCX::NHLookupAssets({"4.2.9"}, [this](const std::string& json) {
+                this->log(json);
+            });
         }}
     };
 

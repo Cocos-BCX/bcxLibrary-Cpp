@@ -135,6 +135,33 @@ void BCX::callContractFunction(const std::string& nameOrId, const std::string& f
     BCXImp::getInstance()->callContractFunction(nameOrId, functionName, params, runTime, cb);
 }
 
+void BCX::NHRegisterCreator(const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->NHRegisterCreator(cb);
+}
+
+void BCX::NHCreateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->NHCreateWorldView(name, cb);
+}
+
+void BCX::NHRelateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->NHRelateWorldView(name, cb);
+}
+
+void BCX::NHCreatAsset(const std::vector<bcx::NHAssetCreateInfo>& NHAssets, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->NHCreatAsset(NHAssets, cb);
+}
+
+void BCX::NHDeleteAsset(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->NHDeleteAsset(IDOrHashs, cb);
+}
+
+void BCX::NHTransferAsset(const std::string IDOrHash, const std::string ToAccount, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->NHTransferAsset(IDOrHash, ToAccount, cb);
+}
+
+void BCX::NHLookupAssets(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb) {
+    BCXImp::getInstance()->NHLookupAssets(IDOrHashs, cb);
+}
 
 std::string BCX::getVersion() {
     return BCX_SDK_VERSION_STR;

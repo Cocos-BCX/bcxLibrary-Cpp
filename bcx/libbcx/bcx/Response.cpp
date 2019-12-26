@@ -34,6 +34,10 @@ Response Response::createResponse(Errors e) {
             s = "not login";
             break;
         }
+        case Errors::Error_Not_Own: {
+            s = "not own";
+            break;
+        }
         case Errors::Error_Auth_Fail: {
             s = "auth failed";
             break;

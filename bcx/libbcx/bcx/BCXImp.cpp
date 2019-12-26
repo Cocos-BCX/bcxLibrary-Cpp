@@ -16,6 +16,7 @@
 #include "../protocol/asset_object.hpp"
 #include "../protocol/contract_object.hpp"
 #include "../protocol/operations/transfer.hpp"
+#include "../protocol/operations/nhasset.hpp"
 #include "../protocol/transaction.hpp"
 
 #define CHECK_LOGIN(CALLBACK) \
@@ -686,6 +687,193 @@ void BCXImp::callContractFunction(const std::string& nameOrId, const std::string
     HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
 }
 
+void BCXImp::NHRegisterCreator(const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    bcx::protocol::nh_register_asset_creator_operation op;
+    
+    op.fee_paying_account = _chainData.fullAccount.account.get_id();
+    
+    sendOperation({op})
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::NHCreateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    bcx::protocol::nh_create_world_view_operation op;
+    
+    op.fee_paying_account = _chainData.fullAccount.account.get_id();
+    op.world_view = name;
+
+    sendOperation({op})
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::NHRelateWorldView(const std::string& name, const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    bcx::protocol::nh_relate_world_view_operation op;
+    
+    op.related_account = _chainData.fullAccount.account.get_id();
+    op.view_owner = _chainData.fullAccount.account.get_id();
+    op.world_view = name;
+
+    sendOperation({op})
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::NHCreatAsset(const std::vector<bcx::NHAssetCreateInfo>& NHAssets, const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<std::vector<bcx::protocol::operation>> ops = std::make_shared<std::vector<bcx::protocol::operation>>();
+    
+    std::shared_ptr<std::vector<std::string>> asset_names = std::make_shared<std::vector<std::string>>();
+    
+    for (const auto& asset_create : NHAssets) {
+        bcx::protocol::nh_create_asset_operation op;
+
+        op.fee_paying_account = _chainData.fullAccount.account.get_id();
+        op.asset_id = asset_create.assetName;
+        op.world_view = asset_create.worldView;
+        op.base_describe = asset_create.baseDescribe;
+
+        ops->push_back(op);
+
+        asset_names->push_back(asset_create.owner);
+    }
+
+    lookupAccountNames(*asset_names)
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        const auto oaos = v.as<std::vector<fc::optional<bcx::protocol::account_object>>>(BCX_PACK_MAX_DEPTH);
+
+        Response rErr = Response::createResponse(Errors::Error_Error);
+        RETURN_REJECT_DEFER_IF(ops->size() != oaos.size(), resp)
+
+        Response rOwn = Response::createResponse(Errors::Error_Not_Own);
+        for (int i = 0; i < ops->size(); i++) {
+            const auto &oao = oaos[i];
+            RETURN_REJECT_DEFER_IF(!oao.valid(), rErr)
+
+            auto &caop = ops->at(i).get<bcx::protocol::nh_create_asset_operation>();
+            caop.owner = oao->get_id();
+        }
+
+        return this->sendOperation(*ops);
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::NHDeleteAsset(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<std::vector<bcx::protocol::operation>> ops = std::make_shared<std::vector<bcx::protocol::operation>>();
+
+    lookupNHAsset(IDOrHashs)
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        const auto oNHais = v.as<std::vector<fc::optional<bcx::protocol::nh_asset_info>>>(BCX_PACK_MAX_DEPTH);
+
+        Response rErr = Response::createResponse(Errors::Error_Error);
+        Response rOwn = Response::createResponse(Errors::Error_Not_Own);
+        for (const auto& oNHai : oNHais) {
+            RETURN_REJECT_DEFER_IF(!oNHai.valid(), rErr)
+            
+            bcx::protocol::account_id_type ait;
+            fc::from_variant(oNHai->nh_asset_owner, ait);
+            RETURN_REJECT_DEFER_IF((ait != _chainData.fullAccount.account.get_id()), rOwn)
+
+            bcx::protocol::nh_delete_asset_operation op;
+            
+            op.fee_paying_account = _chainData.fullAccount.account.get_id();
+            op.nh_asset = oNHai->id;
+
+            ops->push_back(op);
+        }
+
+        return this->sendOperation(*ops);
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::NHTransferAsset(const std::string IDOrHash, const std::string ToAccount, const std::function<void(const std::string&)>& cb) {
+    CHECK_LOGIN(cb)
+
+    std::shared_ptr<bcx::protocol::nh_transfer_asset_operation> op = std::make_shared<bcx::protocol::nh_transfer_asset_operation>();
+
+    getAccountByName(ToAccount)
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        auto account_object = v.as<bcx::protocol::account_object>(BCX_PACK_MAX_DEPTH);
+
+        op->to = account_object.get_id();
+
+        return lookupNHAsset({IDOrHash});
+    })
+    .then([=](const Response& resp) {
+        RETURN_REJECT_DEFER_IF(Errors::Error_Success != resp.code, resp)
+
+        const fc::variant& v = resp.data;
+        const auto oNHais = v.as<std::vector<fc::optional<bcx::protocol::nh_asset_info>>>(BCX_PACK_MAX_DEPTH);
+
+        Response rErr = Response::createResponse(Errors::Error_Error);
+        RETURN_REJECT_DEFER_IF(1 != oNHais.size(), resp)
+
+        Response rOwn = Response::createResponse(Errors::Error_Not_Own);
+        for (const auto& oNHai : oNHais) {
+            RETURN_REJECT_DEFER_IF(!oNHai.valid(), rErr)
+            
+            bcx::protocol::account_id_type ait;
+            fc::from_variant(oNHai->nh_asset_owner, ait);
+            RETURN_REJECT_DEFER_IF((ait != _chainData.fullAccount.account.get_id()), rOwn)
+
+            op->nh_asset = oNHai->id;
+        }
+
+        return this->sendOperation({*op});
+    })
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
+
+void BCXImp::NHLookupAssets(const std::vector<std::string>& IDOrHashs, const std::function<void(const std::string&)>& cb) {
+    lookupNHAsset(IDOrHashs)
+    .then([=](const Response& resp) {
+        std::string s = fc::json::to_string(resp);
+        cb(s);
+    })
+    HANDLE_DEFER_FAIL_AND_CALL_BACK(cb)
+}
 
 void BCXImp::performFunctionInMainThread(const std::function<void()>& f) {
     _looper.performFunctionInMainThread(f);
@@ -912,11 +1100,48 @@ void BCXImp::loop() {
 
     _ws.send_call(2, "get_contract", params)
     .then([=](const fc::variant& v) {
-        bcx::protocol::contract_object co;
-        v.as(co, BCX_PACK_MAX_DEPTH);
-
         d.resolve(Response::createResponse(v));
         
+//        std::string s0 = "0000000000000000000000000000000000000000000000000000000000000000";
+//        if (0 == s0.compare(co->current_version)) {
+//            //TODO need to getobject 2.11.0
+//            throw std::string("contract version is 0");
+//        }
+//        return query_get_transaction_by_id(co->current_version);
+    })
+    HANDLE_DEFER_FAIL
+
+    return d;
+}
+
+::promise::Defer BCXImp::lookupNHAsset(const std::vector<std::string>& idsOrHashs) {
+    promise::Defer d = promise::newPromise();
+
+    fc::variants params;
+    fc::variant mparams;
+    fc::to_variant(idsOrHashs, mparams, BCX_PACK_MAX_DEPTH);
+    params.push_back(mparams);
+
+    _ws.send_call(_chainData.dbAPIID, "lookup_nh_asset", params)
+    .then([=](const fc::variant& v) {
+        d.resolve(Response::createResponse(v));
+    })
+    HANDLE_DEFER_FAIL
+
+    return d;
+}
+
+::promise::Defer BCXImp::lookupAccountNames(const std::vector<std::string> &names) {
+    promise::Defer d = promise::newPromise();
+
+    fc::variants params;
+    fc::variant params1;
+    fc::to_variant(names, params1, BCX_PACK_MAX_DEPTH);
+    params.push_back(params1);
+
+    _ws.send_call(_chainData.dbAPIID, "lookup_account_names", params)
+    .then([=](const fc::variant& v) {
+        d.resolve(Response::createResponse(v));
     })
     HANDLE_DEFER_FAIL
 
