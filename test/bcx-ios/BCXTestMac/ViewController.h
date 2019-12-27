@@ -8,8 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ViewController : NSViewController
+@interface ViewController : NSViewController<NSTableViewDataSource, NSTableViewDelegate>
 
+@property (weak) IBOutlet NSTextField *txtLog;
+@property (weak) IBOutlet NSTableView *testCasesView;
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
+- (nullable NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row;
+- (void)tableViewDoubleClick:(id)sender;
 
 @end
 

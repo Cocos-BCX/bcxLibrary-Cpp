@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A5CDCC1239F3C4F00950019 /* BCXTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A5CDCBF239F3C4F00950019 /* BCXTest.cpp */; };
+		9A3181C423B59C9300A2864E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3181C323B59C9300A2864E /* AppDelegate.m */; };
+		9A3181C723B59C9300A2864E /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A3181C623B59C9300A2864E /* ViewController.mm */; };
+		9A3181C923B59C9500A2864E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A3181C823B59C9500A2864E /* Assets.xcassets */; };
+		9A3181CC23B59C9500A2864E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A3181CA23B59C9500A2864E /* Main.storyboard */; };
+		9A3181CF23B59C9500A2864E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3181CE23B59C9500A2864E /* main.m */; };
+		9A3181D923B5A91D00A2864E /* BCXTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A3181D723B5A91C00A2864E /* BCXTest.cpp */; };
+		9A3181DA23B5A91D00A2864E /* BCXTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A3181D723B5A91C00A2864E /* BCXTest.cpp */; };
+		9A3181DB23B5AAC600A2864E /* libbcx mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5CDCCA239F3D3800950019 /* libbcx mac.a */; };
 		9A5CDCCB239F3D4800950019 /* libbcx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5CDCC8239F3D3800950019 /* libbcx.a */; };
 		9A75EEF92398A1F3008E5D68 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A75EEF82398A1F3008E5D68 /* libz.tbd */; };
 		9A9C8B3623916607006A741D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9C8B3523916607006A741D /* AppDelegate.m */; };
@@ -37,8 +44,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9A5CDCBF239F3C4F00950019 /* BCXTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BCXTest.cpp; path = ../../Classes/BCXTest.cpp; sourceTree = "<group>"; };
-		9A5CDCC0239F3C4F00950019 /* BCXTest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BCXTest.hpp; path = ../../Classes/BCXTest.hpp; sourceTree = "<group>"; };
+		9A3181C023B59C9300A2864E /* BCXTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BCXTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A3181C223B59C9300A2864E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9A3181C323B59C9300A2864E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9A3181C523B59C9300A2864E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9A3181C623B59C9300A2864E /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		9A3181C823B59C9500A2864E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9A3181CB23B59C9500A2864E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9A3181CD23B59C9500A2864E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A3181CE23B59C9500A2864E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9A3181D023B59C9500A2864E /* BCXTestMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BCXTestMac.entitlements; sourceTree = "<group>"; };
+		9A3181D723B5A91C00A2864E /* BCXTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BCXTest.cpp; sourceTree = "<group>"; };
+		9A3181D823B5A91C00A2864E /* BCXTest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BCXTest.hpp; sourceTree = "<group>"; };
 		9A5CDCC2239F3D3800950019 /* bcx.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = bcx.xcodeproj; path = "../../bcx/project/bcx-lib-ios/bcx.xcodeproj"; sourceTree = "<group>"; };
 		9A75EEF82398A1F3008E5D68 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9A9C8B3123916607006A741D /* BCXTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BCXTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +73,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9A3181BD23B59C9300A2864E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A3181DB23B5AAC600A2864E /* libbcx mac.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9A9C8B2E23916607006A741D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,6 +93,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A3181C123B59C9300A2864E /* BCXTestMac */ = {
+			isa = PBXGroup;
+			children = (
+				9A3181C223B59C9300A2864E /* AppDelegate.h */,
+				9A3181C323B59C9300A2864E /* AppDelegate.m */,
+				9A3181C523B59C9300A2864E /* ViewController.h */,
+				9A3181C623B59C9300A2864E /* ViewController.mm */,
+				9A3181C823B59C9500A2864E /* Assets.xcassets */,
+				9A3181CA23B59C9500A2864E /* Main.storyboard */,
+				9A3181CD23B59C9500A2864E /* Info.plist */,
+				9A3181CE23B59C9500A2864E /* main.m */,
+				9A3181D023B59C9500A2864E /* BCXTestMac.entitlements */,
+			);
+			path = BCXTestMac;
+			sourceTree = "<group>";
+		};
+		9A3181D623B5A91C00A2864E /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9A3181D723B5A91C00A2864E /* BCXTest.cpp */,
+				9A3181D823B5A91C00A2864E /* BCXTest.hpp */,
+			);
+			name = Classes;
+			path = ../Classes;
+			sourceTree = "<group>";
+		};
 		9A5CDCC3239F3D3800950019 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -89,7 +140,9 @@
 			isa = PBXGroup;
 			children = (
 				9A5CDCC2239F3D3800950019 /* bcx.xcodeproj */,
+				9A3181D623B5A91C00A2864E /* Classes */,
 				9A9C8B3323916607006A741D /* BCXTest */,
+				9A3181C123B59C9300A2864E /* BCXTestMac */,
 				9A9C8B3223916607006A741D /* Products */,
 				9A75EED823989C56008E5D68 /* Frameworks */,
 			);
@@ -99,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				9A9C8B3123916607006A741D /* BCXTest.app */,
+				9A3181C023B59C9300A2864E /* BCXTest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,8 +166,6 @@
 				9A9C8B3823916607006A741D /* SceneDelegate.m */,
 				9A9C8B3A23916607006A741D /* ViewController.h */,
 				9A9C8B3B23916607006A741D /* ViewController.mm */,
-				9A5CDCBF239F3C4F00950019 /* BCXTest.cpp */,
-				9A5CDCC0239F3C4F00950019 /* BCXTest.hpp */,
 				9A9C8B3D23916607006A741D /* Main.storyboard */,
 				9A9C8B4023916611006A741D /* Assets.xcassets */,
 				9A9C8B4223916611006A741D /* LaunchScreen.storyboard */,
@@ -126,6 +178,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9A3181BF23B59C9300A2864E /* BCXTestMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A3181D523B59C9500A2864E /* Build configuration list for PBXNativeTarget "BCXTestMac" */;
+			buildPhases = (
+				9A3181BC23B59C9300A2864E /* Sources */,
+				9A3181BD23B59C9300A2864E /* Frameworks */,
+				9A3181BE23B59C9300A2864E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BCXTestMac;
+			productName = BCXTestMac;
+			productReference = 9A3181C023B59C9300A2864E /* BCXTest.app */;
+			productType = "com.apple.product-type.application";
+		};
 		9A9C8B3023916607006A741D /* BCXTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A9C8B4A23916611006A741D /* Build configuration list for PBXNativeTarget "BCXTest" */;
@@ -152,6 +221,9 @@
 				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = SDKBox;
 				TargetAttributes = {
+					9A3181BF23B59C9300A2864E = {
+						CreatedOnToolsVersion = 11.1;
+					};
 					9A9C8B3023916607006A741D = {
 						CreatedOnToolsVersion = 11.1;
 					};
@@ -177,6 +249,7 @@
 			projectRoot = "";
 			targets = (
 				9A9C8B3023916607006A741D /* BCXTest */,
+				9A3181BF23B59C9300A2864E /* BCXTestMac */,
 			);
 		};
 /* End PBXProject section */
@@ -199,6 +272,15 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9A3181BE23B59C9300A2864E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A3181C923B59C9500A2864E /* Assets.xcassets in Resources */,
+				9A3181CC23B59C9500A2864E /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9A9C8B2F23916607006A741D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -212,13 +294,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9A3181BC23B59C9300A2864E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A3181C723B59C9300A2864E /* ViewController.mm in Sources */,
+				9A3181DA23B5A91D00A2864E /* BCXTest.cpp in Sources */,
+				9A3181CF23B59C9500A2864E /* main.m in Sources */,
+				9A3181C423B59C9300A2864E /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9A9C8B2D23916607006A741D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9A9C8B3C23916607006A741D /* ViewController.mm in Sources */,
+				9A3181D923B5A91D00A2864E /* BCXTest.cpp in Sources */,
 				9A9C8B3623916607006A741D /* AppDelegate.m in Sources */,
-				9A5CDCC1239F3C4F00950019 /* BCXTest.cpp in Sources */,
 				9A9C8B4723916611006A741D /* main.m in Sources */,
 				9A9C8B3923916607006A741D /* SceneDelegate.m in Sources */,
 			);
@@ -227,6 +320,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		9A3181CA23B59C9500A2864E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A3181CB23B59C9500A2864E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		9A9C8B3D23916607006A741D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -246,6 +347,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		9A3181D123B59C9500A2864E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BCXTestMac/BCXTestMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BCXTestMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdkbox.test.app.bcx;
+				PRODUCT_NAME = BCXTest;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../bcx/libbcx\"";
+			};
+			name = Debug;
+		};
+		9A3181D223B59C9500A2864E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BCXTestMac/BCXTestMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BCXTestMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdkbox.test.app.bcx;
+				PRODUCT_NAME = BCXTest;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../bcx/libbcx\"";
+			};
+			name = Release;
+		};
 		9A9C8B4823916611006A741D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -495,6 +636,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9A3181D523B59C9500A2864E /* Build configuration list for PBXNativeTarget "BCXTestMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A3181D123B59C9500A2864E /* Debug */,
+				9A3181D223B59C9500A2864E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9A9C8B2C23916607006A741D /* Build configuration list for PBXProject "BCXTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

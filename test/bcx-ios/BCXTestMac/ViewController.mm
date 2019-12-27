@@ -10,6 +10,7 @@
 #import "../../Classes/BCXTest.hpp"
 
 static BCXTest BT;
+static bool init = false;
 
 @implementation ViewController
 
@@ -17,17 +18,20 @@ static BCXTest BT;
     [super viewDidLoad];
 
     // Do any additional setup after loading the view.
-    
-//    BT.setNativeLog([self](const std::string& s) {
-//        [self showLog:[NSString stringWithUTF8String:s.c_str()]];
-//    });
-//    BT.init();
-//    [self showTestCases];
-//    [NSTimer scheduledTimerWithTimeInterval:0.1
-//                                    repeats:YES
-//                                      block:^(NSTimer * _Nonnull timer) {
-//        BT.loop();
-//    }];
+
+    if (!init) {
+        init = true;
+        BT.setNativeLog([self](const std::string& s) {
+            [self showLog:[NSString stringWithUTF8String:s.c_str()]];
+        });
+        BT.init();
+        [self testCasesViewSetting];
+        [NSTimer scheduledTimerWithTimeInterval:0.1
+                                        repeats:YES
+                                          block:^(NSTimer * _Nonnull timer) {
+            BT.loop();
+        }];
+    }
 }
 
 
@@ -37,40 +41,55 @@ static BCXTest BT;
     // Update the view, if already loaded.
 }
 
-- (void)showTestCases {
-    int x = 60, y = 50;
-//    const auto testCasesCount = BT.getTestCasesCount();
-//    for (int i = 0; i < testCasesCount; i++) {
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-//        [button setTitle:[NSString stringWithUTF8String:BT.getTestCasesName(i).c_str()] forState:UIControlStateNormal];
-//        button.center = CGPointMake(x, y);
-//        [button sizeToFit];
-//        [button addTarget:self action:@selector(testCasePressed:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:button];
-//
-//        y = y + 30;
-//    }
+- (void)testCasesViewSetting {
+    self.testCasesView.delegate = self;
+    self.testCasesView.dataSource = self;
+    self.testCasesView.target = self;
+    self.testCasesView.doubleAction = @selector(tableViewDoubleClick:);
 }
 
-//- (void)testCasePressed:(UIButton *)button {
-//    NSLog(@"Test:%@", button.titleLabel.text);
-//    [self showLog: [NSString stringWithFormat:@"Test:%@", button.titleLabel.text] ];
-//    BT.runTestCase(button.titleLabel.text.UTF8String);
-//}
-//
-//- (void)showLog:(NSString*)s {
-//    if (nullptr == self.txtLog) {
-//        return;
-//    }
-//    NSString *txt = self.txtLog.text;
-//    NSArray *sArr = [txt componentsSeparatedByString:@"\n"];
-//    NSMutableArray *mutArr = [NSMutableArray arrayWithArray:sArr];
-//    while (mutArr.count > 3) {
-//        [mutArr removeObjectAtIndex:0];
-//    }
-//    [mutArr addObject:s];
-//    txt = [mutArr componentsJoinedByString:@"\n"];
-//    self.txtLog.text = txt;
-//}
+- (void)testCasePressed:(NSButton *)button {
+    NSLog(@"Test:%@", button.title);
+    [self showLog: [NSString stringWithFormat:@"Test:%@", button.title] ];
+    BT.runTestCase(button.title.UTF8String);
+}
+
+- (void)showLog:(NSString*)s {
+    if (nullptr == self.txtLog) {
+        return;
+    }
+    NSString *txt = self.txtLog.stringValue;
+    NSArray *sArr = [txt componentsSeparatedByString:@"\n"];
+    NSMutableArray *mutArr = [NSMutableArray arrayWithArray:sArr];
+    while (mutArr.count > 3) {
+        [mutArr removeObjectAtIndex:0];
+    }
+    [mutArr addObject:s];
+    txt = [mutArr componentsJoinedByString:@"\n"];
+    self.txtLog.stringValue = txt;
+}
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return BT.getTestCasesCount();
+}
+
+- (nullable NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row {
+    NSString *cellIdentifier = @"testcell";
+
+    NSTableCellView *cell = [tableView makeViewWithIdentifier:cellIdentifier owner:self];
+    if (cell) {
+        cell.textField.stringValue = [NSString stringWithUTF8String:BT.getTestCasesName((int)row).c_str()];
+        
+        return cell;
+    }
+    return nil;
+}
+
+- (void)tableViewDoubleClick:(id)sender {
+    NSInteger row = self.testCasesView.selectedRow;
+    std::string testName = BT.getTestCasesName((int)row);
+    NSLog(@"RunTest: %@", [NSString stringWithUTF8String: testName.c_str()]);
+    BT.runTestCase(testName);
+}
 
 @end
