@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../fc/include/fc/variant.hpp"
 #include "./types.hpp"
 
 namespace bcx { namespace protocol {
@@ -80,10 +81,7 @@ struct vote_id_type {
 
 } }
 
-namespace fc
-{
-
-class variant;
+namespace fc {
 
 void to_variant( const bcx::protocol::vote_id_type& var, fc::variant& vo, uint32_t max_depth = 1 );
 void from_variant( const fc::variant& var, bcx::protocol::vote_id_type& vo, uint32_t max_depth = 1 );

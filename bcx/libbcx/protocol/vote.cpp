@@ -1,6 +1,3 @@
-//#include <graphene/chain/global_property_object.hpp>
-//#include <graphene/chain/protocol/vote.hpp>
-//#include <fc/variant.hpp>
 #include "./vote.hpp"
 
 namespace bcx {

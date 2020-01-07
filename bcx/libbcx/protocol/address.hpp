@@ -4,6 +4,7 @@
 #include <vector>
 #include "./config.hpp"
 #include "../fc/include/fc/crypto/ripemd160.hpp"
+#include "../fc/include/fc/variant.hpp"
 
 namespace bcx {
 namespace protocol {
@@ -27,10 +28,11 @@ inline bool operator <  ( const address& a, const address& b ) { return a.addr <
 } // namespace protocol
 } // namespace bcx
 
-
 namespace fc {
-   void to_variant( const bcx::protocol::address& var,  fc::variant& vo, uint32_t max_depth = 1 );
-   void from_variant( const fc::variant& var,  bcx::protocol::address& vo, uint32_t max_depth = 1 );
+
+void to_variant( const bcx::protocol::address& var,  fc::variant& vo, uint32_t max_depth = 1 );
+void from_variant( const fc::variant& var,  bcx::protocol::address& vo, uint32_t max_depth = 1 );
+
 }
 
 namespace std {

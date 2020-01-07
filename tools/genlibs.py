@@ -225,7 +225,7 @@ def genIOSLibs():
     # copy ios header
     copyIOSXHeader(package_ios_folder)
 
-    makeFolderEmpty(os.path.join(CUR_DIR, 'tmp'))
+    # makeFolderEmpty(os.path.join(CUR_DIR, 'tmp'))
 
 def copyIOSXHeader(package_path):
     bcx_lib_folder = os.path.join(CUR_DIR, '..', 'bcx', 'libbcx')
