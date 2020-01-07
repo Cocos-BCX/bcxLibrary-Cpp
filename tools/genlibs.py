@@ -454,7 +454,21 @@ def genWindowsLibs():
 def syncThirdLibs():
     bcx_lib_folder = os.path.join(CUR_DIR, '..', 'bcx', 'libbcx')
     bcx_package_folder = os.path.realpath(os.path.join(CUR_DIR, '..', 'bcx-sdk', 'package'))
-    unicopy(os.path.join(bcx_lib_folder, '3rd'), os.path.join(bcx_package_folder, '3rd'))
+    bcx_lib_third_folder = os.path.join(bcx_lib_folder, '3rd')
+    bcx_package_third_folder = os.path.join(bcx_package_folder, '3rd')
+
+    files = [
+        "CMakeLists.txt",
+        "cmake",
+        "empty.cpp",
+        "openssl",
+        "secp256k1",
+        "uv",
+        "websockets",
+        "zlib",
+    ]
+    for f in files:
+        unicopy(os.path.join(bcx_lib_third_folder, f), os.path.join(bcx_package_third_folder, f))
 
 def preEnvCheckNDK():
     ndk_root = get_ndk_root()
